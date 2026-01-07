@@ -1,0 +1,59 @@
+services:
+  api:
+    build:
+      context: ..
+      dockerfile: deployment/Dockerfile
+    command: ["sh", "-c", "mkdir -p \"$HOME\" && python deployment/prefetch_totalseg_weights.py && python deployment/server.py"]
+    ports:
+      - "8000:8000"
+    environment:
+      HOME: "/app/deployment/storage/home"
+      RADPANC_HOST: "0.0.0.0"
+      RADPANC_PORT: "8000"
+      RADPANC_STORAGE_ROOT: "/app/deployment/storage"
+      RADPANC_RUNS_ROOT: "/app/runs"
+      RADPANC_VIEWER_URL: "http://localhost:5003/"
+      RADPANC_AUTORUN_ON_COORDINATE: "1"
+      RADPANC_AUTORUN_INTERVAL_SECONDS: "2"
+      RADPANC_TOTALSEG_TASK: "total"
+      RADPANC_TOTALSEG_ROI_SUBSET: "pancreas"
+      RADPANC_TOTALSEG_FAST: "0"
+      RADPANC_TOTALSEG_ROBUST_CROP: "0"
+      RADPANC_TOTALSEG_DEVICE: "cpu"
+      RADPANC_TOTALSEG_NR_THR_RESAMP: "1"
+      RADPANC_TOTALSEG_NR_THR_SAVING: "1"
+      RADPANC_TOTALSEG_FORCE_SPLIT: "0"
+      RADPANC_TOTALSEG_ALLOW_FAST_FALLBACK: "1"
+      RADPANC_TOTALSEG_FAST_FALLBACK_MODE: "fast"
+      RADPANC_TOTALSEG_DOWNLOAD_RETRIES: "10"
+      RADPANC_TOTALSEG_DOWNLOAD_TIMEOUT: "300"
+      OMP_NUM_THREADS: "1"
+      MKL_NUM_THREADS: "1"
+      OPENBLAS_NUM_THREADS: "1"
+      NUMEXPR_NUM_THREADS: "1"
+      ITK_GLOBAL_DEFAULT_NUMBER_OF_THREADS: "1"
+    volumes:
+      - radpanc_storage:/app/deployment/storage
+      - radpanc_runs:/app/runs
+
+  viewer:
+    build:
+      context: ..
+      dockerfile: deployment/Dockerfile
+    command: ["sh", "-c", "mkdir -p \"$HOME\" && python \"radiomics pipeline/pancreas_head_delimiter/app.py\""]
+    ports:
+      - "5003:5003"
+    environment:
+      HOME: "/app/deployment/storage/home"
+      RADPANC_CT_DIR: "/app/deployment/storage/niftii"
+      RADPANC_SEG_DIR: "/app/deployment/storage/data/pancreas"
+      RADPANC_COORDINATES_PATH: "/app/deployment/storage/coordinates/x_coordinate_selections.json"
+      RADPANC_VIEWER_HOST: "0.0.0.0"
+      RADPANC_VIEWER_PORT: "5003"
+    volumes:
+      - radpanc_storage:/app/deployment/storage
+      - radpanc_runs:/app/runs
+
+volumes:
+  radpanc_storage:
+  radpanc_runs:

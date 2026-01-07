@@ -1,0 +1,65 @@
+{
+  "timestamp": "20250917_212453",
+  "method": "scanner_group_collapsed",
+  "description": "7 stable batches for ComBat harmonization",
+  "reference_batch": "GE_Revolution_HD",
+  "batch_structure": {
+    "GE_Revolution_HD": {
+      "count": 127,
+      "models": [
+        "Revolution HD"
+      ],
+      "role": "Reference batch"
+    },
+    "GE_Revolution_Other": {
+      "count": 30,
+      "models": [
+        "Revolution EVO",
+        "Revolution Apex",
+        "Revolution CT",
+        "Revolution Frontier",
+        "Revolution Maxima"
+      ],
+      "role": "Secondary GE batch"
+    },
+    "Siemens_All": {
+      "count": 18,
+      "models": [
+        "All Siemens models"
+      ],
+      "role": "Manufacturer group"
+    },
+    "Canon_Toshiba_All": {
+      "count": 10,
+      "models": [
+        "All Canon/Toshiba models"
+      ],
+      "role": "Manufacturer group"
+    },
+    "Philips_All": {
+      "count": 9,
+      "models": [
+        "All Philips models"
+      ],
+      "role": "Manufacturer group"
+    },
+    "Other": {
+      "count": 13,
+      "models": [
+        "GE Optima CT660",
+        "GE Optima CT540",
+        "Discovery models",
+        "Other small groups"
+      ],
+      "role": "Merged small batches (includes GE Optima for stability)"
+    }
+  },
+  "total_patients": 207,
+  "combat_eligible": 207,
+  "min_batch_size": 9,
+  "rationale": {
+    "reference_choice": "GE Revolution HD has largest sample (n=127) for stable reference",
+    "grouping_strategy": "Balance between technical similarity and statistical power",
+    "min_batch_threshold": "All batches \u22655 for stable empirical Bayes estimation"
+  }
+}

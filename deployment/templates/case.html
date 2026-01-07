@@ -1,0 +1,285 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Case {{ case.patient_id }} · RADPANC</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='app.css') }}" />
+  </head>
+  <body>
+    <div class="app">
+      <div class="topbar">
+        <div>
+          <div class="muted"><a href="{{ url_for('index') }}">Home</a></div>
+          <h1>Case: {{ case.patient_id }}</h1>
+        </div>
+        <div style="display:flex; gap:0.8rem; align-items:flex-start;">
+          <div class="kv">
+            <span class="pill">CT: <code>{{ case.patient_id }}.nii.gz</code></span>
+            <span class="pill">Seg: <code>pancreas.nii.gz</code></span>
+            {% if case.scanner_id %}
+              <span class="pill">Scanner: <code>{{ case.scanner_id }}</code></span>
+            {% endif %}
+          </div>
+          <div class="caseSwitch">
+            <details id="caseSwitch">
+              <summary>Cases</summary>
+              <div class="mini muted">Jump between existing cases.</div>
+              <input id="caseSlider" type="range" min="0" max="0" step="1" value="0" />
+              <div id="caseSliderLabel" class="muted mini">-</div>
+              <label>Select case</label>
+              <select id="caseSelect"></select>
+              <div style="height:0.55rem"></div>
+              <form
+                method="post"
+                action="{{ url_for('delete_case', patient_id=case.patient_id) }}"
+                onsubmit="return confirm('Delete this case and its stored CT/seg/DICOM zips?');"
+              >
+                <button type="submit" class="btnDanger">Delete case</button>
+              </form>
+            </details>
+          </div>
+        </div>
+      </div>
+
+      {% if errors %}
+      <div class="errors">
+        <div style="font-weight: 900">Upload errors</div>
+        <ul>
+          {% for e in errors %}
+          <li>{{ e }}</li>
+          {% endfor %}
+        </ul>
+      </div>
+      {% endif %}
+
+      <div class="layout">
+        <!-- Left controls -->
+        <div class="stack">
+          <div class="card">
+            <div class="stepTitle">
+              <div class="stepNum">1</div>
+              <div class="sectionTitle" style="margin:0">Upload</div>
+            </div>
+            <div class="muted mini">
+              CT present: {% if ct_present %}<span class="ok">yes</span>{% else %}<span class="bad">no</span>{% endif %}
+              · Seg present: {% if seg_present %}<span class="ok">yes</span>{% else %}<span class="bad">no</span>{% endif %}
+              {% if case.dicom_zips and case.dicom_zips|length %}
+                · DICOM zips stored: <span class="ok">{{ case.dicom_zips|length }}</span>
+              {% endif %}
+            </div>
+
+            <form
+              id="dicomUploadForm"
+              method="post"
+              action="{{ url_for('upload_dicom_zip', patient_id=case.patient_id) }}"
+              enctype="multipart/form-data"
+            >
+              <label>DICOM series (.zip)</label>
+              <input type="file" name="dicom_zip" />
+              <div style="height:0.55rem"></div>
+              <button type="submit">Upload DICOM → convert + segment</button>
+            </form>
+
+            <div id="uploadProgressWrap" class="uploadProgressWrap">
+              <div class="busyRow">
+                <span class="spinner"></span><span class="muted" data-upload-label>Uploading…</span>
+              </div>
+              <div style="height:0.35rem"></div>
+              <progress value="0" max="100"></progress>
+            </div>
+
+            {% if case.last_dicom_zip %}
+            <div style="height:0.55rem"></div>
+            <form id="rerunPreprocessForm" method="post" action="{{ url_for('rerun_preprocess', patient_id=case.patient_id) }}">
+              <button type="submit">Re-run preprocess (last DICOM)</button>
+            </form>
+            {% endif %}
+
+            <details style="margin-top:0.75rem">
+              <summary>Or upload CT + segmentation (NIfTI)</summary>
+              <form
+                id="niftiUploadForm"
+                method="post"
+                action="{{ url_for('upload_case_files', patient_id=case.patient_id) }}"
+                enctype="multipart/form-data"
+              >
+                <label>CT NIfTI (.nii/.nii.gz)</label>
+                <input type="file" name="ct_nifti" />
+                <label>Pancreas segmentation NIfTI (.nii/.nii.gz)</label>
+                <input type="file" name="pancreas_seg" />
+                <div style="height:0.55rem"></div>
+                <button type="submit">Upload</button>
+              </form>
+            </details>
+          </div>
+
+          <div class="card" id="pipeline">
+            <div class="stepTitle">
+              <div class="stepNum">2</div>
+              <div class="sectionTitle" style="margin:0">Convert + segment pancreas</div>
+            </div>
+            <div id="preprocessStatus" class="muted">-</div>
+            <progress id="preprocessProgress" style="display:none"></progress>
+            <div id="preprocessProgressLabel" class="muted" style="margin-top:0.25rem; display:none">-</div>
+            <details id="preprocessLogDetails" style="margin-top:0.6rem; display:none">
+              <summary>Live log</summary>
+              <pre id="preprocessLog" class="logtail"></pre>
+            </details>
+          </div>
+
+          <div class="card">
+            <div class="stepTitle">
+              <div class="stepNum">3</div>
+              <div class="sectionTitle" style="margin:0">Delimit pancreatic head</div>
+            </div>
+            <div id="coordinateStatus" class="muted">-</div>
+            <p class="mini muted" style="margin-top:0.5rem">
+              Use <code>Save Selection</code> in the embedded viewer (center panel).
+            </p>
+            {% if saved_coordinate %}
+            <details style="margin-top:0.5rem">
+              <summary>Saved coordinate JSON</summary>
+              <pre style="background:#f7f7f7;border:1px solid #eee;padding:0.75rem;border-radius:8px;overflow:auto">{{ saved_coordinate | tojson(indent=2) }}</pre>
+            </details>
+            {% endif %}
+          </div>
+
+          <div class="card">
+            <div class="stepTitle">
+              <div class="stepNum">4</div>
+              <div class="sectionTitle" style="margin:0">Harmonization (ComBat)</div>
+            </div>
+            <p class="mini muted">Optional. Enable only if you have frozen ComBat estimates and a known batch label.</p>
+            <form id="combatForm" method="post" action="{{ url_for('update_combat', patient_id=case.patient_id) }}">
+              <label><input type="checkbox" name="combat_enabled" {% if case.combat_enabled %}checked{% endif %} /> Enable ComBat (apply frozen estimates)</label>
+              <label>Scanner / batch label</label>
+              <input
+                id="combatScannerInput"
+                type="text"
+                name="combat_scanner_id"
+                list="scannerGroups"
+                value="{{ case.combat_scanner_id or case.scanner_id or '' }}"
+                placeholder="e.g. GE_Revolution_Other"
+              />
+              {% if case.dicom_scanner and case.dicom_scanner.scanner_group_collapsed_auto %}
+              <div class="mini muted">
+                Suggested from DICOM: <code id="suggestedScanner">{{ case.dicom_scanner.scanner_group_collapsed_auto }}</code>
+                · <a href="#" id="useSuggestedScanner">use</a>
+              </div>
+              {% endif %}
+              <label>ComBat estimates (pkl)</label>
+              <input
+                type="text"
+                name="combat_estimates"
+                value="{{ case.combat_estimates or default_combat_estimates or '' }}"
+                placeholder="e.g. radiomics pipeline/outputs_combat/combat_estimates.pkl"
+              />
+              <div style="height:0.55rem"></div>
+              <button type="submit" class="btnSecondary">Save ComBat settings</button>
+            </form>
+            <datalist id="scannerGroups">
+              {% for g in scanner_groups %}
+                <option value="{{ g }}"></option>
+              {% endfor %}
+            </datalist>
+          </div>
+
+          <div class="card">
+            <div class="stepTitle">
+              <div class="stepNum">5</div>
+              <div class="sectionTitle" style="margin:0">Predict POPF risk</div>
+            </div>
+            <div id="predictStatus" class="muted">-</div>
+            <progress id="predictProgress" style="display:none"></progress>
+            <div id="predictProgressLabel" class="muted" style="margin-top:0.25rem; display:none">-</div>
+            <details id="predictLogDetails" style="margin-top:0.6rem; display:none">
+              <summary>Live log</summary>
+              <pre id="predictLog" class="logtail"></pre>
+            </details>
+
+            <div style="height:0.7rem"></div>
+            {% if settings.autorun_on_coordinate %}
+              <div class="mini muted">Auto-run: enabled (prediction starts after <code>Save Selection</code>).</div>
+            {% else %}
+              <form id="predictForm" method="post" action="{{ url_for('run_case', patient_id=case.patient_id) }}">
+                <input type="hidden" name="use_viewer_coordinate" value="on" />
+                <button id="computeRiskButton" type="submit" disabled>Compute risk (use saved head coordinate)</button>
+                <div id="computeRiskHint" class="muted" style="margin-top:0.35rem;">Waiting for CT/seg + saved coordinate.</div>
+              </form>
+            {% endif %}
+          </div>
+        </div>
+
+        <!-- Center viewer -->
+        <div class="viewerWrap">
+          <iframe title="Pancreas head delimiter" src="{{ settings.viewer_url }}?patient={{ case.patient_id }}&embedded=1"></iframe>
+        </div>
+
+        <!-- Right status/results -->
+        <div class="stack">
+          <div class="card resultCard">
+            <div class="sectionTitle">Result</div>
+            <div class="resultRisk" id="resultRisk">-</div>
+            <div class="resultSub">
+              <div id="resultGroup"></div>
+              <div class="muted" style="font-weight:800">POPF risk</div>
+            </div>
+            <div style="height:0.55rem"></div>
+            <pre id="resultCutpoints" class="muted" style="white-space:pre-line; margin:0; background:transparent; border:0; padding:0; font-family: inherit;"></pre>
+            <div style="height:0.6rem"></div>
+            <div id="downloadLinks" class="muted" style="display:none">
+              Download:
+              <a id="downloadPred" href="#">popf_predictions.csv</a>
+              · <a id="downloadManifest" href="#">manifest.json</a>
+            </div>
+          </div>
+
+          <details class="card">
+            <summary style="font-weight:900">Advanced</summary>
+            <p class="muted mini">Manual head coordinate or ComBat overrides (not needed for the standard flow).</p>
+            <form method="post" action="{{ url_for('run_case', patient_id=case.patient_id) }}">
+              <div class="row">
+                <div>
+                  <label><input type="checkbox" name="use_viewer_coordinate" /> Use saved viewer coordinate</label>
+                </div>
+                <div>
+                  <label><input type="checkbox" name="skip_combat" checked /> Skip ComBat</label>
+                </div>
+              </div>
+              <div class="row">
+                <div>
+                  <label>Head X (world)</label>
+                  <input type="number" step="any" name="head_x" placeholder="e.g. 4.7" />
+                </div>
+                <div>
+                  <label>Head Y (optional)</label>
+                  <input type="number" step="any" name="head_y" placeholder="e.g. 0.0" />
+                </div>
+              </div>
+              <label>Z-limit (optional)</label>
+              <input type="number" step="1" name="head_z_limit" placeholder="e.g. 120" />
+              <div class="row">
+                <div>
+                  <label>ComBat estimates path (optional)</label>
+                  <input type="text" name="combat_estimates" placeholder="e.g. radiomics pipeline/outputs_combat/combat_estimates.pkl" />
+                </div>
+                <div>
+                  <label>Scanner ID (optional)</label>
+                  <input type="text" name="combat_scanner_id" value="{{ case.scanner_id or '' }}" placeholder="e.g. GE_Revolution_Other" />
+                </div>
+              </div>
+              <div style="height:0.55rem"></div>
+              <button type="submit">Run advanced</button>
+            </form>
+          </details>
+        </div>
+      </div>
+
+      <script>
+        window.RADPANC_CONFIG = { patientId: {{ case.patient_id | tojson }} };
+      </script>
+      <script src="{{ url_for('static', filename='app.js') }}" defer></script>
+    </div>
+  </body>
+</html>

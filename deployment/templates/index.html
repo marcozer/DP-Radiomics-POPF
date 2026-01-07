@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>RADPANC Deployment</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='app.css') }}" />
+    <style>
+      body { overflow: auto; }
+      .page { max-width: 960px; margin: 1.25rem auto; padding: 0 0.9rem 1.25rem; }
+      h1 { margin: 0 0 0.5rem; font-weight: 950; }
+      .card { max-width: 720px; }
+    </style>
+  </head>
+  <body>
+    <div class="page">
+      <h1>RADPANC Deployment</h1>
+      <p class="muted">
+        Storage: <code>{{ settings.storage_root }}</code> · Runs: <code>{{ settings.runs_root }}</code> ·
+        Viewer: <a href="{{ settings.viewer_url }}">{{ settings.viewer_url }}</a>
+      </p>
+
+      <div class="card">
+        <div class="sectionTitle">One-page quickstart</div>
+        <p class="muted mini">
+          Upload a DICOM zip and run everything from the case page (segment → select head → POPF risk).
+        </p>
+        <form method="post" action="{{ url_for('quickstart') }}" enctype="multipart/form-data">
+          <label>Patient ID</label>
+          <input type="text" name="patient_id" placeholder="e.g. test" required />
+          <label>Scanner ID (optional)</label>
+          <input type="text" name="scanner_id" placeholder="e.g. GE_Revolution_Other" />
+          <label>DICOM series (.zip)</label>
+          <input type="file" name="dicom_zip" required />
+          <div style="height: 0.8rem"></div>
+          <button type="submit">Upload DICOM → segment → open case</button>
+        </form>
+        <p class="muted mini" style="margin-top: 0.7rem">
+          Tip: with <code>RADPANC_AUTORUN_ON_COORDINATE=1</code>, clicking <code>Save Selection</code> in the embedded viewer automatically triggers prediction.
+        </p>
+      </div>
+    </div>
+  </body>
+</html>

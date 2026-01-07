@@ -1,0 +1,31 @@
+{
+  "source": {
+    "calibration": "primary analysis/configs/calibration/radiomics_calibration.json",
+    "threshold_diagnostics": "primary analysis/configs/calibration/radiomics_threshold_diagnostics.svg",
+    "performance_plot": "primary analysis/configs/calibration/radiomics_performance.svg",
+    "model_bundle": "primary analysis/configs/exported_model.pkl",
+    "note": "Deployment thresholds are frozen from the final manuscript figures in `configs/calibration/`."
+  },
+  "probability_source": "popf_risk_calibrated",
+  "threshold_selection": {
+    "method": "figure_frozen",
+    "low_threshold": "Low threshold annotated in radiomics_threshold_diagnostics.svg",
+    "high_threshold": "High threshold annotated in radiomics_threshold_diagnostics.svg"
+  },
+  "low_threshold": 0.076,
+  "high_threshold": 0.222,
+  "risk_groups": [
+    {
+      "label": "Low",
+      "rule": "p <= low_threshold"
+    },
+    {
+      "label": "Intermediate",
+      "rule": "low_threshold < p <= high_threshold"
+    },
+    {
+      "label": "High",
+      "rule": "p > high_threshold"
+    }
+  ]
+}

@@ -1,0 +1,1769 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fast Pancreas X-Level Viewer</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background-color: #1a1a1a;
+            color: #e0e0e0;
+            overflow: hidden;
+        }
+        
+        .container {
+            display: flex;
+            height: 100vh;
+        }
+        
+        /* Left panel */
+        .control-panel {
+            width: 280px;
+            background-color: #252525;
+            padding: 15px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            height: 100vh;
+        }
+        
+        .control-panel h2 {
+            margin-bottom: 20px;
+            color: #fff;
+            font-size: 18px;
+        }
+        
+        .control-group {
+            margin-bottom: 20px;
+        }
+        
+        .control-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: #ccc;
+            font-size: 14px;
+        }
+        
+        .control-group select,
+        .control-group input {
+            width: 100%;
+            padding: 8px;
+            background-color: #333;
+            color: #fff;
+            border: 1px solid #444;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        
+        .control-group select {
+            max-height: 200px;
+            overflow-y: auto;
+        }
+        
+        #scannerSelect {
+            background-color: #333;
+            color: #fff;
+            border: 1px solid #444;
+            scrollbar-width: thin;
+            scrollbar-color: #666 #333;
+        }
+        
+        #scannerSelect::-webkit-scrollbar {
+            width: 10px;
+        }
+        
+        #scannerSelect::-webkit-scrollbar-track {
+            background: #333;
+        }
+        
+        #scannerSelect::-webkit-scrollbar-thumb {
+            background: #666;
+            border-radius: 5px;
+        }
+        
+        #scannerSelect::-webkit-scrollbar-thumb:hover {
+            background: #888;
+        }
+        
+        #scannerSelect option {
+            padding: 8px;
+            border-bottom: 1px solid #444;
+        }
+        
+        #scannerSelect option:hover {
+            background-color: #444;
+        }
+        
+        #scannerSelect option:checked {
+            background-color: #0066cc;
+            color: white;
+        }
+        
+        .button {
+            width: 100%;
+            padding: 10px;
+            background-color: #0066cc;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        
+        .button:hover {
+            background-color: #0052a3;
+        }
+        
+        .button.secondary {
+            background-color: #666;
+        }
+        
+        .button.secondary:hover {
+            background-color: #555;
+        }
+        
+        .info-box {
+            background-color: #333;
+            padding: 10px;
+            border-radius: 4px;
+            font-size: 13px;
+            margin-bottom: 15px;
+        }
+        
+        .info-box .label {
+            color: #999;
+            margin-right: 5px;
+        }
+        
+        .info-box .value {
+            color: #4CAF50;
+            font-weight: bold;
+        }
+        
+        /* Main viewer */
+        .viewer {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background-color: #0a0a0a;
+        }
+        
+        .viewer-header {
+            background-color: #1a1a1a;
+            padding: 15px 20px;
+            border-bottom: 1px solid #333;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .patient-info {
+            font-size: 16px;
+            color: #fff;
+        }
+        
+        .coordinates {
+            display: flex;
+            gap: 20px;
+            font-size: 14px;
+        }
+        
+        .coord {
+            color: #999;
+        }
+        
+        .coord .value {
+            color: #fff;
+            font-weight: bold;
+            margin-left: 5px;
+        }
+        
+        /* Image display */
+        .image-container {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            background-color: #000;
+        }
+        
+        .image-wrapper {
+            position: relative;
+            display: inline-block;
+            overflow: hidden;
+            cursor: grab;
+        }
+        
+        .image-wrapper.panning {
+            cursor: grabbing;
+        }
+        
+        #mainImage {
+            display: block;
+            cursor: crosshair;
+            image-rendering: auto;
+            transform-origin: center center;
+            transition: transform 0.1s ease-out;
+            width: 800px;
+            height: 800px;
+            object-fit: contain;
+        }
+        
+        /* X-line indicator */
+        .x-line {
+            position: absolute;
+            width: 3px;
+            height: 100%;
+            background-color: #ff0000;
+            cursor: col-resize;
+            display: none;
+            opacity: 0.8;
+            transition: opacity 0.2s;
+        }
+        
+        .x-line:hover {
+            opacity: 1.0;
+            width: 5px;
+        }
+        
+        .x-line::before {
+            content: '';
+            position: absolute;
+            left: -10px;
+            right: -10px;
+            top: 0;
+            bottom: 0;
+            cursor: col-resize;
+        }
+        
+        .y-line {
+            position: absolute;
+            width: 100%;
+            height: 3px;
+            background-color: #ff00ff;
+            cursor: row-resize;
+            display: none;
+            opacity: 0.8;
+            transition: opacity 0.2s;
+        }
+        
+        .y-line:hover {
+            opacity: 1.0;
+            height: 5px;
+        }
+        
+        .y-line::before {
+            content: '';
+            position: absolute;
+            top: -10px;
+            bottom: -10px;
+            left: 0;
+            right: 0;
+            cursor: row-resize;
+        }
+        
+        /* Quick navigation */
+        .quick-nav {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: rgba(37, 37, 37, 0.9);
+            padding: 15px 25px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            width: 400px;
+        }
+        
+        .slice-control {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            width: 100%;
+        }
+        
+        .slice-slider {
+            flex: 1;
+            -webkit-appearance: none;
+            appearance: none;
+            height: 6px;
+            background: #444;
+            border-radius: 3px;
+            outline: none;
+            cursor: pointer;
+            position: relative;
+        }
+        
+        .slice-slider::-webkit-slider-runnable-track {
+            height: 6px;
+            background: #444;
+            border-radius: 3px;
+        }
+        
+        .slice-slider::-moz-range-track {
+            height: 6px;
+            background: #444;
+            border-radius: 3px;
+        }
+        
+        .slice-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 18px;
+            height: 18px;
+            background: #0066cc;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .slice-slider::-webkit-slider-thumb:hover {
+            transform: scale(1.2);
+            background: #0052a3;
+        }
+        
+        .slice-slider::-moz-range-thumb {
+            width: 18px;
+            height: 18px;
+            background: #0066cc;
+            border-radius: 50%;
+            cursor: pointer;
+            border: none;
+            transition: all 0.2s;
+        }
+        
+        .slice-slider::-moz-range-thumb:hover {
+            transform: scale(1.2);
+            background: #0052a3;
+        }
+        
+        .slice-info {
+            color: #ccc;
+            font-size: 14px;
+            min-width: 80px;
+            text-align: center;
+            font-weight: bold;
+        }
+        
+        /* Loading */
+        .loading {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background-color: rgba(0, 0, 0, 0.8);
+            padding: 20px;
+            border-radius: 8px;
+            z-index: 1000;
+            display: none;
+        }
+        
+        .loading.active {
+            display: block;
+        }
+        
+        /* X distribution chart */
+        .x-distribution {
+            height: 150px;
+            background-color: #333;
+            border-radius: 4px;
+            margin-top: 10px;
+            padding: 10px;
+        }
+        
+        /* Zoom controls */
+        .zoom-controls {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background-color: rgba(37, 37, 37, 0.9);
+            padding: 10px;
+            border-radius: 8px;
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+        
+        .zoom-controls button {
+            background-color: #444;
+            color: #fff;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background-color 0.2s;
+        }
+        
+        .zoom-controls button:hover {
+            background-color: #555;
+        }
+        
+        .zoom-level {
+            color: #ccc;
+            font-size: 14px;
+            min-width: 60px;
+            text-align: center;
+        }
+        
+        /* Measurement tools */
+        .measurement-controls {
+            position: absolute;
+            bottom: 80px;
+            left: 20px;
+            background-color: rgba(37, 37, 37, 0.9);
+            padding: 15px;
+            border-radius: 8px;
+        }
+        
+        .measurement-button {
+            display: block;
+            width: 100%;
+            padding: 8px 12px;
+            margin: 5px 0;
+            background-color: #444;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 13px;
+            transition: background-color 0.2s;
+        }
+        
+        .measurement-button:hover {
+            background-color: #555;
+        }
+        
+        .measurement-button.active {
+            background-color: #0066cc;
+        }
+        
+        .measurement-info {
+            margin-top: 10px;
+            padding: 10px;
+            background-color: #333;
+            border-radius: 4px;
+            font-size: 12px;
+        }
+        
+        .measurement-line {
+            position: absolute;
+            background-color: #00ff00;
+            pointer-events: none;
+            z-index: 10;
+        }
+        
+        .measurement-label {
+            position: absolute;
+            background-color: rgba(0, 0, 0, 0.8);
+            color: #00ff00;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-size: 12px;
+            pointer-events: none;
+            z-index: 11;
+        }
+        
+        /* Legend */
+        .legend {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background-color: rgba(37, 37, 37, 0.9);
+            padding: 15px;
+            border-radius: 8px;
+            font-size: 13px;
+        }
+        
+        .legend-item {
+            display: flex;
+            align-items: center;
+            margin: 5px 0;
+        }
+        
+        .legend-color {
+            width: 20px;
+            height: 20px;
+            margin-right: 10px;
+            border-radius: 3px;
+        }
+        
+        /* Keyboard shortcuts */
+        .shortcuts {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #2a2a2a;
+            border-radius: 4px;
+            font-size: 12px;
+        }
+        
+        .shortcuts h3 {
+            margin-bottom: 10px;
+            color: #fff;
+            font-size: 14px;
+        }
+        
+        .shortcut {
+            margin: 5px 0;
+            color: #999;
+        }
+        
+        .shortcut kbd {
+            background-color: #444;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: monospace;
+            color: #fff;
+        }
+        
+        /* Patient list */
+        .patient-list-item {
+            display: flex;
+            align-items: center;
+            padding: 12px;
+            margin: 4px 0;
+            background-color: #2a2a2a;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background-color 0.2s;
+            font-size: 15px;
+        }
+        
+        .patient-list-item:hover {
+            background-color: #3a3a3a;
+        }
+        
+        .patient-list-item.selected {
+            background-color: #0066cc;
+        }
+        
+        .patient-list-item.completed {
+            opacity: 0.7;
+        }
+        
+        .patient-checkbox {
+            margin-right: 10px;
+            cursor: pointer;
+        }
+        
+        .patient-name {
+            flex: 1;
+            color: #fff;
+        }
+        
+        .patient-scanner {
+            font-size: 13px;
+            color: #999;
+            margin-left: 10px;
+        }
+        
+        .loading-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background-color: #0066cc;
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.3s ease;
+            z-index: 1001;
+        }
+    </style>
+</head>
+<body>
+        <div class="container">
+        <!-- Control Panel -->
+        <div class="control-panel">
+            <h2>Fast X-Level Selection</h2>
+            
+            <div class="control-group" id="scannerFilterGroup">
+                <label>Filter by Scanner</label>
+                <select id="scannerFilter">
+                    <option value="">All Scanners</option>
+                </select>
+            </div>
+            
+            <div class="control-group" id="patientListGroup">
+                <label>Patient List (<span id="patientCount">0</span> total, <span id="completedCount">0</span> completed)</label>
+                <div id="patientList" style="height: 500px; overflow-y: auto; background-color: #333; border-radius: 4px; padding: 5px;">
+                    <!-- Patient list will be populated here -->
+                </div>
+            </div>
+            
+            <div class="info-box" id="patientInfo" style="display: none;">
+                <div><span class="label">Dimensions:</span><span class="value" id="dimInfo">-</span></div>
+                <div><span class="label">Pancreas range:</span><span class="value" id="rangeInfo">-</span></div>
+            </div>
+            
+            <div class="control-group">
+                <label>X-Coordinate (mm) - Main cut (keeps HEAD on patient RIGHT)</label>
+                <input type="number" id="xCoordInput" step="0.1" value="0">
+                <button class="button" onclick="applyXCoordinate()">Apply X-Line</button>
+            </div>
+            
+            <div class="control-group">
+                <label>Y-Coordinate (mm) - Only affects TAIL side (patient LEFT)</label>
+                <input type="number" id="yCoordInput" step="0.1" value="0">
+                <button class="button" onclick="applyYCoordinate()">Apply Y-Line</button>
+            </div>
+            
+            <div class="control-group">
+                <label>Z-Limit (slice) - Protects POSTERIOR to Y-line</label>
+                <input type="number" id="zLimitInput" step="1" value="" placeholder="Current slice">
+                <button class="button secondary" onclick="applyZLimit()">Set Z-Limit (uses current if empty)</button>
+            </div>
+            
+            
+            
+            <div class="control-group">
+                <button class="button secondary" onclick="saveSelection()">Save Selection</button>
+                <div style="margin-top: 10px; font-size: 12px; color: #999;">
+                    <div id="saveStatus">
+                        <div>X: <span id="xStatus" style="color: #ff4444;">Not set</span></div>
+                        <div>Neck: <span id="neckStatus" style="color: #ff4444;">Not measured</span></div>
+                        <div>Duct: <span id="ductStatus" style="color: #ff4444;">Not measured</span></div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="shortcuts">
+                <h3>Controls</h3>
+                <div class="shortcut"><kbd>↑</kbd> <kbd>↓</kbd> Navigate slices</div>
+                <div class="shortcut"><kbd>Shift</kbd> + <kbd>↑↓</kbd> Jump 5 slices</div>
+                <div class="shortcut"><kbd>Mouse Wheel</kbd> Zoom in/out</div>
+                <div class="shortcut"><kbd>Shift</kbd> + <kbd>Drag</kbd> Pan image</div>
+                <div class="shortcut"><kbd>Click</kbd> Set X-coordinate</div>
+                <div class="shortcut"><kbd>Drag Red Line</kbd> Adjust X-cut</div>
+                <div class="shortcut"><kbd>M</kbd> or <kbd>Space</kbd> Toggle mask</div>
+                <div class="shortcut"><kbd>S</kbd> Save all data</div>
+            </div>
+        </div>
+        
+        <!-- Main Viewer -->
+        <div class="viewer">
+            <div class="viewer-header">
+                <div class="patient-info" id="currentPatient">No patient selected</div>
+                <div class="coordinates">
+                    <div class="coord">X:<span class="value" id="xCoord">-</span></div>
+                    <div class="coord">Y:<span class="value" id="yCoord">-</span></div>
+                    <div class="coord">Z:<span class="value" id="zCoord">-</span></div>
+                    <div class="coord" id="zLimitIndicator" style="display: none; margin-left: 20px; padding: 5px 10px; border-radius: 4px;">
+                        Z-Limit: <span class="value" id="zLimitValue">-</span>
+                        <span id="zLimitStatus" style="margin-left: 10px; font-weight: bold;"></span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="image-container">
+                <div class="image-wrapper">
+                    <img id="mainImage" src="" alt="CT scan">
+                    <div class="x-line" id="xLine"></div>
+                    <div class="y-line" id="yLine"></div>
+                </div>
+                
+                <div class="zoom-controls">
+                    <button onclick="zoom(-0.2)">-</button>
+                    <span class="zoom-level" id="zoomLevel">100%</span>
+                    <button onclick="zoom(0.2)">+</button>
+                    <button onclick="resetZoom()">Reset</button>
+                    <button id="maskToggle" onclick="toggleMask()" style="margin-left: 10px; background-color: #0066cc;">Mask: ON</button>
+                </div>
+                
+                <div class="measurement-controls">
+                    <h4 style="color: #fff; margin-bottom: 10px; font-size: 14px;">Measurements</h4>
+                    <button class="measurement-button" id="neckBtn" onclick="startMeasurement('neck')">
+                        Neck Thickness (mm)
+                    </button>
+                    <button class="measurement-button" id="ductBtn" onclick="startMeasurement('duct')">
+                        Duct Size (mm)
+                    </button>
+                    <button class="measurement-button" onclick="clearMeasurements()">
+                        Clear All
+                    </button>
+                    <div class="measurement-info" id="measurementInfo" style="display: none;">
+                        <div id="neckMeasurement" style="display: none;">
+                            Neck: <span style="color: #4CAF50; font-weight: bold;">-</span> mm
+                        </div>
+                        <div id="ductMeasurement" style="display: none;">
+                            Duct: <span style="color: #4CAF50; font-weight: bold;">-</span> mm
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="quick-nav">
+                    <div class="slice-control">
+                        <span class="slice-info" id="sliceInfo">-/-</span>
+                        <input type="range" class="slice-slider" id="sliceSlider" min="0" max="100" value="50" oninput="onSliderChange(this.value)">
+                    </div>
+                </div>
+                
+                <div class="legend">
+                    <div class="legend-item">
+                        <div class="legend-color" style="background-color: #00ff00;"></div>
+                        <span>Kept Pancreas</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background-color: #ff0000;"></div>
+                        <span>Cut Lines (X/Y)</span>
+                    </div>
+                    <div class="legend-item">
+                        <div class="legend-color" style="background-color: #00ffff;"></div>
+                        <span>Inactive Lines (below Z-limit)</span>
+                    </div>
+                    <div class="legend-item" id="cutLegend">
+                        <div class="legend-color" style="background-color: #ff0000;"></div>
+                        <span>Will be cut</span>
+                    </div>
+                    <div class="legend-item" id="protectedLegend" style="display: none;">
+                        <div class="legend-color" style="background-color: #00ff00;"></div>
+                        <span>Protected by Z-limit</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="loading" id="loading">Loading...</div>
+    <div class="loading-bar" id="loadingBar"></div>
+    
+    <script>
+        // Global variables
+        let currentPatient = null;
+        let patientData = null;
+        let currentSlice = 0;
+        let maxSlice = 0;
+        let xCoordinate = null;
+        let yCoordinate = null;
+        let allPatients = [];
+        let currentAffine = null;
+        let currentImageShape = null;
+        let isDraggingX = false;
+        let isDraggingY = false;
+        let zoomLevel = 1.0;
+        let panX = 0;
+        let panY = 0;
+        let isPanning = false;
+        let panStartX = 0;
+        let panStartY = 0;
+        let measurementMode = null;
+        let measurementStart = null;
+        let measurementEnd = null;
+        let measurements = {
+            neck: null,
+            duct: null
+        };
+        let showMask = true;
+        let zLimit = null;
+        
+        // Initialize
+        async function init() {
+            const params = new URLSearchParams(window.location.search);
+            const requestedPatient =
+                params.get('patient') || params.get('patient_id') || params.get('case') || params.get('id');
+            const embedded = (params.get('embedded') || '').toLowerCase() === '1' || (params.get('embedded') || '').toLowerCase() === 'true';
+
+            await loadPatients();
+            setupEventListeners();
+
+            if (embedded) {
+                const scannerGroup = document.getElementById('scannerFilterGroup');
+                const patientGroup = document.getElementById('patientListGroup');
+                if (scannerGroup) scannerGroup.style.display = 'none';
+                if (patientGroup) patientGroup.style.display = 'none';
+            }
+
+            if (requestedPatient) {
+                const exists = allPatients.some(p => p.name === requestedPatient);
+                if (exists) {
+                    await selectPatient(requestedPatient);
+                } else {
+                    console.warn(`Requested patient '${requestedPatient}' not found in /api/patients`);
+                }
+            } else if (embedded && allPatients.length === 1) {
+                await selectPatient(allPatients[0].name);
+            }
+        }
+        
+        // Load patients
+        async function loadPatients() {
+            try {
+                const response = await fetch('/api/patients');
+                allPatients = await response.json();
+                
+                // Get unique scanners
+                const scanners = [...new Set(allPatients.map(p => p.scanner))].sort();
+                const scannerFilter = document.getElementById('scannerFilter');
+                scannerFilter.innerHTML = '<option value="">All Scanners</option>';
+                scanners.forEach(scanner => {
+                    const option = document.createElement('option');
+                    option.value = scanner;
+                    option.textContent = scanner;
+                    scannerFilter.appendChild(option);
+                });
+                
+                displayPatients();
+            } catch (error) {
+                console.error('Error loading patients:', error);
+            }
+        }
+        
+        // Display patients in list
+        function displayPatients() {
+            const filter = document.getElementById('scannerFilter').value;
+            const patientList = document.getElementById('patientList');
+            patientList.innerHTML = '';
+            
+            let displayedPatients = allPatients;
+            if (filter) {
+                displayedPatients = allPatients.filter(p => p.scanner === filter);
+            }
+            
+            displayedPatients.forEach(patient => {
+                const item = document.createElement('div');
+                item.className = 'patient-list-item';
+                if (patient.completed) {
+                    item.className += ' completed';
+                }
+                if (patient.name === currentPatient) {
+                    item.className += ' selected';
+                }
+                
+                item.innerHTML = `
+                    <input type="checkbox" class="patient-checkbox" 
+                           ${patient.completed ? 'checked' : ''} 
+                           onclick="toggleComplete('${patient.name}', event)">
+                    <span class="patient-name">${patient.name}</span>
+                    <span class="patient-scanner">${patient.scanner.split(' ')[0]}</span>
+                `;
+                
+                item.onclick = (e) => {
+                    if (!e.target.classList.contains('patient-checkbox')) {
+                        selectPatient(patient.name);
+                    }
+                };
+                
+                patientList.appendChild(item);
+            });
+            
+            // Update counts
+            const total = displayedPatients.length;
+            const completed = displayedPatients.filter(p => p.completed).length;
+            document.getElementById('patientCount').textContent = total;
+            document.getElementById('completedCount').textContent = completed;
+        }
+        
+        // Toggle patient completion
+        async function toggleComplete(patientName, event) {
+            event.stopPropagation();
+            
+            try {
+                await fetch(`/api/mark_complete/${patientName}`, { method: 'POST' });
+                
+                // Update local data
+                const patient = allPatients.find(p => p.name === patientName);
+                if (patient) {
+                    patient.completed = true;
+                }
+                
+                displayPatients();
+            } catch (error) {
+                console.error('Error marking complete:', error);
+            }
+        }
+        
+        // Patient selection
+        async function selectPatient(patientName) {
+            currentPatient = patientName;
+            document.getElementById('currentPatient').textContent = patientName;
+            
+            // Reset measurements when switching patients
+            measurements = { neck: null, duct: null };
+            xCoordinate = null;
+            yCoordinate = null;
+            zLimit = null;
+            clearMeasurements();
+            document.getElementById('zLimitInput').value = '';
+            document.getElementById('yCoordInput').value = '0';
+            
+            // Update UI
+            displayPatients();
+            
+            // Show loading
+            showLoading(true);
+            
+            // Preload all data
+            try {
+                const preloadResponse = await fetch(`/api/preload/${patientName}`);
+                const preloadData = await preloadResponse.json();
+                console.log(`Preloaded ${preloadData.slices} slices for ${patientName}`);
+            
+                // Load patient info
+                const response = await fetch(`/api/patient_info/${patientName}`);
+                patientData = await response.json();
+                
+                // Update info display
+                document.getElementById('patientInfo').style.display = 'block';
+                document.getElementById('dimInfo').textContent = 
+                    `${patientData.dimensions[0]} × ${patientData.dimensions[1]} × ${patientData.dimensions[2]}`;
+                document.getElementById('rangeInfo').textContent = 
+                    `Slices ${patientData.pancreas_bounds.min_slice}-${patientData.pancreas_bounds.max_slice}`;
+                
+                // Set slice to pancreas center
+                maxSlice = patientData.dimensions[2] - 1;
+                currentSlice = patientData.pancreas_bounds.center_slice;
+                
+                // Update slider
+                const slider = document.getElementById('sliceSlider');
+                slider.max = maxSlice;
+                slider.value = currentSlice;
+                
+                // Load saved measurements if available
+                if (patientData.saved_measurements && Object.keys(patientData.saved_measurements).length > 0) {
+                    const saved = patientData.saved_measurements;
+                    
+                    // Load X coordinate
+                    if (saved.x_coordinate !== null && saved.x_coordinate !== undefined) {
+                        xCoordinate = saved.x_coordinate;
+                        document.getElementById('xCoordInput').value = xCoordinate.toFixed(1);
+                    }
+                    
+                    // Load Y coordinate
+                    if (saved.y_coordinate !== null && saved.y_coordinate !== undefined) {
+                        yCoordinate = saved.y_coordinate;
+                        document.getElementById('yCoordInput').value = yCoordinate.toFixed(1);
+                    }
+                    
+                    // Load Z-limit
+                    if (saved.z_limit !== null && saved.z_limit !== undefined) {
+                        zLimit = saved.z_limit;
+                        document.getElementById('zLimitInput').value = zLimit;
+                    }
+                    
+                    // Load measurements
+                    if (saved.neck_thickness_mm !== null && saved.neck_thickness_mm !== undefined) {
+                        measurements.neck = saved.neck_thickness_mm;
+                    }
+                    if (saved.duct_size_mm !== null && saved.duct_size_mm !== undefined) {
+                        measurements.duct = saved.duct_size_mm;
+                    }
+                    
+                    // Update UI to show loaded measurements
+                    updateSaveStatus();
+                    if (measurements.neck) {
+                        document.getElementById('neckMeasurement').style.display = 'block';
+                        document.getElementById('neckMeasurement').querySelector('span').textContent = measurements.neck.toFixed(1);
+                        document.getElementById('measurementInfo').style.display = 'block';
+                    }
+                    if (measurements.duct) {
+                        document.getElementById('ductMeasurement').style.display = 'block';
+                        document.getElementById('ductMeasurement').querySelector('span').textContent = measurements.duct.toFixed(1);
+                        document.getElementById('measurementInfo').style.display = 'block';
+                    }
+                    
+                    // Load X distribution but don't override saved X coordinate
+                    // await loadXDistribution(false);
+                } else {
+                    // Load X distribution and set default
+                    // await loadXDistribution(true);
+                }
+                
+                // Load initial slice
+                await loadSlice();
+            } catch (error) {
+                console.error('Error loading patient:', error);
+            } finally {
+                showLoading(false);
+            }
+        }
+        
+        // Load X distribution
+        async function loadXDistribution(setDefault = true) {
+            try {
+                const response = await fetch(`/api/x_analysis/${currentPatient}`);
+                const data = await response.json();
+                
+                document.getElementById('xStats').style.display = 'block';
+                document.getElementById('xMin').textContent = data.x_min.toFixed(1);
+                document.getElementById('xMax').textContent = data.x_max.toFixed(1);
+                document.getElementById('xMean').textContent = data.x_mean.toFixed(1);
+                document.getElementById('xMedian').textContent = data.x_median.toFixed(1);
+                
+                // Set default X coordinate to median only if requested and not already set
+                if (setDefault && xCoordinate === null) {
+                    document.getElementById('xCoordInput').value = data.x_median.toFixed(1);
+                }
+            } catch (error) {
+                console.error('Error loading X distribution:', error);
+            }
+        }
+        
+        // Load slice
+        async function loadSlice() {
+            if (!currentPatient) return;
+            
+            const params = new URLSearchParams();
+            if (xCoordinate !== null) {
+                params.append('x_coord', xCoordinate);
+            }
+            if (yCoordinate !== null) {
+                params.append('y_coord', yCoordinate);
+            }
+            if (zLimit !== null) {
+                params.append('z_limit', zLimit);
+            }
+            params.append('show_mask', showMask);
+            
+            try {
+                const response = await fetch(`/api/slice/${currentPatient}/${currentSlice}?${params}`);
+                const data = await response.json();
+                
+                // Update image
+                document.getElementById('mainImage').src = data.image;
+                
+                // Update coordinates
+                document.getElementById('xCoord').textContent = data.world_coords.x.toFixed(1);
+                document.getElementById('yCoord').textContent = data.world_coords.y.toFixed(1);
+                document.getElementById('zCoord').textContent = data.world_coords.z.toFixed(1);
+                
+                // Update slice info
+                document.getElementById('sliceInfo').textContent = `${currentSlice}/${maxSlice}`;
+                
+                // Store affine and shape for coordinate calculations
+                currentAffine = data.affine;
+                currentImageShape = data.shape;
+                
+                // Update line positions if set
+                if (xCoordinate !== null) {
+                    updateXLinePosition();
+                }
+                if (yCoordinate !== null) {
+                    updateYLinePosition();
+                }
+                
+                // Update legend for Z-limit
+                updateLegendForZLimit();
+            } catch (error) {
+                console.error('Error loading slice:', error);
+            }
+        }
+        
+        // Handle slider change
+        function onSliderChange(value) {
+            currentSlice = parseInt(value);
+            document.getElementById('sliceInfo').textContent = `${currentSlice}/${maxSlice}`;
+            loadSlice();
+        }
+        
+        // Change slice (for keyboard navigation)
+        function changeSlice(delta) {
+            currentSlice = Math.max(0, Math.min(maxSlice, currentSlice + delta));
+            document.getElementById('sliceSlider').value = currentSlice;
+            document.getElementById('sliceInfo').textContent = `${currentSlice}/${maxSlice}`;
+            updateLegendForZLimit();  // Update Z-limit status immediately
+            loadSlice();
+        }
+        
+        // Apply X coordinate
+        async function applyXCoordinate() {
+            xCoordinate = parseFloat(document.getElementById('xCoordInput').value);
+            loadSlice();
+            updateSaveStatus();
+            
+            // Load Z-limit analysis
+            // if (currentPatient && xCoordinate !== null) {
+            //     await loadZLimitAnalysis();
+            // }
+        }
+        
+        // Apply Y coordinate
+        async function applyYCoordinate() {
+            yCoordinate = parseFloat(document.getElementById('yCoordInput').value);
+            loadSlice();
+            updateSaveStatus();
+            
+            // Load Z-limit analysis
+            // if (currentPatient && (xCoordinate !== null || yCoordinate !== null)) {
+            //     await loadZLimitAnalysis();
+            // }
+        }
+        
+        // Apply Z limit
+        async function applyZLimit() {
+            const input = document.getElementById('zLimitInput').value;
+            
+            // If input is empty, use current slice
+            if (!input || input === '') {
+                zLimit = currentSlice;
+                document.getElementById('zLimitInput').value = currentSlice;
+            } else {
+                zLimit = parseInt(input);
+            }
+            
+            loadSlice();
+            updateSaveStatus();
+            updateLegendForZLimit();
+            
+            // Load Z-limit analysis
+            // if (currentPatient && xCoordinate !== null) {
+            //     await loadZLimitAnalysis();
+            // }
+        }
+        
+        // Update legend based on Z-limit
+        function updateLegendForZLimit() {
+            const protectedLegend = document.getElementById('protectedLegend');
+            const cutLegend = document.getElementById('cutLegend');
+            const zLimitIndicator = document.getElementById('zLimitIndicator');
+            const zLimitValue = document.getElementById('zLimitValue');
+            const zLimitStatus = document.getElementById('zLimitStatus');
+            
+            // Always update slice info
+            document.getElementById('sliceInfo').textContent = `${currentSlice}/${maxSlice}`;
+            
+            if (zLimit !== null) {
+                // Show Z-limit indicator
+                zLimitIndicator.style.display = 'inline-block';
+                zLimitValue.textContent = zLimit;
+                
+                if (currentSlice <= zLimit) {
+                    // Below/at Z-limit: protected
+                    protectedLegend.style.display = 'flex';
+                    cutLegend.style.display = 'none';
+                    zLimitStatus.textContent = 'PROTECTED - ALL TISSUE PRESERVED';
+                    zLimitStatus.style.color = '#00ff00';
+                    zLimitIndicator.style.backgroundColor = '#003300';
+                    zLimitIndicator.style.border = '2px solid #00ff00';
+                    
+                    // Update the legend colors
+                    document.querySelector('#protectedLegend .legend-color').style.backgroundColor = '#00ffff';
+                } else {
+                    // Above Z-limit: X-cut applies
+                    protectedLegend.style.display = 'none';
+                    cutLegend.style.display = 'flex';
+                    zLimitStatus.textContent = 'X-CUT ACTIVE';
+                    zLimitStatus.style.color = '#ff4444';
+                    zLimitIndicator.style.backgroundColor = '#330000';
+                    zLimitIndicator.style.border = '2px solid #ff4444';
+                    
+                    // Update the legend colors
+                    document.querySelector('#cutLegend .legend-color').style.backgroundColor = '#ff4444';
+                }
+            } else {
+                // No Z-limit set
+                zLimitIndicator.style.display = 'none';
+                protectedLegend.style.display = 'none';
+                cutLegend.style.display = xCoordinate !== null ? 'flex' : 'none';
+                
+                if (xCoordinate !== null) {
+                    document.querySelector('#cutLegend .legend-color').style.backgroundColor = '#ff0000';
+                }
+            }
+        }
+        
+        // Load Z-limit analysis
+        async function loadZLimitAnalysis() {
+            try {
+                const params = new URLSearchParams();
+                params.append('x_coord', xCoordinate);
+                if (zLimit !== null) {
+                    params.append('z_limit', zLimit);
+                }
+                
+                const response = await fetch(`/api/z_limit_analysis/${currentPatient}?${params}`);
+                const data = await response.json();
+                
+                // Display stats
+                document.getElementById('zLimitStats').style.display = 'block';
+                document.getElementById('totalVoxels').textContent = data.total_pancreas_voxels.toLocaleString();
+                document.getElementById('preservedVoxels').textContent = data.preserved_voxels.toLocaleString();
+                document.getElementById('cutVoxels').textContent = data.cut_voxels.toLocaleString();
+                document.getElementById('preservationRate').textContent = data.preservation_rate.toFixed(1);
+                
+                // Color-code preservation rate
+                const preservationSpan = document.getElementById('preservationRate');
+                if (data.preservation_rate >= 90) {
+                    preservationSpan.style.color = '#44ff44';  // Green - excellent preservation
+                } else if (data.preservation_rate >= 80) {
+                    preservationSpan.style.color = '#ffaa00';  // Orange - good preservation
+                } else {
+                    preservationSpan.style.color = '#ff4444';  // Red - significant loss
+                }
+            } catch (error) {
+                console.error('Error loading Z-limit analysis:', error);
+            }
+        }
+        
+        // Update save status indicators
+        function updateSaveStatus() {
+            // X-coordinate status
+            const xStatus = document.getElementById('xStatus');
+            if (xCoordinate !== null) {
+                xStatus.textContent = xCoordinate.toFixed(1) + ' mm';
+                xStatus.style.color = '#4CAF50';
+            } else {
+                xStatus.textContent = 'Not set';
+                xStatus.style.color = '#ff4444';
+            }
+            
+            // Neck status
+            const neckStatus = document.getElementById('neckStatus');
+            if (measurements.neck !== null) {
+                neckStatus.textContent = measurements.neck.toFixed(1) + ' mm';
+                neckStatus.style.color = '#4CAF50';
+            } else {
+                neckStatus.textContent = 'Not measured';
+                neckStatus.style.color = '#ff4444';
+            }
+            
+            // Duct status
+            const ductStatus = document.getElementById('ductStatus');
+            if (measurements.duct !== null) {
+                ductStatus.textContent = measurements.duct.toFixed(1) + ' mm';
+                ductStatus.style.color = '#4CAF50';
+            } else {
+                ductStatus.textContent = 'Not measured';
+                ductStatus.style.color = '#ff4444';
+            }
+        }
+        
+        // Convert pixel to world X coordinate
+        function pixelToWorldX(pixelX, imageWidth) {
+            if (!currentAffine || !currentImageShape) return null;
+            
+            // For axial view, we need to calculate world X from pixel position
+            // Using the affine matrix to transform pixel coordinates to world coordinates
+            const relativeX = pixelX / imageWidth;
+            const actualPixelX = relativeX * currentImageShape[1]; // width is shape[1] after transpose
+            
+            // Calculate world X using affine transformation
+            // For a point at (actualPixelX, y=shape[0]/2, z=currentSlice)
+            const y = currentImageShape[0] / 2;
+            const z = currentSlice;
+            
+            // Apply affine transformation
+            const worldX = currentAffine[0][0] * actualPixelX + 
+                          currentAffine[0][1] * y + 
+                          currentAffine[0][2] * z + 
+                          currentAffine[0][3];
+            
+            return worldX;
+        }
+        
+        // Convert world X to pixel position
+        function worldXToPixel(worldX) {
+            if (!currentAffine || !currentImageShape) return null;
+            
+            // Inverse calculation - find pixel X that gives us this world X
+            // This is approximate - we're solving for X in the middle of the image
+            const y = currentImageShape[0] / 2;
+            const z = currentSlice;
+            
+            // Solve for pixelX: worldX = affine[0][0] * pixelX + affine[0][1] * y + affine[0][2] * z + affine[0][3]
+            const pixelX = (worldX - currentAffine[0][1] * y - currentAffine[0][2] * z - currentAffine[0][3]) / currentAffine[0][0];
+            
+            // Convert to relative position for display
+            const imageElement = document.getElementById('mainImage');
+            const relativeX = pixelX / currentImageShape[1];
+            
+            return relativeX * imageElement.width;
+        }
+        
+        // Convert pixel Y to world coordinate
+        function pixelToWorldY(pixelY, imageHeight) {
+            if (!currentAffine || !currentImageShape) return null;
+            
+            // Convert display pixel to data pixel
+            const relativeY = pixelY / imageHeight;
+            // Image is flipped vertically on the server for conventional display.
+            const dataPixelY = (1 - relativeY) * currentImageShape[0];
+            
+            // Use middle X for calculation
+            const x = currentImageShape[1] / 2;
+            const z = currentSlice;
+            
+            // Calculate world Y coordinate
+            const worldY = currentAffine[1][0] * x + currentAffine[1][1] * dataPixelY + 
+                          currentAffine[1][2] * z + currentAffine[1][3];
+            
+            return worldY;
+        }
+        
+        // Convert world Y to pixel position
+        function worldYToPixel(worldY) {
+            if (!currentAffine || !currentImageShape) return null;
+            
+            // Inverse calculation - find pixel Y that gives us this world Y
+            const x = currentImageShape[1] / 2;
+            const z = currentSlice;
+            
+            // Solve for pixelY: worldY = affine[1][0] * x + affine[1][1] * pixelY + affine[1][2] * z + affine[1][3]
+            const pixelY = (worldY - currentAffine[1][0] * x - currentAffine[1][2] * z - currentAffine[1][3]) / currentAffine[1][1];
+            
+            // Convert to relative position for display
+            const imageElement = document.getElementById('mainImage');
+            // Convert to relative position for display (account for vertical flip)
+            const relativeY = 1 - (pixelY / currentImageShape[0]);
+            
+            return relativeY * imageElement.height;
+        }
+        
+        // Update X-line position
+        function updateXLinePosition() {
+            if (xCoordinate === null) {
+                document.getElementById('xLine').style.display = 'none';
+                return;
+            }
+            
+            const xLine = document.getElementById('xLine');
+            const imageWrapper = document.querySelector('.image-wrapper');
+            const imageElement = document.getElementById('mainImage');
+            
+            const pixelX = worldXToPixel(xCoordinate);
+            if (pixelX !== null) {
+                xLine.style.left = pixelX + 'px';
+                xLine.style.display = 'block';
+                xLine.style.height = imageElement.height + 'px';
+            }
+        }
+        
+        function updateYLinePosition() {
+            if (yCoordinate === null) {
+                document.getElementById('yLine').style.display = 'none';
+                return;
+            }
+            
+            const yLine = document.getElementById('yLine');
+            const imageWrapper = document.querySelector('.image-wrapper');
+            const imageElement = document.getElementById('mainImage');
+            
+            const pixelY = worldYToPixel(yCoordinate);
+            if (pixelY !== null) {
+                yLine.style.top = pixelY + 'px';
+                yLine.style.display = 'block';
+                yLine.style.width = imageElement.width + 'px';
+            }
+        }
+        
+        // Save selection
+        async function saveSelection() {
+            if (!currentPatient) {
+                alert('Please select a patient');
+                return;
+            }
+            
+            // Get scanner info for current patient
+            const patientInfo = allPatients.find(p => p.name === currentPatient);
+            const scanner = patientInfo ? patientInfo.scanner : 'Unknown Scanner';
+            
+            // Prepare save data - include all fields even if null
+            const saveData = {
+                patient: currentPatient,
+                x_coordinate: xCoordinate,
+                y_coordinate: yCoordinate,
+                z_limit: zLimit,
+                scanner: scanner,
+                timestamp: new Date().toISOString(),
+                slice_number: currentSlice,
+                neck_thickness: measurements.neck,
+                duct_size: measurements.duct
+            };
+            
+            try {
+                const response = await fetch('/api/quick_save', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify(saveData)
+                });
+                
+                const result = await response.json();
+                
+                // Build status message
+                let statusMessage = `Saved for ${currentPatient}!\n\n`;
+                statusMessage += `X-coordinate: ${xCoordinate ? xCoordinate.toFixed(1) + ' mm' : 'Not set'}\n`;
+                statusMessage += `Y-coordinate: ${yCoordinate ? yCoordinate.toFixed(1) + ' mm' : 'Not set'}\n`;
+                statusMessage += `Z-limit: ${zLimit !== null ? 'Slice ' + zLimit : 'Not set'}\n`;
+                statusMessage += `Neck thickness: ${measurements.neck ? measurements.neck.toFixed(1) + ' mm' : 'Not measured'}\n`;
+                statusMessage += `Duct size: ${measurements.duct ? measurements.duct.toFixed(1) + ' mm' : 'Not measured'}\n`;
+                statusMessage += `\nTotal saved: ${result.total_saved} patients`;
+                
+                alert(statusMessage);
+                
+                // Mark patient as completed after saving
+                if (!patientInfo.completed) {
+                    await toggleComplete(currentPatient, new Event('click'));
+                }
+            } catch (error) {
+                console.error('Error saving:', error);
+                alert('Error saving data. Please try again.');
+            }
+        }
+        
+        // Setup event listeners
+        function setupEventListeners() {
+            document.getElementById('scannerFilter').addEventListener('change', displayPatients);
+            
+            // Keyboard navigation
+            document.addEventListener('keydown', (e) => {
+                if (!currentPatient) return;
+                
+                const step = e.shiftKey ? 5 : 1;
+                
+                if (e.key === 'ArrowUp') {
+                    changeSlice(step);
+                } else if (e.key === 'ArrowDown') {
+                    changeSlice(-step);
+                } else if (e.key === ' ') {
+                    e.preventDefault();
+                    toggleMask();
+                } else if (e.key === 's' || e.key === 'S') {
+                    saveSelection();
+                } else if (e.key === 'm' || e.key === 'M') {
+                    toggleMask();
+                }
+            });
+            
+            // Mouse events for draggable lines
+            const xLine = document.getElementById('xLine');
+            const yLine = document.getElementById('yLine');
+            const imageWrapper = document.querySelector('.image-wrapper');
+            const mainImage = document.getElementById('mainImage');
+            
+            // Make X-line draggable
+            xLine.addEventListener('mousedown', (e) => {
+                isDraggingX = true;
+                e.preventDefault();
+                document.body.style.cursor = 'col-resize';
+            });
+            
+            // Make Y-line draggable
+            yLine.addEventListener('mousedown', (e) => {
+                isDraggingY = true;
+                e.preventDefault();
+                document.body.style.cursor = 'row-resize';
+            });
+            
+            // Handle mouse move
+            document.addEventListener('mousemove', (e) => {
+                const rect = mainImage.getBoundingClientRect();
+                
+                if (isDraggingX) {
+                    const x = e.clientX - rect.left;
+                    
+                    if (x >= 0 && x <= rect.width) {
+                        // Update X-line position
+                        xLine.style.left = x + 'px';
+                        
+                        // Calculate world X coordinate
+                        const worldX = pixelToWorldX(x, rect.width);
+                        if (worldX !== null) {
+                            xCoordinate = worldX;
+                            document.getElementById('xCoordInput').value = worldX.toFixed(1);
+                            document.getElementById('xCoord').textContent = worldX.toFixed(1);
+                        }
+                    }
+                } else if (isDraggingY) {
+                    const y = e.clientY - rect.top;
+                    
+                    if (y >= 0 && y <= rect.height) {
+                        // Update Y-line position
+                        yLine.style.top = y + 'px';
+                        
+                        // Calculate world Y coordinate
+                        const worldY = pixelToWorldY(y, rect.height);
+                        if (worldY !== null) {
+                            yCoordinate = worldY;
+                            document.getElementById('yCoordInput').value = worldY.toFixed(1);
+                            document.getElementById('yCoord').textContent = worldY.toFixed(1);
+                        }
+                    }
+                }
+            });
+            
+            // Handle mouse up
+            document.addEventListener('mouseup', async () => {
+                if (isDraggingX || isDraggingY) {
+                    isDraggingX = false;
+                    isDraggingY = false;
+                    document.body.style.cursor = 'default';
+                    // Reload slice with new coordinates
+                    loadSlice();
+                    updateSaveStatus();
+                    
+                    // Load Z-limit analysis
+                    // if (currentPatient && (xCoordinate !== null || yCoordinate !== null)) {
+                    //     await loadZLimitAnalysis();
+                    // }
+                }
+            });
+            
+            // Click on image to set X coordinate (only if not measuring)
+            mainImage.addEventListener('click', (e) => {
+                if (isDraggingX || isDraggingY || measurementMode || isPanning) return;
+                
+                const rect = e.target.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                
+                // Calculate world X coordinate
+                const worldX = pixelToWorldX(x, rect.width);
+                if (worldX !== null) {
+                    xCoordinate = worldX;
+                    document.getElementById('xCoordInput').value = worldX.toFixed(1);
+                    loadSlice();
+                }
+            });
+            
+            // Update line positions when image loads
+            mainImage.addEventListener('load', () => {
+                updateXLinePosition();
+                updateYLinePosition();
+            });
+        }
+        
+        // Show/hide loading
+        function showLoading(show) {
+            document.getElementById('loading').classList.toggle('active', show);
+        }
+        
+        // Toggle mask
+        function toggleMask() {
+            showMask = !showMask;
+            const button = document.getElementById('maskToggle');
+            if (showMask) {
+                button.textContent = 'Mask: ON';
+                button.style.backgroundColor = '#0066cc';
+            } else {
+                button.textContent = 'Mask: OFF';
+                button.style.backgroundColor = '#666';
+            }
+            loadSlice();
+        }
+        
+        
+        // Zoom functions
+        function zoom(delta) {
+            zoomLevel = Math.max(0.5, Math.min(5.0, zoomLevel + delta));
+            updateTransform();
+            document.getElementById('zoomLevel').textContent = Math.round(zoomLevel * 100) + '%';
+        }
+        
+        function resetZoom() {
+            zoomLevel = 1.0;
+            panX = 0;
+            panY = 0;
+            updateTransform();
+            document.getElementById('zoomLevel').textContent = '100%';
+        }
+        
+        function updateTransform() {
+            const mainImage = document.getElementById('mainImage');
+            mainImage.style.transform = `translate(${panX}px, ${panY}px) scale(${zoomLevel})`;
+            updateXLinePosition();
+            updateYLinePosition();
+            updateMeasurementPositions();
+        }
+        
+        // Pan functions
+        function setupPanning() {
+            const imageWrapper = document.querySelector('.image-wrapper');
+            const mainImage = document.getElementById('mainImage');
+            
+            imageWrapper.addEventListener('wheel', (e) => {
+                e.preventDefault();
+                const delta = e.deltaY > 0 ? -0.1 : 0.1;
+                zoom(delta);
+            });
+            
+            mainImage.addEventListener('mousedown', (e) => {
+                if (e.button === 1 || (e.button === 0 && e.shiftKey)) {
+                    isPanning = true;
+                    panStartX = e.clientX - panX;
+                    panStartY = e.clientY - panY;
+                    imageWrapper.classList.add('panning');
+                    e.preventDefault();
+                }
+            });
+            
+            document.addEventListener('mousemove', (e) => {
+                if (isPanning) {
+                    panX = e.clientX - panStartX;
+                    panY = e.clientY - panStartY;
+                    updateTransform();
+                }
+            });
+            
+            document.addEventListener('mouseup', () => {
+                if (isPanning) {
+                    isPanning = false;
+                    document.querySelector('.image-wrapper').classList.remove('panning');
+                }
+            });
+        }
+        
+        // Measurement functions
+        function startMeasurement(type) {
+            measurementMode = type;
+            measurementStart = null;
+            measurementEnd = null;
+            
+            // Update button states
+            document.querySelectorAll('.measurement-button').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.getElementById(type + 'Btn').classList.add('active');
+            
+            // Change cursor
+            document.getElementById('mainImage').style.cursor = 'crosshair';
+        }
+        
+        function clearMeasurements() {
+            measurementMode = null;
+            measurementStart = null;
+            measurementEnd = null;
+            measurements = { neck: null, duct: null };
+            
+            // Remove all measurement lines and labels
+            document.querySelectorAll('.measurement-line, .measurement-label').forEach(el => {
+                el.remove();
+            });
+            
+            // Reset UI
+            document.querySelectorAll('.measurement-button').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.getElementById('mainImage').style.cursor = 'crosshair';
+            document.getElementById('measurementInfo').style.display = 'none';
+            document.getElementById('neckMeasurement').style.display = 'none';
+            document.getElementById('ductMeasurement').style.display = 'none';
+            
+            // Update save status
+            updateSaveStatus();
+        }
+        
+        function drawMeasurement(type, start, end) {
+            // Remove existing measurement for this type
+            document.querySelectorAll(`.measurement-${type}`).forEach(el => {
+                el.remove();
+            });
+            
+            const imageWrapper = document.querySelector('.image-wrapper');
+            const rect = document.getElementById('mainImage').getBoundingClientRect();
+            const wrapperRect = imageWrapper.getBoundingClientRect();
+            
+            // Calculate positions relative to wrapper
+            const x1 = start.x - wrapperRect.left;
+            const y1 = start.y - wrapperRect.top;
+            const x2 = end.x - wrapperRect.left;
+            const y2 = end.y - wrapperRect.top;
+            
+            // Calculate distance
+            const dx = x2 - x1;
+            const dy = y2 - y1;
+            const length = Math.sqrt(dx * dx + dy * dy);
+            const angle = Math.atan2(dy, dx) * 180 / Math.PI;
+            
+            // Create line
+            const line = document.createElement('div');
+            line.className = `measurement-line measurement-${type}`;
+            line.style.width = length + 'px';
+            line.style.height = '2px';
+            line.style.left = x1 + 'px';
+            line.style.top = y1 + 'px';
+            line.style.transform = `rotate(${angle}deg)`;
+            line.style.transformOrigin = '0 0';
+            imageWrapper.appendChild(line);
+            
+            // Calculate real-world distance
+            const pixelDistance = length / zoomLevel;
+            const mmDistance = calculateRealDistance(start, end, pixelDistance);
+            
+            // Create label
+            const label = document.createElement('div');
+            label.className = `measurement-label measurement-${type}`;
+            label.textContent = mmDistance.toFixed(1) + ' mm';
+            label.style.left = (x1 + x2) / 2 + 'px';
+            label.style.top = (y1 + y2) / 2 + 'px';
+            imageWrapper.appendChild(label);
+            
+            // Update measurement display
+            measurements[type] = mmDistance;
+            document.getElementById('measurementInfo').style.display = 'block';
+            document.getElementById(type + 'Measurement').style.display = 'block';
+            document.getElementById(type + 'Measurement').querySelector('span').textContent = 
+                mmDistance.toFixed(1);
+            
+            // Update save status
+            updateSaveStatus();
+        }
+        
+        function calculateRealDistance(start, end, pixelDistance) {
+            if (!currentAffine || !patientData) return pixelDistance;
+            
+            // Get voxel spacing from patient data
+            const voxelSpacing = patientData.voxel_dims;
+            
+            // For axial view, use x and y spacing
+            const pixelSpacingX = voxelSpacing[0];
+            const pixelSpacingY = voxelSpacing[1];
+            
+            // Average spacing for diagonal measurements
+            const avgSpacing = (pixelSpacingX + pixelSpacingY) / 2;
+            
+            return pixelDistance * avgSpacing;
+        }
+        
+        function updateMeasurementPositions() {
+            // Update measurement line and label positions when zooming/panning
+            // This is complex and would need proper implementation
+        }
+        
+        // Setup measurement clicks
+        function setupMeasurementClicks() {
+            const mainImage = document.getElementById('mainImage');
+            
+            mainImage.addEventListener('click', (e) => {
+                if (!measurementMode || isDragging) return;
+                
+                const rect = e.target.getBoundingClientRect();
+                const point = {
+                    x: e.clientX,
+                    y: e.clientY,
+                    imageX: (e.clientX - rect.left) / zoomLevel,
+                    imageY: (e.clientY - rect.top) / zoomLevel
+                };
+                
+                if (!measurementStart) {
+                    measurementStart = point;
+                } else {
+                    measurementEnd = point;
+                    drawMeasurement(measurementMode, measurementStart, measurementEnd);
+                    
+                    // Reset mode
+                    measurementMode = null;
+                    document.querySelectorAll('.measurement-button').forEach(btn => {
+                        btn.classList.remove('active');
+                    });
+                }
+            });
+        }
+        
+        // Initialize on load
+        window.addEventListener('load', () => {
+            init();
+            setupPanning();
+            setupMeasurementClicks();
+        });
+    </script>
+</body>
+</html>

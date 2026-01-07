@@ -1,0 +1,27 @@
+{
+  "method": "sigmoid",
+  "brier_cv": 0.1204415820578197,
+  "brier_full": 0.12015188898503606,
+  "brier_raw": 0.1880565923126082,
+  "raw_ece": 0.2152789708884794,
+  "raw_calibration_slope": 0.7472207615943958,
+  "raw_calibration_intercept": -1.4493964721488912,
+  "auc_raw": 0.7961432506887052,
+  "auc_calibrated": 0.7929948839039748,
+  "optuna_best_params": {
+    "C": 35.528420709464484,
+    "l1_ratio": 0.3230325803466242
+  },
+  "optuna_best_score": 0.7927807486631017,
+  "diagnostics": {
+    "sigmoid": {
+      "brier": 0.12015188898503606,
+      "info": {
+        "coef": [
+          0.724481676092538
+        ],
+        "intercept": -1.4436947350888607
+      }
+    }
+  }
+}

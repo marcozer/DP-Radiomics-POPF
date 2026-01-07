@@ -1,0 +1,62 @@
+.DS_Store
+Thumbs.db
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyd
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+coverage.xml
+.venv/
+venv/
+.env
+
+# Internal helper / instruction files (do not publish)
+AGENTS.md
+agent.md
+.aider*
+.copilot*
+.github/copilot*
+
+# Jupyter / matplotlib caches
+.ipynb_checkpoints/
+.mplcache/
+
+# OS/editor
+.vscode/
+.idea/
+
+# Runtime artifacts (DO NOT COMMIT)
+runs/
+deployment/storage/
+deployment/storage/**
+deployment/__pycache__/
+
+# Medical imaging / DICOM exports (DO NOT COMMIT)
+*.nii
+*.nii.gz
+*.dcm
+*.dicom
+*.nrrd
+*.mha
+*.mhd
+*.img
+*.hdr
+*.zip
+
+# Viewer state (should be generated locally)
+radiomics pipeline/pancreas_head_delimiter/x_coordinate_selections*.json
+radiomics pipeline/pancreas_head_delimiter/completed_patients.json
+
+# Radiomics pipeline: local data + outputs (generated / private)
+radiomics pipeline/niftii/
+radiomics pipeline/outputs*/
+radiomics pipeline/data/head/
+radiomics pipeline/data/pancreas/
+radiomics pipeline/data/*.csv
+
+# Primary analysis: private cohort data
+primary analysis/data/

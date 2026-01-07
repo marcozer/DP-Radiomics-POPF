@@ -1,0 +1,42 @@
+{
+  "method": "isotonic",
+  "brier_cv": 0.06579153137002086,
+  "brier_full": 0.0,
+  "brier_raw": 0.08832186468885124,
+  "raw_ece": 0.21519859615450007,
+  "raw_calibration_slope": 36.13658063984862,
+  "raw_calibration_intercept": -29.418798438531496,
+  "auc_raw": 1.0,
+  "auc_calibrated": 0.9285714285714286,
+  "optuna_best_params": null,
+  "optuna_best_score": null,
+  "diagnostics": {
+    "isotonic": {
+      "brier": 0.0,
+      "info": {
+        "type": "isotonic",
+        "x": [
+          0.005823135905128906,
+          0.6030292873842027,
+          0.7715744110393067,
+          0.8901502489926475
+        ],
+        "y": [
+          0.0,
+          0.0,
+          1.0,
+          1.0
+        ],
+        "out_of_bounds": "clip"
+      }
+    },
+    "sigmoid": {
+      "brier": 4.6775695255874185e-07,
+      "info": {
+        "type": "sigmoid",
+        "intercept": -13.250066143907564,
+        "slope": 16.611845737024947
+      }
+    }
+  }
+}

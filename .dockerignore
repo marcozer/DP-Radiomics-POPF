@@ -1,0 +1,20 @@
+.git
+.DS_Store
+**/.DS_Store
+**/__pycache__/
+**/*.pyc
+
+# Local run artifacts (large, must never be baked into images)
+runs/
+deployment/storage/
+
+# Large imaging datasets / outputs (not needed inside the container)
+radiomics pipeline/niftii/
+radiomics pipeline/data/**/*.nii
+radiomics pipeline/data/**/*.nii.gz
+radiomics pipeline/outputs*/
+
+# Primary analysis artifacts / datasets (inference image only needs code + configs)
+primary analysis/data/
+primary analysis/results/
+primary analysis/results_reference/
