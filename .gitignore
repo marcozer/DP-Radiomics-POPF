@@ -60,3 +60,4 @@ radiomics pipeline/data/*.csv
 
 # Primary analysis: private cohort data
 primary analysis/data/
+primary analysis/results/

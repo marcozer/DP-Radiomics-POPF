@@ -213,7 +213,7 @@ async function refreshPipelineStatus(patientId) {
       const cal = pred.popf_risk_calibrated;
       const raw = pred.popf_risk_raw;
       const prob = (cal !== null && cal !== undefined) ? cal : raw;
-      const src = (cal !== null && cal !== undefined) ? 'Calibrated' : 'Raw';
+      const src = (cal !== null && cal !== undefined) ? 'Reportable' : 'Raw';
 
       if (resultRiskEl) {
         const v = Number(prob);

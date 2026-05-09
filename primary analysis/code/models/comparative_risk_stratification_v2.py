@@ -3,9 +3,10 @@
 
 Evaluates canonical clinical fistula scores (D-FRS pre-, intra-operative and
 DISPAIR) alongside the frozen seven-feature radiomics signature and combined
-models that augment the clinical scores with radiomics. Out-of-fold metrics,
-calibration diagnostics, and risk group summaries are exported for manuscript
-quality reporting.
+models that augment the clinical scores with radiomics. The current public
+export uses unweighted logistic regression for radiomics/refit models, keeps
+published clinical scores unrefit, and exports out-of-fold metrics, calibration
+diagnostics, and risk group summaries for manuscript-quality reporting.
 """
 
 from __future__ import annotations
@@ -82,6 +83,10 @@ HONORIFICS = {
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description="Comparative risk stratification with canonical clinical scores")
+    parser.add_argument("--radiomics-path", type=Path, default=RAD_PATH,
+                        help="Local radiomics feature CSV; not bundled in the public repository")
+    parser.add_argument("--clinical-path", type=Path, default=TRUSTABLE_PATH,
+                        help="Local clinical score input CSV; not bundled in the public repository")
     parser.add_argument("--output-dir", type=str, default=str(OUTPUT_DIR_DEFAULT),
                         help="Directory where metrics/plots are saved")
     parser.add_argument("--max-cases", type=int, default=None,
@@ -331,14 +336,11 @@ def compute_clinical_scores(records: List[Dict[str, Any]]) -> None:
         neck = rec.get("neck_thickness")
         bmi = rec.get("bmi")
         op_duration_minutes = rec.get("op_duration")
-        op_duration_hours = op_duration_minutes / 60.0 if _is_valid(op_duration_minutes) else None
         blood_loss = rec.get("blood_loss")
 
         soft = _texture_to_indicator(rec.get("pancreas_texture"))
-        if soft is None:
-            soft = 0.0
         rec["soft_pancreas"] = soft
-        rec["soft_pancreas_flag"] = float(soft > 0)
+        rec["soft_pancreas_flag"] = float(soft > 0) if soft is not None else None
 
         lesion_head_val = rec.get("lesion_head")
         lesion_body_val = rec.get("lesion_body")
@@ -371,7 +373,7 @@ def compute_clinical_scores(records: List[Dict[str, Any]]) -> None:
         rec["male_indicator"] = male_indicator
 
         if mpd is not None and neck is not None:
-            logit = -4.211 + 0.388 * mpd + 0.19931 * neck
+            logit = -4.211 + 0.388 * mpd + 0.131 * neck
             if math.isnan(logit):
                 rec["dfrs_preop_logit"] = None
                 rec["dfrs_preop_prob"] = None
@@ -382,8 +384,8 @@ def compute_clinical_scores(records: List[Dict[str, Any]]) -> None:
             rec["dfrs_preop_logit"] = None
             rec["dfrs_preop_prob"] = None
 
-        if None not in (mpd, neck, bmi, soft, op_duration_hours):
-            logit = -11.923 + 0.783 * mpd + 0.199 * neck + 0.107 * bmi + 1.592 * soft + 0.005 * op_duration_hours
+        if None not in (mpd, neck, bmi, soft, op_duration_minutes):
+            logit = -11.923 + 0.783 * mpd + 0.199 * neck + 0.107 * bmi + 1.592 * soft + 0.005 * op_duration_minutes
             if math.isnan(logit):
                 rec["dfrs_intraop_logit"] = None
                 rec["dfrs_intraop_prob"] = None
@@ -395,7 +397,7 @@ def compute_clinical_scores(records: List[Dict[str, Any]]) -> None:
             rec["dfrs_intraop_prob"] = None
 
         if _is_valid(neck) and rec.get("transection_at_neck") is not None and diabetes_numeric is not None:
-            lp_legacy = -8.322 + 0.19931 * neck + 0.545 * rec["transection_at_neck"] - 1.116 * diabetes_numeric
+            lp_legacy = -8.322 + 0.384 * neck + 0.545 * rec["transection_at_neck"] - 1.116 * diabetes_numeric
             rec["dispair_legacy_logit"] = lp_legacy
             rec["dispair_legacy_prob"] = float(1.0 / (1.0 + math.exp(-lp_legacy)))
         else:
@@ -444,7 +446,7 @@ def compute_clinical_scores(records: List[Dict[str, Any]]) -> None:
 def _build_logistic_pipeline(params: Optional[Dict[str, float]] = None) -> Pipeline:
     if params:
         model = LogisticRegression(
-            class_weight="balanced",
+            class_weight=None,
             penalty="elasticnet",
             solver="saga",
             max_iter=4000,
@@ -454,7 +456,7 @@ def _build_logistic_pipeline(params: Optional[Dict[str, float]] = None) -> Pipel
         )
     else:
         model = LogisticRegression(
-            class_weight="balanced",
+            class_weight=None,
             penalty="l2",
             solver="lbfgs",
             max_iter=4000,
@@ -1213,6 +1215,9 @@ def evaluate_predictions(name: str, slug: str, y: np.ndarray, prob: np.ndarray,
 
 def main() -> None:
     args = parse_args()
+    global RAD_PATH, TRUSTABLE_PATH
+    RAD_PATH = args.radiomics_path
+    TRUSTABLE_PATH = args.clinical_path
     output_dir = Path(args.output_dir)
     output_dir.mkdir(parents=True, exist_ok=True)
 

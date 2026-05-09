@@ -178,5 +178,4 @@ python code/predict_popf_risk.py \
   --output-csv results/predictions_test.csv
 ```
 
-For the **calibrated probability used for reporting**, first generate the calibration JSON with:
-`primary analysis/code/models/comparative_risk_stratification_v2.py`, then pass it via `--calibration-json`.
+The default calibration JSON is an identity mapping from the current manuscript analysis, so `popf_risk_calibrated` is retained as a backward-compatible reportable-risk column and equals `popf_risk_raw`.

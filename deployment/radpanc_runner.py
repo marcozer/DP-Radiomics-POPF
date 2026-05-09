@@ -4,7 +4,7 @@ RADPANC end-to-end runner (composition layer).
 
 This tool composes the two sibling repos via CLI contracts:
 - `radiomics pipeline/` for head mask extraction + radiomics (+ optional ComBat)
-- `primary analysis/` for calibrated POPF risk inference
+- `primary analysis/` for 7-rad POPF risk inference
 
 Design goal: keep the deployment surface stable even when internal scripts evolve.
 We do this by:
@@ -133,7 +133,7 @@ def _latest_matching(path: Path, pattern: str) -> Path:
 
 
 def parse_args() -> argparse.Namespace:
-    parser = argparse.ArgumentParser(description="RADPANC end-to-end runner (radiomics → optional ComBat → calibrated POPF risk)")
+    parser = argparse.ArgumentParser(description="RADPANC end-to-end runner (radiomics -> optional ComBat -> 7-rad POPF risk)")
 
     parser.add_argument("--patient-id", required=True, help="Patient identifier (used for file naming)")
     parser.add_argument("--run-dir", type=Path, default=None, help="Run directory (default: runs/<patient>_<timestamp>)")
@@ -356,8 +356,8 @@ def main() -> None:
             # Proceed without ComBat (unknown scanner/batch or other issue)
             features_for_model = features_csv
 
-    # Step 5: prediction (raw + calibrated)
-    print("[RADPANC] Step 5/5 · Predict POPF risk (raw + calibrated)", flush=True)
+    # Step 5: prediction (raw + reportable probability; identity calibration by default)
+    print("[RADPANC] Step 5/5 · Predict POPF risk (7-rad reportable probability)", flush=True)
     model_pkl = args.model_pkl.resolve() if args.model_pkl else (paths.analysis_repo / "configs" / "exported_model.pkl").resolve()
     out_pred_csv = out_pred_dir / "popf_predictions.csv"
     out_pred_meta = out_pred_dir / "popf_predictions_meta.json"

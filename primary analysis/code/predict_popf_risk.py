@@ -11,8 +11,8 @@ That artifact is a dict containing:
   - preprocessed_feature_names: list[str] of required feature columns (HF3 schema)
   - panel_indices: list[int] indices of the 7-feature radiomics signature
 
-Optionally, you can apply a post-hoc calibration mapping (sigmoid or isotonic)
-exported by `code/models/comparative_risk_stratification_v2.py`.
+Optionally, you can apply a post-hoc calibration mapping (identity, sigmoid, or
+isotonic) exported by the manuscript analysis scripts.
 """
 
 from __future__ import annotations
@@ -105,6 +105,7 @@ def _sigmoid(x: np.ndarray) -> np.ndarray:
 def _load_calibration_info(calibration_json: Path) -> dict[str, Any]:
     """
     Supports either:
+    - an identity/no-recalibration file: {"method": "identity", ...}
     - a plain calibrator file: {"type": "sigmoid", "intercept": ..., "slope": ...}
     - a report produced by `comparative_risk_stratification_v2.py`:
         {"method": "...", "diagnostics": {"sigmoid": {"info": {...}}, ...}}
@@ -112,6 +113,9 @@ def _load_calibration_info(calibration_json: Path) -> dict[str, Any]:
     payload = json.loads(calibration_json.read_text())
     if not isinstance(payload, dict):
         raise ValueError("Calibration JSON must be an object/dict.")
+
+    if str(payload.get("method", "")).lower().strip() in {"identity", "raw_identity", "none"}:
+        return {"type": "identity", "source": payload}
 
     if "type" in payload:
         return payload
@@ -170,6 +174,9 @@ def _risk_group_from_probability(p: float, low_thr: float, high_thr: float) -> s
 
 def _apply_calibration(prob_raw: np.ndarray, calibrator: dict[str, Any]) -> np.ndarray:
     cal_type = str(calibrator.get("type", "")).lower().strip()
+    if cal_type in {"identity", "raw_identity", "none"}:
+        return np.asarray(prob_raw, dtype=float)
+
     if cal_type == "sigmoid":
         intercept = float(calibrator["intercept"])
         slope = float(calibrator["slope"])
@@ -190,11 +197,16 @@ def _apply_calibration(prob_raw: np.ndarray, calibrator: dict[str, Any]) -> np.n
 
 
 def _load_model_bundle(model_pkl: Path) -> dict[str, Any]:
-    _ensure_stabl_available()
-
     import joblib
 
-    bundle = joblib.load(model_pkl)
+    try:
+        bundle = joblib.load(model_pkl)
+    except ModuleNotFoundError as exc:
+        if exc.name and exc.name.startswith("stabl"):
+            _ensure_stabl_available()
+            bundle = joblib.load(model_pkl)
+        else:
+            raise
     if not isinstance(bundle, dict):
         raise ValueError(
             f"Expected a dict model bundle in {model_pkl}, got {type(bundle)}."
@@ -238,7 +250,7 @@ def parse_args() -> argparse.Namespace:
         "--calibration-json",
         type=Path,
         default=None,
-        help="Optional calibration JSON (sigmoid/isotonic) to convert raw to calibrated risk.",
+        help="Optional calibration JSON (identity/sigmoid/isotonic) to convert raw to reportable risk.",
     )
     parser.add_argument(
         "--no-calibration",

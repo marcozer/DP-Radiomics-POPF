@@ -4,16 +4,16 @@
     "threshold_diagnostics": "primary analysis/configs/calibration/radiomics_threshold_diagnostics.svg",
     "performance_plot": "primary analysis/configs/calibration/radiomics_performance.svg",
     "model_bundle": "primary analysis/configs/exported_model.pkl",
-    "note": "Deployment thresholds are frozen from the final manuscript figures in `configs/calibration/`."
+    "note": "Deployment thresholds are frozen from the current manuscript 7-rad out-of-fold analysis."
   },
   "probability_source": "popf_risk_calibrated",
   "threshold_selection": {
-    "method": "figure_frozen",
-    "low_threshold": "Low threshold annotated in radiomics_threshold_diagnostics.svg",
-    "high_threshold": "High threshold annotated in radiomics_threshold_diagnostics.svg"
+    "method": "internal_tertile_like_youden_fallback_from_oof_predictions",
+    "low_threshold": "Low/intermediate threshold from the current 7-rad OOF risk grouping.",
+    "high_threshold": "Intermediate/high threshold from the current 7-rad OOF risk grouping."
   },
-  "low_threshold": 0.076,
-  "high_threshold": 0.222,
+  "low_threshold": 0.07396834058928708,
+  "high_threshold": 0.258187912676405,
   "risk_groups": [
     {
       "label": "Low",
