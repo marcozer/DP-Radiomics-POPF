@@ -61,3 +61,18 @@ radiomics pipeline/data/*.csv
 # Primary analysis: private cohort data
 primary analysis/data/
 primary analysis/results/
+
+# Clinical / OMOP source data (DO NOT COMMIT PHI)
+**/OMOP*/
+**/updated_OMOP*/
+**/*Warshaw*
+**/*clinical_base*
+**/*clinical*db*
+**/*POPF_SCANNER*
+**/*person*.csv
+**/*note*.csv
+**/*visit_occurrence*.csv
+**/*procedure_occurrence*.csv
+**/*measurement*.csv
+*.xlsx
+*.xls
