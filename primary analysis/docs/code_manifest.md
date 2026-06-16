@@ -8,9 +8,10 @@
 | `code/scripts/eval_fixed_panel.py` | `scripts/eval_fixed_panel.py` | Clean fixed-panel CV without selection. |
 | `code/scripts/eval_fixed_panel_combat.py` | `scripts/eval_fixed_panel_combat.py` | Optional harmonization evaluation. |
 | `code/scripts/optimize_lr_postselection.py` | `scripts/optimize_lr_postselection.py` | Optional LR C sensitvity. |
-| `code/models/comparative_risk_stratification_v2.py` | `R0` / manuscript regeneration utility | Updated clinical-score formulas, unweighted radiomics/refit models, no-refit published score benchmarking. |
-| `code/models/nested_unweighted_calibration.py` | `R0/nested_unweighted_20260505/run_nested_unweighted_calibration.py` | Primary clean unweighted fixed-L2 OOF probability audit for the locked 7-rad signature; patient-level predictions off by default. |
-| `code/models/create_v2_style_figures_from_clean_analysis.py` | `R0/nested_unweighted_20260505/create_v2_style_figures_from_clean_analysis.py` | Recreates the `comparative_risk_stratification_v2` figure family from clean fixed-L2 OOF predictions; patient-level predictions off by default. |
+| `code/models/r0_v2_elasticnet_7rad_mpd_thickness.py` | `R0_v2/analysis_elasticnet_7rad_mpd_thickness_20260616` | Current manuscript analysis: standardized unweighted elastic-net `7-rad`, refitted `7-rad + MPD/thickness`, standalone DP-FRS/DISPAIR benchmarks, bootstrap `.632+`, paired OOF comparison, and deployable model export. |
+| `code/models/comparative_risk_stratification_v2.py` | `R0` / manuscript regeneration utility | Legacy clinical-score/risk-stratification utility retained for audit of earlier figure generations. |
+| `code/models/nested_unweighted_calibration.py` | `R0/nested_unweighted_20260505/run_nested_unweighted_calibration.py` | Legacy clean unweighted fixed-L2 OOF probability audit; no longer the current R0_v2 primary estimator. |
+| `code/models/create_v2_style_figures_from_clean_analysis.py` | `R0/nested_unweighted_20260505/create_v2_style_figures_from_clean_analysis.py` | Legacy v2-style figure utility from clean fixed-L2 OOF predictions; retained for audit only. |
 | `code/utils/plotting_utils.py` | `utils/plotting_utils.py` | Shared figure helpers. |
 | `code/utils/data_utils.py` | `utils/data_utils.py` | (Add once finalized). |
 | `stabl` | pip dependency | Install from the upstream repo and document the commit SHA in `docs/setup_env.md` notes. |

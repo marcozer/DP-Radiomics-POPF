@@ -1,31 +1,39 @@
 {
   "source": {
     "calibration": "primary analysis/configs/calibration/radiomics_calibration.json",
-    "threshold_diagnostics": "primary analysis/configs/calibration/radiomics_threshold_diagnostics.svg",
     "performance_plot": "primary analysis/configs/calibration/radiomics_performance.svg",
     "model_bundle": "primary analysis/configs/exported_model.pkl",
-    "note": "Deployment thresholds are frozen from the current manuscript 7-rad out-of-fold analysis."
+    "note": "Internal descriptive thresholds from R0_v2 5x5 out-of-fold 7-rad predictions. External validation is required before using these thresholds for clinical decisions."
   },
   "probability_source": "popf_risk_calibrated",
   "threshold_selection": {
-    "method": "internal_tertile_like_youden_fallback_from_oof_predictions",
-    "low_threshold": "Low/intermediate threshold from the current 7-rad OOF risk grouping.",
-    "high_threshold": "Intermediate/high threshold from the current 7-rad OOF risk grouping."
+    "method": "internal_tertile_cut_points_from_5x5_oof_predictions",
+    "low_threshold": "Lower tertile cut point of R0_v2 7-rad out-of-fold probabilities.",
+    "high_threshold": "Upper tertile cut point of R0_v2 7-rad out-of-fold probabilities."
   },
-  "low_threshold": 0.07396834058928708,
-  "high_threshold": 0.258187912676405,
+  "low_threshold": 0.07449991845313005,
+  "high_threshold": 0.2657460819031407,
   "risk_groups": [
     {
       "label": "Low",
-      "rule": "p <= low_threshold"
+      "rule": "p <= low_threshold",
+      "internal_oof_n": 65,
+      "internal_oof_events": 3,
+      "internal_oof_event_rate": 0.046153846153846156
     },
     {
       "label": "Intermediate",
-      "rule": "low_threshold < p <= high_threshold"
+      "rule": "low_threshold < p <= high_threshold",
+      "internal_oof_n": 64,
+      "internal_oof_events": 11,
+      "internal_oof_event_rate": 0.171875
     },
     {
       "label": "High",
-      "rule": "p > high_threshold"
+      "rule": "p > high_threshold",
+      "internal_oof_n": 66,
+      "internal_oof_events": 22,
+      "internal_oof_event_rate": 0.3333333333333333
     }
   ]
 }

@@ -11,13 +11,8 @@ The files in `manuscript_figures/` were exported from the current manuscript fig
 - `figure3_model_development_internal_validation.svg` / `.png`
 - `figure4_signature_values_predicted_risk.svg` / `.png`
 - `figure5_published_clinical_score_benchmarks.svg` / `.png`
-- `figure6_7rad_vs_dfrs_preop_oof.svg` / `.png`
-
-Additional model-comparison references:
-
-- `figure7_7rad_vs_dfrs_preop_direct_comparison.svg` / `.png`
-- `risk_group_event_rates_7rad_vs_dfrs_preop.svg` / `.png`
+- `figure6_elasticnet_7rad_mpd_thickness.svg` / `.png`
 
 ## Regeneration
 
-Use `../code/models/nested_unweighted_calibration.py` for the primary clean OOF probability audit and `../code/models/create_v2_style_figures_from_clean_analysis.py` for the v2-style figure family. Outputs should be written under `primary analysis/results/`, which is ignored by git.
+Use `../code/models/r0_v2_elasticnet_7rad_mpd_thickness.py` for the current R0_v2 model comparison and Figure 6. Outputs should be written under `primary analysis/results/`, which is ignored by git.

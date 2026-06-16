@@ -13,14 +13,15 @@ This repository is organized as three components that can be used independently 
 
 ## Current manuscript analysis
 The current manuscript uses a locked seven-feature radiomics signature (`7-rad`) and evaluates:
-- published DP-FRS and DISPAIR-FRS clinical scores exactly as published, without local coefficient refitting;
-- unweighted fixed-L2 logistic out-of-fold radiomics models for the main probability audit;
-- radiomics-plus-score comparisons against the 7-rad signature, especially 7-rad plus preoperative DP-FRS;
-- DeLong testing, calibration diagnostics, and descriptive risk strata from paired out-of-fold predictions.
+- the final `7-rad` model as a standardized, unweighted elastic-net logistic regression refitted on the full 195-patient cohort;
+- bootstrap `.632+` AUC as the primary optimism-corrected performance estimate for the final model;
+- nested cross-validation with repeated STABL feature selection as the feature-selection validation analysis;
+- a refitted `7-rad + MPD/thickness` elastic-net model as the comparative radioclinical sensitivity analysis;
+- published DP-FRS and DISPAIR-FRS clinical scores exactly as published, as standalone benchmarks only.
 
 The public repository intentionally does not ship the enriched clinical database. Runtime outputs under `primary analysis/results/` are ignored by git; only aggregate/reference manuscript figures are kept under `primary analysis/results_reference/`.
 
-For Docker/local inference, `primary analysis/configs/exported_model.pkl` is a final all-cohort refit of the locked 7-rad panel with unweighted fixed-L2 logistic regression. That deployment refit is not the manuscript performance estimate; manuscript discrimination and calibration are reported from out-of-fold predictions.
+For Docker/local inference, `primary analysis/configs/exported_model.pkl` is a final all-cohort refit of the locked 7-rad panel with standardized unweighted elastic-net logistic regression. Apparent deployment probabilities are not the manuscript performance estimate; the manuscript reports bootstrap `.632+` and repeated out-of-fold validation.
 
 ## Quickstart (Docker deployment)
 From the repo root:
@@ -51,7 +52,8 @@ See:
 - `primary analysis/code/models/`: calibration and risk stratification utilities.
 - `primary analysis/code/models/nested_unweighted_calibration.py`: primary clean 7-rad probability/calibration audit.
 - `primary analysis/code/models/create_v2_style_figures_from_clean_analysis.py`: regenerates the manuscript-style figure family from the clean unweighted out-of-fold probabilities.
-- `primary analysis/code/models/comparative_risk_stratification_v2.py`: updated comparative score/risk-stratification utility with corrected DP-FRS/DISPAIR formulas and unweighted radiomics/refit models.
+- `primary analysis/code/models/r0_v2_elasticnet_7rad_mpd_thickness.py`: current R0_v2 manuscript analysis, elastic-net `7-rad` with and without MPD/thickness, standalone DP-FRS/DISPAIR benchmarks, and deployable model export.
+- `primary analysis/code/models/comparative_risk_stratification_v2.py`: legacy comparative score/risk-stratification utility retained for audit/reproducibility of earlier figure generations.
 - `primary analysis/code/utils/`: shared helpers (e.g., figure styling via `primary analysis/code/utils/plotting_utils.py`).
 - `primary analysis/results_reference/`: manuscript-ready reference figures exported for the paper.
 
@@ -81,13 +83,9 @@ These are the current SVG/PNG assets embedded in the manuscript figure DOCX, plu
 
 ![Figure 5](primary%20analysis/results_reference/manuscript_figures/figure5_published_clinical_score_benchmarks.svg)
 
-**Figure 6. Out-of-fold performance, calibration, and risk stratification of the 7-rad signature with and without preoperative DP-FRS**
+**Figure 6. Elastic-net performance and calibration of the 7-rad signature with and without refit addition of MPD diameter and pancreatic neck thickness**
 
-![Figure 6](primary%20analysis/results_reference/manuscript_figures/figure6_7rad_vs_dfrs_preop_oof.svg)
-
-**Supplemental direct comparison. 7-rad signature vs 7-rad plus preoperative DP-FRS**
-
-![Direct comparison](primary%20analysis/results_reference/manuscript_figures/figure7_7rad_vs_dfrs_preop_direct_comparison.svg)
+![Figure 6](primary%20analysis/results_reference/manuscript_figures/figure6_elasticnet_7rad_mpd_thickness.svg)
 
 ## Third-party sources and attribution
 This project depends on several open-source tools and includes a vendored copy of `BeautifulFigures` for plotting style.

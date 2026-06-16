@@ -5,7 +5,12 @@ Predict CR-POPF risk for new patients using the exported radiomics signature.
 This script is designed for the model bundle exported as:
   `primary analysis/configs/exported_model.pkl`
 
-That artifact is a dict containing:
+Current R0_v2 artifact is a simple dict containing:
+  - model: fitted sklearn Pipeline(StandardScaler + elastic-net LogisticRegression)
+  - feature_names: list[str] of the locked 7-rad feature columns
+  - metadata: non-patient-level model/performance metadata
+
+Legacy artifacts are also supported. They contain:
   - preprocessor: fitted PreprocessingPipeline (custom class)
   - model: fitted sklearn LogisticRegression
   - preprocessed_feature_names: list[str] of required feature columns (HF3 schema)
@@ -212,10 +217,16 @@ def _load_model_bundle(model_pkl: Path) -> dict[str, Any]:
             f"Expected a dict model bundle in {model_pkl}, got {type(bundle)}."
         )
 
-    required = {"model", "preprocessor", "preprocessed_feature_names", "panel_indices"}
-    missing = required.difference(bundle.keys())
+    if "model" in bundle and "feature_names" in bundle:
+        return bundle
+
+    legacy_required = {"model", "preprocessor", "preprocessed_feature_names", "panel_indices"}
+    missing = legacy_required.difference(bundle.keys())
     if missing:
-        raise ValueError(f"Model bundle is missing keys: {sorted(missing)}")
+        raise ValueError(
+            "Model bundle is neither a current R0_v2 simple bundle nor a supported "
+            f"legacy bundle. Missing keys for legacy schema: {sorted(missing)}"
+        )
 
     return bundle
 
@@ -326,7 +337,8 @@ def main() -> None:
         if df.empty:
             raise ValueError(f"No rows found for {id_col} == {args.patient_id!r}.")
 
-    required_features: list[str] = list(bundle["preprocessed_feature_names"])
+    is_simple_bundle = "feature_names" in bundle
+    required_features: list[str] = list(bundle["feature_names"] if is_simple_bundle else bundle["preprocessed_feature_names"])
     missing = [c for c in required_features if c not in df.columns]
     if missing:
         example = ", ".join(missing[:10])
@@ -339,24 +351,30 @@ def main() -> None:
 
     # Use a NumPy array to avoid downstream warnings about feature names.
     X = df[required_features].apply(pd.to_numeric, errors="coerce").to_numpy(dtype=float)
-    preprocessor = bundle["preprocessor"]
-    X_pre = preprocessor.transform(X)
-
-    panel_indices: list[int] = [int(i) for i in list(bundle["panel_indices"])]
-
-    # If preprocessing ever drops columns, remap indices by feature name.
-    if X_pre.shape[1] != len(required_features):
-        names_out = getattr(preprocessor, "feature_names_out_", None)
-        if not isinstance(names_out, list) or not names_out:
-            raise RuntimeError(
-                "Preprocessor changed feature dimensionality but did not expose feature_names_out_. "
-                "Cannot safely map the radiomics panel."
-            )
-        panel_names = [required_features[i] for i in panel_indices]
-        panel_indices = [names_out.index(name) for name in panel_names]
-
-    X_panel = X_pre[:, panel_indices]
     model = bundle["model"]
+    if is_simple_bundle:
+        X_panel = X
+        panel_indices: list[int] = list(range(len(required_features)))
+        panel_feature_names = list(required_features)
+    else:
+        preprocessor = bundle["preprocessor"]
+        X_pre = preprocessor.transform(X)
+        panel_indices = [int(i) for i in list(bundle["panel_indices"])]
+
+        # If preprocessing ever drops columns, remap indices by feature name.
+        if X_pre.shape[1] != len(required_features):
+            names_out = getattr(preprocessor, "feature_names_out_", None)
+            if not isinstance(names_out, list) or not names_out:
+                raise RuntimeError(
+                    "Preprocessor changed feature dimensionality but did not expose feature_names_out_. "
+                    "Cannot safely map the radiomics panel."
+                )
+            panel_names = [required_features[i] for i in panel_indices]
+            panel_indices = [names_out.index(name) for name in panel_names]
+
+        X_panel = X_pre[:, panel_indices]
+        panel_feature_names = [required_features[i] for i in list(bundle["panel_indices"])]
+
     prob_raw = model.predict_proba(X_panel)[:, 1]
 
     output = pd.DataFrame({id_col: df[id_col].astype(str), "popf_risk_raw": prob_raw.astype(float)})
@@ -412,8 +430,9 @@ def main() -> None:
         "id_col": id_col,
         "n_patients": int(len(output)),
         "required_feature_count": int(len(required_features)),
+        "bundle_schema": bundle.get("schema_version", "legacy_preprocessing_bundle"),
         "panel_indices": panel_indices,
-        "panel_feature_names": [required_features[i] for i in list(bundle["panel_indices"])],
+        "panel_feature_names": panel_feature_names,
         "calibration_json": str(calibration_json) if calibration_json is not None else None,
         "calibration": cal_info,
         "risk_thresholds_json": str(thresholds_json) if thresholds_json is not None else None,

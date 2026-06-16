@@ -28,37 +28,17 @@ Artifacts: frozen panel, feature frequencies, discovery plots.
 ### Dev-mode sanity (fast)
 Use `--ensemble-runs 2 --n-bootstraps 50 --output-dir results_reference/dev_run/discovery` for smoke testing.
 
-## 3. Fixed-Panel Evaluation (primary, the one used for the publication)
+## 3. R0_v2 Elastic-Net Fixed-Panel Evaluation (current manuscript analysis)
 ```bash
-python "code/main analysis/popf_stabl_corrected_parallel_enhanced_v3.py" \
-    --radiomics-path data/HF3.csv \
-    --matches-path data/POPF-SCANNER.csv \
-    --model enlr \
-    --ensemble-runs 20 \
-    --n-bootstraps 500 \
-    --consensus-threshold 0.8 \
-    --n-features 100 \
-    --positive-grades B,C \
-    --n-workers 12 \
-    --validation-bootstrap 2000 \
-    --variance-threshold 0.01 \
-    --max-nan-fraction 0.2 \
-    --impute-strategy median \
-    --artificial-type random_permutation \
-    --corr-group-threshold 99 \
-    --fdr-start 0.8 --fdr-end 0.99 --fdr-step 0.001 \
-    --n-lambda 30 --lambda-grid auto \
-    --val-methods bootstrap632+ repeated-cv loocv simple-bootstrap \
-    --cv-splits 4 --cv-repeats 20 \
-    --eval-consensus-only \
-    --stabl-penalty l1 --stabl-l1-ratio 0.5 \
-    --output-dir results/publish_github
+python "code/models/r0_v2_elasticnet_7rad_mpd_thickness.py" \
+  --radiomics-path data/HF3.csv \
+  --clinical-path data/final_clinical_db.csv \
+  --output-dir results/r0_v2_elasticnet_7rad_mpd_thickness \
+  --export-model-pkl configs/exported_model.pkl
 ```
-Artifacts: AUROC distribution JSON, percentile CI, calibration and ROC plots, per-fold logs.
+Artifacts: bootstrap `.632+` metrics, repeated OOF metrics, paired AUC comparison, standalone DP-FRS/DISPAIR benchmarks, manuscript Figure 6, and a deployable non-patient-level model bundle.
 
-### Optional supportive analyses
-- `.632+ bootstrap`: `--validation-bootstrap 200 --bootstrap-method 632plus`.
-- Temporal holdout: add `--temporal-holdout --scanner-metadata-path data/StudyDates.csv --scanner-id-col scanner_patient_name --date-col StudyDate`.
+The current manuscript does not use temporal hold-out or fixed-L2 as primary estimators. Those older scripts remain in `code/main analysis/` and `code/models/` only for audit/sensitivity work.
 
 ## 4. Post-selection Tuning (optional)
 ```bash
@@ -91,24 +71,18 @@ python code/predict_popf_risk.py \
   --output-csv results/predictions_test.csv
 ```
 
-### Apply post-hoc calibration (final reportable probability)
+### Calibration and risk grouping
 
-Calibration for the frozen signature is produced by:
-`code/models/comparative_risk_stratification_v2.py`.
+The R0_v2 deployment bundle uses an identity calibration JSON by default. Risk groups, if requested, use internal descriptive OOF tertile cut points and require external validation before clinical use.
 
 ```bash
 cd "primary analysis"
-CAL_DIR="results/comparative_risk_stratification_v2"
-
-python code/models/comparative_risk_stratification_v2.py \
-  --output-dir "$CAL_DIR" \
-  --calibration-method auto
 
 python code/predict_popf_risk.py \
   --model-pkl configs/exported_model.pkl \
   --features-csv "$FEATURES_CSV" \
   --id-col patient_id \
   --patient-id "<PATIENT_ID>" \
-  --calibration-json "$CAL_DIR/radiomics_calibration.json" \
+  --calibration-json configs/calibration/radiomics_calibration.json \
   --output-csv results/predictions_test_calibrated.csv
 ```
