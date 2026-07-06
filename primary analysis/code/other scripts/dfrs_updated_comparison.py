@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-D-FRS evaluation with updated authoritative outcomes from POPF-SCANNER
+D-FRS evaluation with curated outcome labels
 Comprehensive comparison for manuscript
 """
 
@@ -16,10 +16,10 @@ def evaluate_dfrs_updated():
     """Evaluate D-FRS with corrected outcomes"""
 
     print("="*70)
-    print("D-FRS EVALUATION WITH AUTHORITATIVE POPF-SCANNER OUTCOMES")
+    print("D-FRS EVALUATION WITH CURATED OUTCOME LABELS")
     print("="*70)
 
-    parser = argparse.ArgumentParser(description="Evaluate D-FRS with POPF-SCANNER outcomes")
+    parser = argparse.ArgumentParser(description="Evaluate D-FRS with curated outcome labels")
     parser.add_argument("--clinical-path", type=Path,
                         default=Path(__file__).resolve().parents[2] / "data" / "clinical_matched_popf_scanner.csv",
                         help="CSV with clinical variables and popf_grade")

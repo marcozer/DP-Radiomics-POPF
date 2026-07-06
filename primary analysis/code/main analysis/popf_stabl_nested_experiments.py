@@ -2154,7 +2154,7 @@ def main():
     parser.add_argument('--radiomics-path', type=str, default=None,
                        help='Optional: explicit path to radiomics CSV to use (overrides default data discovery)')
     parser.add_argument('--matches-path', type=str, default=None,
-                       help='Path to POPF outcome matching CSV (default: data/POPF-SCANNER.csv)')
+                       help='Path to outcome matching CSV (default: data/outcome_matches.csv)')
     parser.add_argument('--positive-grades', type=str, default='B,C',
                        help="Comma-separated POPF grades considered positive (default: 'B,C'). Example to include 'BL': B,C,BL")
     parser.add_argument('--allow-id-normalization', action='store_true', default=False,
@@ -2399,7 +2399,7 @@ def main():
         if args.matches_path:
             matches_path = Path(args.matches_path)
         else:
-            matches_path = data_dir / 'POPF-SCANNER.csv'
+            matches_path = data_dir / 'outcome_matches.csv'
         if not matches_path.exists():
             raise FileNotFoundError(f"Matches file not found: {matches_path}")
         matches_df = pd.read_csv(matches_path)

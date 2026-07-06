@@ -1,6 +1,6 @@
 # Results Packaging Checklist
 
-- [ ] Alignment audit CSVs show zero unmatched IDs or include rationale for exclusions.
+- [ ] Alignment check CSVs show zero unmatched IDs or include rationale for exclusions.
 - [ ] `configs/panels/publish_lr_panel.txt` exists, matches discovery output hash, and is referenced in evaluation command logs.
 - [ ] `code/` contains only the scripts required for reproduction and does not include third-party code copies unless explicitly licensed and documented.
 - [ ] `requirements.txt`, `docs/setup_env.md`, and `docs/runbook.md` reflect the exact commands used; update version pins if any packages were upgraded.

@@ -2,26 +2,17 @@
 """
 POPF STABL V3 - ENHANCED WITH PREPROCESSING & CORRELATION GROUPING
 ===================================================================
+Enhanced version building on V2 with:
+- Integrated preprocessing pipeline (VarianceThreshold, LowInfoFilter, SimpleImputer)
+- Correlation-based feature grouping via perc_corr_group_threshold
+- Knockoff artificial features for better FDR control with correlated features
+- All V2 features preserved (BCa CI, optimization, etc.)
 
-
-best working command for now (sept 25) : python popf_stabl_corrected_parallel_enhanced_v3.py \
-      --radiomics-path data/HF3.csv \
-      --matches-path data/outcome_matches.csv \
-      --ensemble-runs 10 \
-      --n-bootstraps 500 \
-      --consensus-threshold 0.8 \
-      --artificial-type random_permutation \
-      --model xgb \
-      --cv-tune-lr --cv-tune-trials 120 \
-      --lr-c-min 0.05 --lr-c-max 1 \
-      --en-l1-min 0.2 --en-l1-max 0.4 \
-      --stabl-penalty l1 --n-lambda 60 --stabl-l1-ratio 0.4 \
-      --val-methods repeated-cv \
-      --cv-splits 5 --cv-repeats 1 \
-      --n-workers 50 --fdr-start 0.1 --fdr-end 0.95 --fdr-step 0.005 \
-      --output-dir results/v3_nested_stratified_optuna5_fdr_repeat  
-
-
+Key Improvements over V2:
+- Better handling of missing values and low-variance features
+- Reduced feature redundancy through correlation grouping
+- More stable feature selection with cleaner input data
+- Flexible preprocessing configuration
 """
 
 # ASCII Art Banner
@@ -85,6 +76,7 @@ except ImportError:
     calibration_curve = None
 from sklearn.base import clone
 from sklearn.utils import resample
+from sklearn.utils.class_weight import compute_sample_weight
 from sklearn.svm import SVC
 
 # NEW: Preprocessing imports
@@ -110,13 +102,8 @@ except ImportError:
     HAS_STATSMODELS = False
     print("Warning: statsmodels not installed. Some CI methods unavailable.")
 
-# Repo-relative imports (utilities live under `code/`)
-SCRIPT_DIR = Path(__file__).resolve()
-CODE_DIR = SCRIPT_DIR.parent.parent  # .../code
-if str(CODE_DIR) not in sys.path:
-    sys.path.insert(0, str(CODE_DIR))
-
-# STABL imports (installed via pip/submodule)
+# STABL imports
+sys.path.insert(0, str(Path(__file__).parent.parent / 'dependencies' / 'Stabl'))
 from stabl.stabl import Stabl
 from stabl.preprocessing import LowInfoFilter  # NEW: STABL preprocessing
 
@@ -602,7 +589,11 @@ class MultiMethodValidator:
                  lr_c_min: float = 1e-3,
                  lr_c_max: float = 1e2,
                  en_l1_min: float = 0.3,
-                 en_l1_max: float = 0.7):
+                 en_l1_max: float = 0.7,
+                 nested_stabl_bags: int = 1,
+                 nested_add_ridge: bool = False,
+                 nested_add_firth: bool = False,
+                 nested_add_xgb: bool = False):
         self.n_bootstrap = n_bootstrap
         self.optimize_model = optimize_model
         self.fixed_c = fixed_c
@@ -629,6 +620,10 @@ class MultiMethodValidator:
         self.lr_c_max = lr_c_max
         self.en_l1_min = en_l1_min
         self.en_l1_max = en_l1_max
+        self.nested_stabl_bags = max(1, int(nested_stabl_bags))
+        self.nested_add_ridge = nested_add_ridge
+        self.nested_add_firth = nested_add_firth
+        self.nested_add_xgb = nested_add_xgb and HAS_ADVANCED_MODELS
         
     def evaluate_all_methods(self, model, X, y, feature_names=None, methods=None):
         """Evaluate model using selected validation methods.
@@ -742,8 +737,6 @@ class MultiMethodValidator:
                 'use_preprocessing': self.stabl_params.get('use_preprocessing', True),
                 'preprocessing_config': self.stabl_params.get('preprocessing_config', {}),
                 'c_value': self.stabl_params.get('c_value', None),
-                'stabl_penalty': self.stabl_params.get('stabl_penalty', 'l1'),
-                'stabl_l1_ratio': self.stabl_params.get('stabl_l1_ratio', 0.5),
                 'random_state': random_state + i
             }
 
@@ -1008,48 +1001,108 @@ class MultiMethodValidator:
             oof_pred = np.zeros(len(y), dtype=float)
             oof_mask = np.zeros(len(y), dtype=bool)
             fold_tuning = []
-            for tr, te in cv.split(X, y):
-                # Train-only selection
-                selector = EnhancedParallelEnsembleSTABL(**self.stabl_params)
-                selector.fit(X[tr], y[tr], feature_names=np.array(feature_names))
-                sel_feats = selector.selected_features_ or []
-                if not sel_feats:
-                    continue
-                if selector.use_preprocessing:
-                    X_tr_pre = selector.preprocessor_.transform(X[tr])
-                    X_te_pre = selector.preprocessor_.transform(X[te])
-                    pre_names = selector.preprocessed_feature_names_
-                    idx = [i for i, f in enumerate(pre_names) if f in sel_feats]
-                    if not idx:
+            for fold_idx, (tr, te) in enumerate(cv.split(X, y), 1):
+                bag_predictions = []
+                base_seed = self.stabl_params.get('random_state', 42)
+                for bag in range(self.nested_stabl_bags):
+                    stabl_cfg = dict(self.stabl_params)
+                    stabl_cfg['random_state'] = base_seed + fold_idx * 1000 + bag
+                    selector = EnhancedParallelEnsembleSTABL(**stabl_cfg)
+                    selector.fit(X[tr], y[tr], feature_names=np.array(feature_names))
+                    sel_feats = selector.selected_features_ or []
+                    if not sel_feats:
                         continue
-                    X_tr_sel = X_tr_pre[:, idx]
-                    X_te_sel = X_te_pre[:, idx]
-                else:
-                    idx = [i for i, f in enumerate(feature_names) if f in sel_feats]
-                    if not idx:
-                        continue
-                    X_tr_sel = X[tr][:, idx]
-                    X_te_sel = X[te][:, idx]
+                    if selector.use_preprocessing:
+                        X_tr_pre = selector.preprocessor_.transform(X[tr])
+                        X_te_pre = selector.preprocessor_.transform(X[te])
+                        pre_names = selector.preprocessed_feature_names_
+                        idx = [i for i, f in enumerate(pre_names) if f in sel_feats]
+                        if not idx:
+                            continue
+                        X_tr_sel = X_tr_pre[:, idx]
+                        X_te_sel = X_te_pre[:, idx]
+                    else:
+                        idx = [i for i, f in enumerate(feature_names) if f in sel_feats]
+                        if not idx:
+                            continue
+                        X_tr_sel = X[tr][:, idx]
+                        X_te_sel = X[te][:, idx]
 
-                # Train model and score
-                m = clone(model)
-                tuned_info = None
-                if self.cv_tune_lr and isinstance(m, LogisticRegression):
+                    imputer = SimpleImputer(strategy='median')
+                    X_tr_imp = imputer.fit_transform(X_tr_sel)
+                    X_te_imp = imputer.transform(X_te_sel)
+                    scaler = StandardScaler()
+                    X_tr_s = scaler.fit_transform(X_tr_imp)
+                    X_te_s = scaler.transform(X_te_imp)
+
+                    component_probs: List[np.ndarray] = []
+                    base_model = clone(model)
+                    tuned_info = None
+                    if self.cv_tune_lr and isinstance(base_model, LogisticRegression):
+                        try:
+                            base_model, tuned_info = self._optuna_tune_lr(X_tr_s, y[tr], base_model)
+                        except Exception:
+                            tuned_info = None
                     try:
-                        m, tuned_info = self._optuna_tune_lr(X_tr_sel, y[tr], m)
-                    except Exception:
-                        tuned_info = None
-                m.fit(X_tr_sel, y[tr])
-                try:
-                    y_prob = m.predict_proba(X_te_sel)[:, 1]
-                except AttributeError:
-                    y_prob = m.decision_function(X_te_sel)
+                        base_model.fit(X_tr_s, y[tr])
+                        logistic_prob = base_model.predict_proba(X_te_s)[:, 1]
+                    except AttributeError:
+                        base_model.fit(X_tr_s, y[tr])
+                        decision = base_model.decision_function(X_te_s)
+                        logistic_prob = 1.0 / (1.0 + np.exp(-decision))
+                    component_probs.append(logistic_prob)
+                    if tuned_info is not None:
+                        tuned_info = dict(tuned_info)
+                        tuned_info.update({'fold': fold_idx, 'bag': bag})
+                        fold_tuning.append(tuned_info)
+
+                    if self.nested_add_ridge:
+                        ridge_prob = self._ridge_nested_prediction(X_tr_s, y[tr], X_te_s)
+                        if ridge_prob is not None:
+                            component_probs.append(ridge_prob)
+
+                    if self.nested_add_firth:
+                        try:
+                            firth = FirthLogisticRegression(class_weight='balanced')
+                            firth.fit(X_tr_s, y[tr])
+                            component_probs.append(firth.predict_proba(X_te_s)[:, 1])
+                        except Exception:
+                            pass
+
+                    if self.nested_add_xgb:
+                        try:
+                            sample_weight = compute_sample_weight('balanced', y[tr])
+                            xgb_clf = XGBClassifier(
+                                n_estimators=200,
+                                max_depth=2,
+                                learning_rate=0.05,
+                                subsample=0.8,
+                                colsample_bytree=0.8,
+                                reg_lambda=1.0,
+                                reg_alpha=0.0,
+                                random_state=stabl_cfg['random_state'],
+                                eval_metric='logloss',
+                                n_jobs=1,
+                            )
+                            xgb_clf.fit(X_tr_imp, y[tr], sample_weight=sample_weight)
+                            component_probs.append(xgb_clf.predict_proba(X_te_imp)[:, 1])
+                        except Exception:
+                            pass
+
+                    if not component_probs:
+                        continue
+
+                    bag_pred = np.mean(np.column_stack(component_probs), axis=1)
+                    bag_predictions.append(bag_pred)
+
+                if not bag_predictions:
+                    continue
+
+                y_prob = np.mean(np.column_stack(bag_predictions), axis=1)
                 if len(np.unique(y[te])) == 2:
                     scores_list.append(roc_auc_score(y[te], y_prob))
                 oof_pred[te] = y_prob
                 oof_mask[te] = True
-                if tuned_info is not None:
-                    fold_tuning.append(tuned_info)
             scores = np.array(scores_list) if scores_list else np.array([])
             oof_auc = float(roc_auc_score(y[oof_mask], oof_pred[oof_mask])) if (oof_mask.any() and len(np.unique(y[oof_mask])) == 2) else None
             oof_ci = None
@@ -1161,6 +1214,36 @@ class MultiMethodValidator:
             m_best.set_params(C=float(best_params.get('C', 1.0)))
             info = {'C': float(best_params.get('C', 1.0)), 'inner': 'optuna'}
         return m_best, info
+
+    def _ridge_nested_prediction(self, X_tr: np.ndarray, y_tr: np.ndarray, X_te: np.ndarray) -> Optional[np.ndarray]:
+        """Fit a ridge (L2) logistic regression with a small C grid on train and predict test."""
+        try:
+            class_counts = np.bincount(y_tr.astype(int))
+            min_count = int(class_counts.min()) if class_counts.size == 2 else 0
+        except Exception:
+            min_count = 0
+        splits = max(2, min(5, min_count)) if min_count > 0 else 2
+        skf = StratifiedKFold(n_splits=splits, shuffle=True, random_state=self.cv_tune_seed)
+        c_grid = [0.05, 0.1, 0.25, 0.5, 1.0, 2.5]
+        best_auc = -np.inf
+        best_model = None
+        for C in c_grid:
+            clf = LogisticRegression(penalty='l2', solver='lbfgs', class_weight='balanced', max_iter=5000, C=C)
+            try:
+                scores = cross_val_score(clf, X_tr, y_tr, cv=skf, scoring='roc_auc')
+                score = float(np.mean(scores)) if len(scores) else 0.5
+            except Exception:
+                score = 0.5
+            if score > best_auc:
+                best_auc = score
+                best_model = clf
+        if best_model is None:
+            return None
+        try:
+            best_model.fit(X_tr, y_tr)
+            return best_model.predict_proba(X_te)[:, 1]
+        except Exception:
+            return None
     
     def loocv_evaluation(self, model, X, y, feature_names=None):
         """Leave-One-Out Cross-Validation (deterministic).
@@ -1836,9 +1919,7 @@ class EnhancedParallelEnsembleSTABL:
                  use_preprocessing: bool = True,
                  preprocessing_config: Dict = None,
                  c_value: float = None,
-                 hard_threshold: float = None,
-                 stabl_penalty: str = 'l1',
-                 stabl_l1_ratio: float = 0.5):
+                 hard_threshold: float = None):
         
         self.n_runs = n_runs
         self.n_bootstraps = n_bootstraps
@@ -1865,8 +1946,6 @@ class EnhancedParallelEnsembleSTABL:
         self.preprocessing_config = preprocessing_config or {}
         self.c_value = c_value
         self.hard_threshold = hard_threshold
-        self.stabl_penalty = stabl_penalty
-        self.stabl_l1_ratio = stabl_l1_ratio
         
         self.feature_matrix_ = None
         self.consensus_features_ = None
@@ -1932,9 +2011,7 @@ class EnhancedParallelEnsembleSTABL:
                 fdr_end=self.fdr_end,
                 fdr_step=self.fdr_step,
                 hard_threshold=self.hard_threshold,
-                c_value=self.c_value,
-                stabl_penalty=self.stabl_penalty,
-                stabl_l1_ratio=self.stabl_l1_ratio
+                c_value=self.c_value  # Pass C value for Optuna optimization
             )
             
             results = list(tqdm(
@@ -1961,29 +2038,14 @@ class EnhancedParallelEnsembleSTABL:
         seed = job_data['seed']
         
         # Setup STABL with enhanced configuration
-        penalty = kwargs.get('stabl_penalty', 'l1')
-        l1_ratio = kwargs.get('stabl_l1_ratio', 0.5)
-        if penalty == 'elasticnet':
-            solver = 'saga'
-            base_estimator = LogisticRegression(
-                penalty=penalty,
-                C=kwargs.get('c_value', 1.0),
-                solver=solver,
-                class_weight='balanced',
-                max_iter=10000,
-                random_state=seed,
-                l1_ratio=l1_ratio
-            )
-        else:
-            solver = 'liblinear'
-            base_estimator = LogisticRegression(
-                penalty=penalty,
-                C=kwargs.get('c_value', 1.0),
-                solver=solver,
-                class_weight='balanced',
-                max_iter=10000,
-                random_state=seed,
-            )
+        base_estimator = LogisticRegression(
+            penalty='l1',
+            C=kwargs.get('c_value', 1.0),  # Allow C value override from Optuna
+            solver='liblinear',
+            class_weight='balanced',
+            max_iter=10000,  # Increased for better convergence
+            random_state=seed
+        )
         
         # Enhanced STABL configuration
         stabl = Stabl(
@@ -2207,12 +2269,6 @@ def main():
     parser.add_argument('--holdout-fraction', type=float, default=0.3,
                        help='Fraction of newest patients to keep as temporal holdout (default: 0.3)')
 
-    # Subset options (clinical-based)
-    parser.add_argument('--clinical-path', type=str, default=None,
-                        help="Path to a clinical CSV containing 'collection_present' and an ID to merge on")
-    parser.add_argument('--collection-only', action='store_true',
-                        help="Restrict analysis to patients with a documented postoperative fluid collection (collection_present==True)")
-
     # NEW: Evaluate multiple models on the selected panel with LOOCV + ROC plots
     parser.add_argument('--eval-all-models', action='store_true',
                        help='Evaluate LR, EN, RF, SVM, XGB/LGB (if available) on the frozen panel and plot ROC curves')
@@ -2235,14 +2291,18 @@ def main():
                         help='Minimum l1_ratio for Elastic-Net tuning')
     parser.add_argument('--en-l1-max', type=float, default=0.7,
                         help='Maximum l1_ratio for Elastic-Net tuning')
+    parser.add_argument('--nested-stabl-bags', type=int, default=1,
+                        help='Number of independent STABL fits per CV split (averaged).')
+    parser.add_argument('--nested-add-ridge', action='store_true',
+                        help='Include ridge logistic regression in the nested ensemble.')
+    parser.add_argument('--nested-add-firth', action='store_true',
+                        help="Include Firth logistic regression in the nested ensemble.")
+    parser.add_argument('--nested-add-xgb', action='store_true',
+                        help='Include a shallow XGBoost learner in the nested ensemble (requires xgboost).')
     # ROC labeling source
     parser.add_argument('--roc-label-source', type=str, default='oof',
                         choices=['oof', 'cv-mean', '632', 'best'],
                         help="Which AUC to annotate on the ROC figure: pooled OOF (oof), mean CV (cv-mean), .632+ (632), or best of available (best)")
-    parser.add_argument('--stabl-penalty', type=str, default='l1', choices=['l1', 'elasticnet'],
-                        help="Penalty used for the STABL base estimator (default: l1).")
-    parser.add_argument('--stabl-l1-ratio', type=float, default=0.5,
-                        help="Elastic-net mixing parameter for STABL when --stabl-penalty=elasticnet (default: 0.5).")
     
     args = parser.parse_args()
     
@@ -2304,16 +2364,9 @@ def main():
             logger.warning(f"Raw radiomics not found, using: {radiomics_path.name}")
     
     logger.info(f"Using radiomics: {radiomics_path.name}")
-
+    
     # Load radiomics
     radiomics_df = pd.read_csv(radiomics_path)
-
-    # Normalize an ID column early to 'scanner_patient_name' for consistent downstream merges
-    if 'scanner_patient_name' not in radiomics_df.columns:
-        for _alt in ('patient_name', 'patient_id'):
-            if _alt in radiomics_df.columns:
-                radiomics_df = radiomics_df.rename(columns={_alt: 'scanner_patient_name'})
-                break
     
     # Get target and features
     # Identify an ID column for potential temporal split merges
@@ -2434,47 +2487,6 @@ def main():
         X = radiomics_df[numeric_cols].values
         feature_names = np.array(numeric_cols)
 
-    # Optional clinical subset: keep only patients with a postoperative collection
-    if args.collection_only:
-        if not args.clinical_path:
-            raise ValueError("--collection-only requires --clinical-path pointing to a CSV with 'collection_present'.")
-        clin_path = Path(args.clinical_path)
-        if not clin_path.exists():
-            raise FileNotFoundError(f"Clinical CSV not found: {clin_path}")
-        clin_df = pd.read_csv(clin_path)
-        if 'scanner_patient_name' not in clin_df.columns:
-            for _alt in ('patient_name', 'patient_id'):
-                if _alt in clin_df.columns:
-                    clin_df = clin_df.rename(columns={_alt: 'scanner_patient_name'})
-                    break
-        if 'scanner_patient_name' not in clin_df.columns:
-            raise KeyError("Clinical CSV must contain an identifier column (scanner_patient_name/patient_name/patient_id)")
-        if 'collection_present' not in clin_df.columns:
-            raise KeyError("Clinical CSV must include a 'collection_present' column")
-
-        # Align to radiomics row order
-        keep_df = radiomics_df[['scanner_patient_name']].merge(
-            clin_df[['scanner_patient_name', 'collection_present']],
-            on='scanner_patient_name', how='left'
-        )
-        col = keep_df['collection_present']
-        # Accept 1/True/"true"/"yes" as positive
-        mask = (
-            (col == 1) | (col == True) |
-            (col.astype(str).str.lower().isin(['true', 'yes', '1']))
-        ).fillna(False).to_numpy()
-
-        kept_n = int(mask.sum())
-        dropped_n = int(len(mask) - kept_n)
-        if kept_n == 0:
-            raise ValueError("After applying collection-only filter, no samples remain. Check clinical CSV and IDs.")
-
-        # Apply mask to X/y and radiomics_df so downstream IDs/OOF align
-        X = X[mask]
-        y = y[mask]
-        radiomics_df = radiomics_df.loc[mask].reset_index(drop=True)
-        logger.info(f"Applied collection-only subset using {clin_path.name}: kept={kept_n}, dropped={dropped_n}")
-
     logger.info(f"Initial data shape: {X.shape}")
     logger.info(f"Class distribution: {np.bincount(y.astype(int))}")
 
@@ -2521,9 +2533,7 @@ def main():
         fdr_step=args.fdr_step,
         use_preprocessing=args.use_preprocessing,
         preprocessing_config=preprocessing_config,
-        c_value=args.c_value,  # Pass Optuna-optimized C value
-        stabl_penalty=args.stabl_penalty,
-        stabl_l1_ratio=args.stabl_l1_ratio
+        c_value=args.c_value  # Pass Optuna-optimized C value
     )
     
     ensemble_stabl.fit(X, y, feature_names)
@@ -2589,9 +2599,7 @@ def main():
                 fdr_start=args.fdr_start,
                 fdr_end=args.fdr_end,
                 fdr_step=args.fdr_step,
-                hard_threshold=args.hard_threshold,
-                stabl_penalty=args.stabl_penalty,
-                stabl_l1_ratio=args.stabl_l1_ratio
+                hard_threshold=args.hard_threshold
             )
             stabl_train.fit(X_tr, y_tr, fn)
             sel_feats = stabl_train.selected_features_ or []
@@ -2719,8 +2727,7 @@ def main():
         'preprocessing_config': preprocessing_config,
         'c_value': args.c_value,
         'hard_threshold': args.hard_threshold,
-        'stabl_penalty': args.stabl_penalty,
-        'stabl_l1_ratio': args.stabl_l1_ratio
+        'random_state': 42
     }
 
     validator = MultiMethodValidator(
@@ -2742,7 +2749,11 @@ def main():
         lr_c_min=args.lr_c_min,
         lr_c_max=args.lr_c_max,
         en_l1_min=args.en_l1_min,
-        en_l1_max=args.en_l1_max
+        en_l1_max=args.en_l1_max,
+        nested_stabl_bags=args.nested_stabl_bags,
+        nested_add_ridge=args.nested_add_ridge,
+        nested_add_firth=args.nested_add_firth,
+        nested_add_xgb=args.nested_add_xgb
     )
     
     # Mark that preprocessing has been applied (for validator awareness)

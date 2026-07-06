@@ -2,12 +2,12 @@
 
 All commands assume repository root and an activated virtualenv with `stabl` installed via pip (e.g., `pip install git+https://github.com/gregbellan/Stabl.git@<commit>`).
 
-## 1. Alignment Audit
+## 1. Alignment Check
 ```bash
 python code/scripts/check_alignment.py \
   --radiomics-path data/radiomics_filtered_unsupervised.csv \
-  --matches-path data/POPF-SCANNER.csv \
-  --out results/alignment_audit
+  --matches-path data/outcome_matches.csv \
+  --out results/alignment_check
 ```
 Outputs: merged radiomics + outcomes table, unmatched IDs CSV.
 
@@ -15,7 +15,7 @@ Outputs: merged radiomics + outcomes table, unmatched IDs CSV.
 ```bash
 python "code/main analysis/popf_stabl_ultra_optimized.py" \
   --radiomics-path data/radiomics_filtered_unsupervised.csv \
-  --matches-path data/POPF-SCANNER.csv \
+  --matches-path data/outcome_matches.csv \
   --model lr --ensemble-runs 20 --n-bootstraps 800 \
   --consensus-threshold 0.65 --artificial-type knockoff \
   --n-features 5 --no-corr-grouping \
@@ -38,7 +38,7 @@ python "code/models/r0_v2_elasticnet_7rad_mpd_thickness.py" \
 ```
 Artifacts: bootstrap `.632+` metrics, repeated OOF metrics, paired AUC comparison, standalone DP-FRS/DISPAIR benchmarks, manuscript Figure 6, and a deployable non-patient-level model bundle.
 
-The current manuscript does not use temporal hold-out or fixed-L2 as primary estimators. Those older scripts remain in `code/main analysis/` and `code/models/` only for audit/sensitivity work.
+The current manuscript does not use temporal hold-out or fixed-L2 as primary estimators. Those older scripts remain in `code/main analysis/` and `code/models/` only for sensitivity work.
 
 ## 4. Post-selection Tuning (optional)
 ```bash

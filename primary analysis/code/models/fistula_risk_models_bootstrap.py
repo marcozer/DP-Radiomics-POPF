@@ -54,7 +54,7 @@ class FistulaRiskModels:
 
     def __init__(self, clinical_path: Optional[Path] = None, output_dir: Optional[Path] = None):
         if clinical_path is None:
-            clinical_path = DATA_DIR / 'POPF_SCANNER_complete_clinical_db_filled.csv'
+            clinical_path = DATA_DIR / 'final_clinical_db.csv'
         else:
             clinical_path = Path(clinical_path)
         self.df = pd.read_csv(clinical_path)

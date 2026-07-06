@@ -110,13 +110,8 @@ except ImportError:
     HAS_STATSMODELS = False
     print("Warning: statsmodels not installed. Some CI methods unavailable.")
 
-# Repo-relative imports (utilities live under `code/`)
-SCRIPT_DIR = Path(__file__).resolve()
-CODE_DIR = SCRIPT_DIR.parent.parent  # .../code
-if str(CODE_DIR) not in sys.path:
-    sys.path.insert(0, str(CODE_DIR))
-
-# STABL imports (installed via pip/submodule)
+# STABL imports
+sys.path.insert(0, str(Path(__file__).parent.parent / 'dependencies' / 'Stabl'))
 from stabl.stabl import Stabl
 from stabl.preprocessing import LowInfoFilter  # NEW: STABL preprocessing
 
@@ -3194,6 +3189,42 @@ def main():
     except Exception as _e:
         # Non-fatal; skip if anything goes wrong
         pass
+
+    # Export a deployable bundle: preprocessor + panel + fitted classifier on full data
+    try:
+        if ensemble_stabl.use_preprocessing:
+            X_full = ensemble_stabl.preprocessor_.transform(X)
+            deploy_preprocessor = ensemble_stabl.preprocessor_
+            deploy_scaler = None
+            pre_names = ensemble_stabl.preprocessed_feature_names_
+        else:
+            scaler = StandardScaler()
+            X_full = scaler.fit_transform(X)
+            deploy_preprocessor = None
+            deploy_scaler = scaler
+            pre_names = feature_names
+
+        sel_idx = [i for i, f in enumerate(pre_names) if f in selected_features]
+        X_panel = X_full[:, sel_idx] if sel_idx else X_full[:, :0]
+
+        deploy_clf = clone(model)
+        deploy_clf.fit(X_panel, y)
+
+        deploy_bundle = {
+            'selected_features': selected_features,
+            'preprocessed_feature_names': list(pre_names),
+            'panel_indices': sel_idx,
+            'preprocessor': deploy_preprocessor,
+            'scaler': deploy_scaler,
+            'model': deploy_clf,
+            'args': vars(args),
+        }
+
+        with open(output_dir / 'deploy_model.pkl', 'wb') as fh:
+            pickle.dump(deploy_bundle, fh, protocol=pickle.HIGHEST_PROTOCOL)
+        logger.info(f"Deployable model saved to {output_dir / 'deploy_model.pkl'}")
+    except Exception as export_err:
+        logger.warning(f"Failed to export deployable model: {export_err}")
 
     # Save results
     results = {

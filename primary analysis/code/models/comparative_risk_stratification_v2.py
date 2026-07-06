@@ -29,7 +29,7 @@ DATA_DIR = REPO_DIR / "data"
 RESULTS_DIR = REPO_DIR / "results"
 
 RAD_PATH = DATA_DIR / "HF3.csv"
-TRUSTABLE_PATH = DATA_DIR / "POPF_SCANNER_complete_clinical_db_filled.csv"
+TRUSTABLE_PATH = DATA_DIR / "final_clinical_db.csv"
 OUTPUT_DIR_DEFAULT = RESULTS_DIR / "comparative_risk_stratification_v2"
 
 base_str = str(CODE_DIR)

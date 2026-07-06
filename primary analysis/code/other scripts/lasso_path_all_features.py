@@ -70,7 +70,7 @@ def ensure_labels(df: pd.DataFrame, run_args: dict, results_dir: Path) -> pd.Dat
     if "cr_popf" in df.columns:
         return df
 
-    matches_path = run_args.get("matches_path") or "data/POPF-SCANNER.csv"
+    matches_path = run_args.get("matches_path") or "data/outcome_matches.csv"
     matches_path = Path(matches_path)
     if not matches_path.is_absolute():
         candidate = (results_dir / matches_path).resolve()

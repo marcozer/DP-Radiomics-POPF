@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Clean nested probability audit for the DP radiomics POPF models.
+"""Clean nested probability diagnostics for the DP radiomics POPF models.
 
 This script is intentionally separate from the deployment inference code. It
 recomputes manuscript-facing out-of-fold estimates with unweighted logistic
@@ -42,13 +42,13 @@ import comparative_risk_stratification_v2 as base  # noqa: E402
 
 
 DEFAULT_RAD_PATH = DATA_DIR / "HF3.csv"
-DEFAULT_CLINICAL_PATH = DATA_DIR / "POPF_SCANNER_complete_clinical_db_filled.csv"
+DEFAULT_CLINICAL_PATH = DATA_DIR / "final_clinical_db.csv"
 DEFAULT_OUTPUT_DIR = RESULTS_DIR / "nested_unweighted_calibration"
 
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
-        description="Clean OOF calibration audit with unweighted logistic regression."
+        description="Clean OOF calibration diagnostics with unweighted logistic regression."
     )
     parser.add_argument("--radiomics-path", type=Path, default=DEFAULT_RAD_PATH)
     parser.add_argument("--clinical-path", type=Path, default=DEFAULT_CLINICAL_PATH)
@@ -437,7 +437,7 @@ def paired_delong_rows(models: Sequence[Dict[str, Any]]) -> List[Dict[str, Any]]
     return rows
 
 
-def plot_probability_audit(model: Dict[str, Any], output_dir: Path) -> None:
+def plot_probability_diagnostics(model: Dict[str, Any], output_dir: Path) -> None:
     y = np.asarray(model["y"], dtype=int)
     prob = np.asarray(model["prob"], dtype=float)
     metrics = model["metrics"]
@@ -481,7 +481,7 @@ def plot_probability_audit(model: Dict[str, Any], output_dir: Path) -> None:
     fig.suptitle(model["name"])
     fig.tight_layout()
     for ext in ("png", "svg"):
-        fig.savefig(output_dir / f"{model['slug']}_probability_calibration_audit.{ext}", dpi=300)
+        fig.savefig(output_dir / f"{model['slug']}_probability_calibration_diagnostics.{ext}", dpi=300)
     plt.close(fig)
 
 
@@ -628,7 +628,7 @@ def main() -> None:
     for slug in ("radiomics_signature", "radiomics_plus_d_frs_pre_operative"):
         model = next((item for item in models if item["slug"] == slug), None)
         if model is not None:
-            plot_probability_audit(model, args.output_dir)
+            plot_probability_diagnostics(model, args.output_dir)
 
     report = {
         "inputs": {
@@ -646,8 +646,8 @@ def main() -> None:
     with (args.output_dir / "analysis_report.json").open("w", encoding="utf-8") as fh:
         json.dump(_json_ready(report), fh, indent=2)
 
-    with (args.output_dir / "calibration_deployment_audit.md").open("w", encoding="utf-8") as fh:
-        fh.write("# Clean Calibration / Deployment Audit\n\n")
+    with (args.output_dir / "calibration_deployment_diagnostics.md").open("w", encoding="utf-8") as fh:
+        fh.write("# Clean Calibration / Deployment Diagnostics\n\n")
         fh.write("Primary estimates use unweighted fixed L2 logistic regression with nested OOF evaluation.\n\n")
         fh.write("## Availability\n\n")
         for key, value in availability.items():
@@ -670,7 +670,7 @@ def main() -> None:
                     f"p={row['p_value']:.4f}, paired n={row['paired_n']}\n"
                 )
 
-    print(f"Clean calibration audit written to: {args.output_dir}")
+    print(f"Clean calibration diagnostics written to: {args.output_dir}")
 
 
 if __name__ == "__main__":

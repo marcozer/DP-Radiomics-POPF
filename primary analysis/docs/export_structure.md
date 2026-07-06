@@ -22,5 +22,5 @@
 
 ## Documentation
 - `docs/setup_env.md`: environment + dependency capture instructions.
-- `docs/runbook.md`: sequence of commands (alignment audit → discovery → fixed-panel evaluation → optional bootstrap) plus expected runtime.
+- `docs/runbook.md`: sequence of commands (alignment check → discovery → fixed-panel evaluation → optional bootstrap) plus expected runtime.
 - `docs/results_packaging_checklist.md`: verification steps before shipping (hash scripts, confirm panel file, ensure no PHI).

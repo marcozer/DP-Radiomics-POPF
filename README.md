@@ -19,7 +19,7 @@ The current manuscript uses a locked seven-feature radiomics signature (`7-rad`)
 - a refitted `7-rad + MPD/thickness` elastic-net model as the comparative radioclinical sensitivity analysis;
 - published DP-FRS and DISPAIR-FRS clinical scores exactly as published, as standalone benchmarks only.
 
-The public repository intentionally does not ship the enriched clinical database. Runtime outputs under `primary analysis/results/` are ignored by git; only aggregate/reference manuscript figures are kept under `primary analysis/results_reference/`.
+This repository does not include clinical databases, imaging files, segmentations, or patient-level predictions. Runtime outputs under `primary analysis/results/` are ignored by git; only aggregate/reference manuscript figures are kept under `primary analysis/results_reference/`.
 
 For Docker/local inference, `primary analysis/configs/exported_model.pkl` is a final all-cohort refit of the locked 7-rad panel with standardized unweighted elastic-net logistic regression. Apparent deployment probabilities are not the manuscript performance estimate; the manuscript reports bootstrap `.632+` and repeated out-of-fold validation.
 
@@ -49,11 +49,9 @@ See:
 
 **Statistical analysis**
 - `primary analysis/code/main analysis/`: core modeling and statistical evaluation scripts (feature selection, cross-validation, ablations, sensitivity analyses).
-- `primary analysis/code/models/`: calibration and risk stratification utilities.
-- `primary analysis/code/models/nested_unweighted_calibration.py`: primary clean 7-rad probability/calibration audit.
-- `primary analysis/code/models/create_v2_style_figures_from_clean_analysis.py`: regenerates the manuscript-style figure family from the clean unweighted out-of-fold probabilities.
+- `primary analysis/code/models/`: model comparison, calibration, and risk-stratification utilities.
 - `primary analysis/code/models/r0_v2_elasticnet_7rad_mpd_thickness.py`: current R0_v2 manuscript analysis, elastic-net `7-rad` with and without MPD/thickness, standalone DP-FRS/DISPAIR benchmarks, and deployable model export.
-- `primary analysis/code/models/comparative_risk_stratification_v2.py`: legacy comparative score/risk-stratification utility retained for audit/reproducibility of earlier figure generations.
+- `primary analysis/code/figures/generate_figure3_model_development_internal_validation.py`: regenerates manuscript Figure 3 with editable SVG text; uses local R0_v2 aggregate outputs and does not require patient-level data in the public repository.
 - `primary analysis/code/utils/`: shared helpers (e.g., figure styling via `primary analysis/code/utils/plotting_utils.py`).
 - `primary analysis/results_reference/`: manuscript-ready reference figures exported for the paper.
 

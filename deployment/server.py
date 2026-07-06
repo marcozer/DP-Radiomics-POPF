@@ -155,7 +155,7 @@ def _sitk_convert_dicom_to_nifti(*, dicom_dir: Path, output_nii_gz: Path) -> dic
         "dicom_dir": str(dicom_dir),
         "series_id": best_series_id,
         "file_count": len(best_files),
-        # Useful DICOM tags for auditability / scanner mapping
+        # Useful DICOM tags for scanner mapping
         "dicom_tags": {
             "modality": _tag("0008|0060"),
             "manufacturer": _tag("0008|0070"),

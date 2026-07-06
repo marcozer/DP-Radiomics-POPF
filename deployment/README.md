@@ -18,7 +18,7 @@ We achieve this by treating both repos as black boxes with **stable CLI contract
   5) optionally applies frozen ComBat estimates,
   6) computes raw and reportable 7-rad POPF risk using the exported model bundle.
 
-It writes a `manifest.json` with commands/inputs/outputs so runs are auditable.
+It writes a `manifest.json` with commands, inputs, and outputs for reproducibility.
 
 - `deployment/server.py`: a minimal web UI + API that lets you upload CT/seg, reuse the head-selection viewer, and run the same pipeline in a background job.
 
@@ -232,9 +232,9 @@ python deployment/smoke_test.py
 
 ## Reportable Probability
 
-The current manuscript uses the fixed unweighted L2 7-rad probability directly as the reportable probability.
+The deployment uses the exported seven-feature elastic-net model to return a reportable CR-POPF probability. Manuscript performance estimates are reported separately with bootstrap `.632+` and repeated out-of-fold validation.
 
-- Intercept-only recalibration was audited but not retained for the manuscript.
+- Intercept-only recalibration was evaluated but not retained for the manuscript.
 - A frozen identity-calibration artifact is stored under:
   `primary analysis/configs/calibration/radiomics_calibration.json`.
 - `primary analysis/code/predict_popf_risk.py` still writes `popf_risk_calibrated` for backward compatibility; with the current identity artifact, it equals `popf_risk_raw`.

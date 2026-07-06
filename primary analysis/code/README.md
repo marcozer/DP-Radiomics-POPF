@@ -6,7 +6,8 @@ Minimum required items:
 - `popf_stabl_corrected_parallel_enhanced_v3.py`
 - `popf_stabl_ultra_optimized.py`
 - `models/r0_v2_elasticnet_7rad_mpd_thickness.py`
-- `scripts/` helper modules (alignment audit, fixed-panel eval, post-selection tuner)
+- `figures/generate_figure3_model_development_internal_validation.py`
+- `scripts/` helper modules (alignment checks, fixed-panel eval, post-selection tuner)
 - `utils/` helpers referenced by the scripts (plotting, data utils)
 - `stabl` installed via pip (see `../docs/setup_env.md`)
 
@@ -21,7 +22,7 @@ python "code/models/r0_v2_elasticnet_7rad_mpd_thickness.py" \
   --export-model-pkl "configs/exported_model.pkl"
 ```
 
-Patient-level prediction CSVs are disabled by default in the public scripts. Add `--write-patient-predictions` only for local, non-public audit runs.
+Patient-level prediction CSVs are disabled by default in the public scripts. Add `--write-patient-predictions` only for local, non-public runs.
 
 Deployment inference uses `../configs/exported_model.pkl`, a final all-cohort refit of the locked 7-rad feature panel with standardized unweighted elastic-net logistic regression. This refit is for prospective inference only; manuscript performance is reported with bootstrap `.632+` and repeated out-of-fold validation.
 

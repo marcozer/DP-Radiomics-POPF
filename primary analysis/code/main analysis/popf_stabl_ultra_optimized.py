@@ -15,7 +15,7 @@ policy:
   for primary performance reporting.
 
 Additions in this version:
-- Exact POPF alignment using `data/POPF-SCANNER.csv` (drop unmatched rows).
+- Exact outcome alignment using `data/outcome_matches.csv` (drop unmatched rows).
 - Configurable positive grades (e.g., B,C or B,C,BL).
 - Optional normalized ID fallback join (off by default).
 - Discovery-only mode exporting frozen panels and frequencies.
@@ -2878,7 +2878,7 @@ def main():
     # Data input & alignment (radiomics-only)
     parser.add_argument('--radiomics-path', type=str, default='data/radiomics_prefiltered.csv',
                        help='Path to radiomics CSV (preferred prefiltered)')
-    parser.add_argument('--matches-path', type=str, default='data/POPF-SCANNER.csv',
+    parser.add_argument('--matches-path', type=str, default='data/outcome_matches.csv',
                        help='Path to POPF outcomes CSV (scanner_patient_name, popf_grade)')
     parser.add_argument('--positive-grades', type=str, default='B,C',
                        help="Comma-separated POPF grades considered positive (default: 'B,C'). e.g., 'B,C,BL'")

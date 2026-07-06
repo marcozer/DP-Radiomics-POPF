@@ -419,7 +419,7 @@ if __name__ == "__main__":
     
     parser = argparse.ArgumentParser(description='Apply unsupervised filtering to radiomics features')
     parser.add_argument('--input', required=True, help='Path to radiomics data CSV')
-    parser.add_argument('--matches', required=True, help='Path to POPF outcome matches CSV (e.g., data/POPF-SCANNER.csv)')
+    parser.add_argument('--matches', required=True, help='Path to outcome matches CSV (e.g., data/outcome_matches.csv)')
     parser.add_argument('--output', default='data/radiomics_filtered_unsupervised.csv',
                        help='Output path for filtered radiomics')
     parser.add_argument('--variance-threshold', type=float, default=0.01,

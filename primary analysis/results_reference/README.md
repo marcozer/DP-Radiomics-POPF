@@ -16,3 +16,5 @@ The files in `manuscript_figures/` were exported from the current manuscript fig
 ## Regeneration
 
 Use `../code/models/r0_v2_elasticnet_7rad_mpd_thickness.py` for the current R0_v2 model comparison and Figure 6. Outputs should be written under `primary analysis/results/`, which is ignored by git.
+
+Use `../code/figures/generate_figure3_model_development_internal_validation.py` to regenerate Figure 3 from local R0_v2 outputs. Only aggregate SVG/PNG figure assets are committed.

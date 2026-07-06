@@ -54,7 +54,7 @@ COLOR_SCHEMES = {
 
 def setup_plotting() -> None:
     """Apply BeautifulFigures-style rcParams (fonts, sizes, export policy)."""
-    # Ensure Courier New (or a close mono fallback) mirrors historical figures.
+    # Ensure Courier New (or a close mono fallback) mirrors manuscript figures.
     try:
         from matplotlib import font_manager as _fm
 

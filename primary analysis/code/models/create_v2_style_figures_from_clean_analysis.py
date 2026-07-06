@@ -48,7 +48,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--clinical-path",
         type=Path,
-        default=DATA_DIR / "POPF_SCANNER_complete_clinical_db_filled.csv",
+        default=DATA_DIR / "final_clinical_db.csv",
     )
     parser.add_argument(
         "--output-dir",
@@ -234,7 +234,7 @@ def overwrite_performance_figure_direct_calibration(
 ) -> None:
     """Render the primary OOF reliability diagram.
 
-    Recalibrated probabilities are audited upstream but are not plotted as a
+    Recalibrated probabilities are evaluated upstream but are not plotted as a
     second curve because they did not improve probability estimates in the
     locked analysis.
     """
@@ -301,7 +301,7 @@ def overwrite_performance_figure_direct_calibration(
                 f"AUC={metrics['auc']:.3f}",
                 f"Brier={metrics['brier']:.3f}",
                 f"ECE={metrics['ece']:.3f}",
-                "Recalibration audited, not retained",
+                "Recalibration evaluated, not retained",
             ]
         ),
         transform=axes[1].transAxes,
