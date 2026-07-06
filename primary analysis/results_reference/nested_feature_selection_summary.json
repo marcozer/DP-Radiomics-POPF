@@ -1,0 +1,22 @@
+{
+  "analysis": "nested_stabl_feature_selection_sensitivity",
+  "purpose": "Assess feature-selection robustness by repeating STABL within training folds; not the primary performance estimate.",
+  "cv_nested_selection": true,
+  "model": "logistic_regression",
+  "cv_splits": 5,
+  "cv_repeats": 1,
+  "auc": 0.7104262672811059,
+  "auc_95_ci": [
+    0.5642857142857143,
+    0.9044642857142856
+  ],
+  "selected_features": [
+    "log-sigma-3-0-mm-3D_glcm_ClusterProminence",
+    "log-sigma-3-0-mm-3D_glcm_ClusterShade",
+    "log-sigma-3-0-mm-3D_gldm_SmallDependenceHighGrayLevelEmphasis",
+    "log-sigma-7-0-mm-3D_ngtdm_Strength",
+    "original_shape_MinorAxisLength",
+    "wavelet-HLH_firstorder_Median",
+    "wavelet-HLH_gldm_LargeDependenceLowGrayLevelEmphasis"
+  ]
+}

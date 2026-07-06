@@ -21,7 +21,7 @@ def evaluate_dfrs_updated():
 
     parser = argparse.ArgumentParser(description="Evaluate D-FRS with curated outcome labels")
     parser.add_argument("--clinical-path", type=Path,
-                        default=Path(__file__).resolve().parents[2] / "data" / "clinical_matched_popf_scanner.csv",
+                        default=Path(__file__).resolve().parents[2] / "data" / "clinical_scores_input.csv",
                         help="CSV with clinical variables and popf_grade")
     args, _ = parser.parse_known_args()
 

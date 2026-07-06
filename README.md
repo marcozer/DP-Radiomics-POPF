@@ -15,7 +15,8 @@ This repository is organized as three components that can be used independently 
 The current manuscript uses a locked seven-feature radiomics signature (`7-rad`) and evaluates:
 - the final `7-rad` model as a standardized, unweighted elastic-net logistic regression refitted on the full 195-patient cohort;
 - bootstrap `.632+` AUC as the primary optimism-corrected performance estimate for the final model;
-- nested cross-validation with repeated STABL feature selection as the feature-selection validation analysis;
+- nested feature-selection sensitivity in which STABL is repeated within training folds to assess selection robustness;
+- repeated out-of-fold validation of the locked feature panel for paired model comparison;
 - a refitted `7-rad + MPD/thickness` elastic-net model as the comparative radioclinical sensitivity analysis;
 - published DP-FRS and DISPAIR-FRS clinical scores exactly as published, as standalone benchmarks only.
 
