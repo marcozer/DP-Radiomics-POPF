@@ -8,8 +8,8 @@ This repository is organized as three components that can be used independently 
 - `deployment/`: a lightweight local web app (Docker) that runs the workflow for new cases.
 
 ## What’s included / what’s not
-- Included: code, configs, and reference figures for the manuscript.
-- Not included: any patient imaging, segmentations, clinical tables, patient-level predictions, or PHI/PII. You must provide inputs locally.
+- Included: code, configs, manuscript reference figures, and de-identified model-ready CSV files for reproducing the primary analysis.
+- Not included: patient imaging, segmentations, operative notes, hospital records, dates, direct identifiers, source-system identifiers, or any PHI/PII.
 
 ## Current manuscript analysis
 The current manuscript uses a locked seven-feature radiomics signature (`7-rad`) and evaluates:
@@ -20,7 +20,7 @@ The current manuscript uses a locked seven-feature radiomics signature (`7-rad`)
 - a refitted `7-rad + MPD/thickness` elastic-net model as the comparative radioclinical sensitivity analysis;
 - published DP-FRS and DISPAIR-FRS clinical scores exactly as published, as standalone benchmarks only.
 
-This repository does not include clinical databases, imaging files, segmentations, or patient-level predictions. Runtime outputs under `primary analysis/results/` are ignored by git; only aggregate/reference manuscript figures are kept under `primary analysis/results_reference/`.
+This repository includes only de-identified model-ready covariates and radiomics features under `primary analysis/data_anonymized/`. It does not include clinical source databases, imaging files, segmentations, direct identifiers, or patient-level prediction outputs. Runtime outputs under `primary analysis/results/` are ignored by git; only aggregate/reference manuscript figures are kept under `primary analysis/results_reference/`.
 
 For Docker/local inference, `primary analysis/configs/exported_model.pkl` is a final all-cohort refit of the locked 7-rad panel with standardized unweighted elastic-net logistic regression. Apparent deployment probabilities are not the manuscript performance estimate; the manuscript reports bootstrap `.632+` and repeated out-of-fold validation.
 

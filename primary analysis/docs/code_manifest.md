@@ -19,4 +19,4 @@
 | `code/utils/data_utils.py` | `utils/data_utils.py` | (Add once finalized). |
 | `stabl` | pip dependency | Install from the upstream repo and document the commit SHA in `docs/setup_env.md` notes. |
 
-The public export intentionally excludes all cohort databases, radiomics CSVs, imaging data, and patient-level prediction outputs.
+The public export includes only de-identified model-ready CSVs. It excludes source clinical databases, imaging data, segmentations, direct identifiers, and patient-level prediction outputs.

@@ -10,10 +10,10 @@
 - Provide CLI presets in YAML (e.g., `configs/stabl_v3_publish.yaml`) capturing discovery + evaluation flags.
 - Store panel files (`configs/panels/*.txt`) and clinical feature lists referenced by comparative scripts.
 
-## Data Templates
-- `data_templates/radiomics_schema.md`: column description, ID alignment rules, mandatory numeric formats.
-- `data_templates/clinical_schema.md`: definitions for clinical covariates (MPD mm, BMI kg/m², etc.).
-- Synthetic CSVs (no PHI) that illustrate header order and accepted values. Use randomly generated values and note they are illustrative only.
+## De-identified Data
+- `data_anonymized/radiomics_features_anonymized.csv`: pseudonymous patient ID, CR-POPF outcome, and radiomics features.
+- `data_anonymized/model_covariates_anonymized.csv`: pseudonymous patient ID, CR-POPF outcome, and model covariates required for the clinical-score benchmarks and radioclinical sensitivity model.
+- No name, date, source-system identifier, clinical note, imaging file, segmentation, or hospital source record is included.
 
 ## Results Reference
 - Re-run discovery + fixed-panel CV with reduced iterations (e.g., `--ensemble-runs 2`, `--n-bootstraps 50`) and store the output folder under `results_reference/dev_run/`.

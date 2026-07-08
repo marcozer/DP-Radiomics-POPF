@@ -25,4 +25,4 @@
 
 6. **Testing sanity**
    - Run `pytest -q` (future home for targeted unit tests under `tests/`).
-   - Execute `python scripts/check_alignment.py --radiomics-path data/... --matches-path data/outcome_matches.csv --out results/alignment_check` to ensure IO dependencies are satisfied.
+   - Execute the R0_v2 command in `docs/runbook.md` once to ensure IO dependencies are satisfied.

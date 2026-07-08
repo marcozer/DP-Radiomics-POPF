@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 """R0_v2 elastic-net analysis for the locked 7-rad signature ± MPD/thickness.
 
-This public script intentionally does not bundle data. It expects local,
-non-committed radiomics and clinical CSV files and writes only aggregate
-metrics, anonymized row-index predictions, and manuscript-style figures.
+This public script uses the de-identified model-ready CSV files bundled under
+`data_anonymized/` by default and writes only aggregate metrics, anonymized
+row-index predictions, and manuscript-style figures.
 
 Final manuscript policy:
 - the locked 7 radiomics features are refitted with one estimator family:
@@ -42,6 +42,7 @@ SCRIPT_PATH = Path(__file__).resolve()
 CODE_DIR = SCRIPT_PATH.parent.parent
 REPO_DIR = CODE_DIR.parent
 DATA_DIR = REPO_DIR / "data"
+DATA_ANON_DIR = REPO_DIR / "data_anonymized"
 RESULTS_DIR = REPO_DIR / "results"
 
 if str(CODE_DIR) not in sys.path:
@@ -111,15 +112,15 @@ class ModelSpec:
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--radiomics-path", type=Path, default=DATA_DIR / "HF3.csv")
-    parser.add_argument("--clinical-path", type=Path, default=DATA_DIR / "final_clinical_db.csv")
+    parser.add_argument("--radiomics-path", type=Path, default=DATA_ANON_DIR / "radiomics_features_anonymized.csv")
+    parser.add_argument("--clinical-path", type=Path, default=DATA_ANON_DIR / "model_covariates_anonymized.csv")
     parser.add_argument("--output-dir", type=Path, default=RESULTS_DIR / "r0_v2_elasticnet_7rad_mpd_thickness")
     parser.add_argument("--outer-folds", type=int, default=5)
     parser.add_argument("--repeats", type=int, default=5)
     parser.add_argument("--inner-folds", type=int, default=3)
     parser.add_argument("--bootstrap-n", type=int, default=632)
     parser.add_argument("--max-cases", type=int, default=None)
-    parser.add_argument("--id-col", type=str, default="scanner_patient_name")
+    parser.add_argument("--id-col", type=str, default="patient_id")
     parser.add_argument("--expected-n", type=int, default=195)
     parser.add_argument("--expected-events", type=int, default=36)
     parser.add_argument(
@@ -616,6 +617,23 @@ def save_figure(fig: plt.Figure, base: Path) -> None:
     fig.savefig(base.with_suffix(".pdf"), bbox_inches="tight")
 
 
+def dataframe_to_markdown(df: pd.DataFrame) -> str:
+    """Render a small DataFrame as Markdown without requiring pandas[tabulate]."""
+    columns = [str(col) for col in df.columns]
+    rows = [[str(value) for value in row] for row in df.to_numpy()]
+    widths = [
+        max(len(columns[idx]), *(len(row[idx]) for row in rows)) if rows else len(columns[idx])
+        for idx in range(len(columns))
+    ]
+    header = "| " + " | ".join(columns[idx].ljust(widths[idx]) for idx in range(len(columns))) + " |"
+    separator = "| " + " | ".join("-" * widths[idx] for idx in range(len(columns))) + " |"
+    body = [
+        "| " + " | ".join(row[idx].ljust(widths[idx]) for idx in range(len(columns))) + " |"
+        for row in rows
+    ]
+    return "\n".join([header, separator, *body])
+
+
 def plot_figure(
     output_dir: Path,
     y: np.ndarray,
@@ -886,7 +904,9 @@ def main() -> None:
                 f"Validated paired OOF delta AUC: {comp['delta_auc_oof']:.3f} [{comp['delta_auc_oof_ci_low']:.3f} to {comp['delta_auc_oof_ci_high']:.3f}], bootstrap P={comp['paired_bootstrap_p_oof']:.3f}.",
                 "",
                 "## Standalone published-score benchmarks",
-                benchmark_df[["model", "n", "events", "auc", "auc_ci_low", "auc_ci_high", "brier", "ece"]].to_markdown(index=False),
+                dataframe_to_markdown(
+                    benchmark_df[["model", "n", "events", "auc", "auc_ci_low", "auc_ci_high", "brier", "ece"]]
+                ),
                 "",
             ]
         )

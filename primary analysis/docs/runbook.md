@@ -3,6 +3,8 @@
 All commands assume repository root and an activated virtualenv with `stabl` installed via pip (e.g., `pip install git+https://github.com/gregbellan/Stabl.git@<commit>`).
 
 ## 1. Alignment Check
+This is only needed when running from private source tables that separate radiomics features from outcomes. The public de-identified radiomics file already contains `patient_id` and `cr_popf`.
+
 ```bash
 python code/scripts/check_alignment.py \
   --radiomics-path data/radiomics_filtered_unsupervised.csv \
@@ -14,8 +16,7 @@ Outputs: merged radiomics + outcomes table, unmatched IDs CSV.
 ## 2. STABL Discovery (full settings)
 ```bash
 python "code/main analysis/popf_stabl_ultra_optimized.py" \
-  --radiomics-path data/radiomics_filtered_unsupervised.csv \
-  --matches-path data/outcome_matches.csv \
+  --radiomics-path data_anonymized/radiomics_features_anonymized.csv \
   --model lr --ensemble-runs 20 --n-bootstraps 800 \
   --consensus-threshold 0.65 --artificial-type knockoff \
   --n-features 5 --no-corr-grouping \
@@ -31,8 +32,7 @@ Use `--ensemble-runs 2 --n-bootstraps 50 --output-dir results_reference/dev_run/
 ## 3. Nested STABL Feature-Selection Sensitivity
 ```bash
 python "code/main analysis/popf_stabl_corrected_parallel_enhanced_v3.py" \
-  --radiomics-path data/HF3.csv \
-  --matches-path data/outcome_matches.csv \
+  --radiomics-path data_anonymized/radiomics_features_anonymized.csv \
   --model lr \
   --consensus-threshold 0.60 \
   --ensemble-runs 10 \
@@ -54,8 +54,8 @@ Artifacts: aggregate nested-selection AUC, selected-feature panel, feature frequ
 ## 4. R0_v2 Elastic-Net Fixed-Panel Evaluation (current manuscript analysis)
 ```bash
 python "code/models/r0_v2_elasticnet_7rad_mpd_thickness.py" \
-  --radiomics-path data/HF3.csv \
-  --clinical-path data/final_clinical_db.csv \
+  --radiomics-path data_anonymized/radiomics_features_anonymized.csv \
+  --clinical-path data_anonymized/model_covariates_anonymized.csv \
   --output-dir results/r0_v2_elasticnet_7rad_mpd_thickness \
   --export-model-pkl configs/exported_model.pkl
 ```
