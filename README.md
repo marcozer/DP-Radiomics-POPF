@@ -60,7 +60,7 @@ See:
 - `deployment/`: Dockerized local app wiring upload → preprocessing → segmentation → prediction.
 
 ## Manuscript figures
-These are the current SVG/PNG assets embedded in the manuscript figure DOCX, plus one direct-comparison model figure. They are stored in `primary analysis/results_reference/manuscript_figures/` and render directly on GitHub.
+These are the current SVG assets embedded in the manuscript figure DOCX. They are stored in `primary analysis/results_reference/manuscript_figures/` and render directly on GitHub.
 
 **Figure 1. Study design and radiomics workflow**
 

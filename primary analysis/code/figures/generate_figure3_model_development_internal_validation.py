@@ -339,13 +339,10 @@ def build_figure(analysis_dir: Path, output_dir: Path, stem: str) -> None:
 
     fig.subplots_adjust(left=0.08, right=0.97, top=0.93, bottom=0.10)
     svg_path = output_dir / f"{stem}.svg"
-    png_path = output_dir / f"{stem}.png"
     fig.savefig(svg_path, bbox_inches="tight")
     strip_svg_trailing_whitespace(svg_path)
-    fig.savefig(png_path, dpi=300, bbox_inches="tight")
     plt.close(fig)
     print(f"Wrote {svg_path}")
-    print(f"Wrote {png_path}")
 
 
 def strip_svg_trailing_whitespace(svg_path: Path) -> None:
@@ -360,7 +357,7 @@ def parse_args() -> argparse.Namespace:
     parser.add_argument(
         "--stem",
         default="figure3_model_development_internal_validation",
-        help="Output filename stem for SVG/PNG.",
+        help="Output filename stem for SVG.",
     )
     return parser.parse_args()
 
