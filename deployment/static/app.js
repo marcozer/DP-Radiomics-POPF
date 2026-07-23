@@ -243,7 +243,7 @@ async function refreshPipelineStatus(patientId) {
           const lo = Number(pred.risk_threshold_low);
           const hi = Number(pred.risk_threshold_high);
           if (Number.isFinite(lo) && Number.isFinite(hi)) {
-            lines.push(`Risk cutpoints (frozen): Low ≤ ${lo.toFixed(3)} · High > ${hi.toFixed(3)}`);
+            lines.push(`Exploratory cutpoints: rule-out < ${lo.toFixed(3)} · rule-in ≥ ${hi.toFixed(3)}`);
           }
         }
         resultCutpointsEl.textContent = lines.join('\n');

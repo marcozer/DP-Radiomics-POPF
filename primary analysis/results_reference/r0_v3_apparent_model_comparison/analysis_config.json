@@ -1,0 +1,18 @@
+{
+  "cohort_n": 195,
+  "events": 36,
+  "radiomics_features": [
+    "log-sigma-3-0-mm-3D_glcm_ClusterProminence",
+    "log-sigma-3-0-mm-3D_glcm_ClusterShade",
+    "log-sigma-3-0-mm-3D_gldm_SmallDependenceHighGrayLevelEmphasis",
+    "log-sigma-7-0-mm-3D_ngtdm_Strength",
+    "original_shape_MinorAxisLength",
+    "wavelet-HLH_firstorder_Median",
+    "wavelet-HLH_gldm_LargeDependenceLowGrayLevelEmphasis"
+  ],
+  "estimator": "standardized unweighted elastic-net logistic regression",
+  "apparent_auc_ci": "simple nonparametric bootstrap; 5000 resamples",
+  "paired_auc_comparison": "DeLong",
+  "dispair_equation": "BJS 2025 research equation; all-neck assumption",
+  "patient_level_outputs_written": false
+}

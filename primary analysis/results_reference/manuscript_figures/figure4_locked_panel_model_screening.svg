@@ -1,0 +1,1189 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   width="1218.850078pt"
+   height="590.135pt"
+   viewBox="0 0 1218.850078 590.135"
+   version="1.1"
+   id="svg65"
+   sodipodi:docname="Figure_4_Model_Family_Screening_and_Validation.svg"
+   inkscape:version="1.4.4 (dcaf3e7, 2026-05-05)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:xlink="http://www.w3.org/1999/xlink"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:dc="http://purl.org/dc/elements/1.1/">
+  <sodipodi:namedview
+     id="namedview65"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:document-units="pt"
+     inkscape:zoom="0.54162286"
+     inkscape:cx="588.97071"
+     inkscape:cy="486.50088"
+     inkscape:window-width="1800"
+     inkscape:window-height="1130"
+     inkscape:window-x="0"
+     inkscape:window-y="39"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="figure_1" />
+  <metadata
+     id="metadata1">
+    <rdf:RDF>
+      <cc:Work>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:date>2026-07-22T11:07:08.209335</dc:date>
+        <dc:format>image/svg+xml</dc:format>
+        <dc:creator>
+          <cc:Agent>
+            <dc:title>Matplotlib v3.10.6, https://matplotlib.org/</dc:title>
+          </cc:Agent>
+        </dc:creator>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <defs
+     id="defs1">
+    <style
+       type="text/css"
+       id="style1">*{stroke-linejoin: round; stroke-linecap: butt}</style>
+  </defs>
+  <g
+     id="figure_1">
+    <g
+       id="patch_1">
+      <path
+         d="M 0 590.135  L 1218.850078 590.135  L 1218.850078 0  L 0 0  z "
+         style="fill: #ffffff"
+         id="path1" />
+    </g>
+    <g
+       id="axes_1"
+       transform="translate(-34.5)">
+      <g
+         id="patch_2">
+        <path
+           d="M 119.88,531 H 536.04 V 64.44 H 119.88 Z"
+           style="fill:#ffffff"
+           id="path2" />
+      </g>
+      <g
+         id="patch_3">
+        <path
+           d="M 119.88,64.44 H 536.04 V 142.2 H 119.88 Z"
+           clip-path="url(#p139249d96d)"
+           style="fill:#476d9a"
+           id="path3" />
+      </g>
+      <g
+         id="patch_4">
+        <path
+           d="m 119.88,142.2 h 416.16 v 77.76 H 119.88 Z"
+           clip-path="url(#p139249d96d)"
+           style="fill:#476d9a"
+           id="path4" />
+      </g>
+      <g
+         id="patch_5">
+        <path
+           d="m 119.88,219.96 h 416.16 v 77.76 H 119.88 Z"
+           clip-path="url(#p139249d96d)"
+           style="fill:#5479a4"
+           id="path5" />
+      </g>
+      <g
+         id="patch_6">
+        <path
+           d="m 119.88,297.72 h 416.16 v 77.76 H 119.88 Z"
+           clip-path="url(#p139249d96d)"
+           style="fill:#587ca8"
+           id="path6" />
+      </g>
+      <g
+         id="patch_7">
+        <path
+           d="m 119.88,375.48 h 416.16 v 77.76 H 119.88 Z"
+           clip-path="url(#p139249d96d)"
+           style="fill:#5f82ad"
+           id="path7" />
+      </g>
+      <g
+         id="patch_8">
+        <path
+           d="M 119.88,453.24 H 536.04 V 531 H 119.88 Z"
+           clip-path="url(#p139249d96d)"
+           style="fill:#6c96b8"
+           id="path8" />
+      </g>
+      <g
+         id="matplotlib.axis_1">
+        <g
+           id="xtick_1">
+          <g
+             id="line2d_1">
+            <defs
+               id="defs8">
+              <path
+                 id="m3aaeb05dce"
+                 d="M 0,0 V 5"
+                 style="stroke:#2e3440;stroke-width:1.5" />
+            </defs>
+            <g
+               id="g8">
+              <use
+                 xlink:href="#m3aaeb05dce"
+                 x="327.95999"
+                 y="531"
+                 style="fill:#2e3440;stroke:#2e3440;stroke-width:1.5"
+                 id="use8" />
+            </g>
+          </g>
+          <g
+             id="text_1">
+            <text
+               style="font-size:20px;font-family:'Courier New', 'DejaVu Sans Mono', Menlo, monospace;fill:#2e3440"
+               transform="translate(213.93031,552.05)"
+               id="text8">Bootstrap .632+ AUC</text>
+            <text
+               style="font-size:20px;font-family:'Courier New', 'DejaVu Sans Mono', Menlo, monospace;fill:#2e3440"
+               transform="translate(279.9475,570.52625)"
+               id="text9">(95% CI)</text>
+          </g>
+        </g>
+      </g>
+      <g
+         id="matplotlib.axis_2">
+        <g
+           id="ytick_1">
+          <g
+             id="line2d_2">
+            <defs
+               id="defs9">
+              <path
+                 id="m0915b77e0d"
+                 d="M 0,0 H -5"
+                 style="stroke:#2e3440;stroke-width:1.5" />
+            </defs>
+            <g
+               id="g9">
+              <use
+                 xlink:href="#m0915b77e0d"
+                 x="119.88"
+                 y="103.32"
+                 style="fill:#2e3440;stroke:#2e3440;stroke-width:1.5"
+                 id="use9" />
+            </g>
+          </g>
+          <g
+             id="text_2">
+            <text
+               style="font-size:22px;font-family:'Courier New', 'DejaVu Sans Mono', Menlo, monospace;text-anchor:end;fill:#2e3440"
+               x="111.38"
+               y="110.06094"
+               id="text10"><tspan
+                 style="font-weight:bold"
+                 id="tspan65">EN</tspan></text>
+          </g>
+        </g>
+        <g
+           id="ytick_2">
+          <g
+             id="line2d_3">
+            <g
+               id="g10">
+              <use
+                 xlink:href="#m0915b77e0d"
+                 x="119.88"
+                 y="181.08"
+                 style="fill:#2e3440;stroke:#2e3440;stroke-width:1.5"
+                 id="use10" />
+            </g>
+          </g>
+          <g
+             id="text_3">
+            <text
+               style="font-size:22px;font-family:'Courier New', 'DejaVu Sans Mono', Menlo, monospace;text-anchor:end;fill:#2e3440"
+               x="111.38"
+               y="187.82094"
+               id="text11"><tspan
+                 style="font-weight:bold"
+                 id="tspan66">L2-LR</tspan></text>
+          </g>
+        </g>
+        <g
+           id="ytick_3">
+          <g
+             id="line2d_4">
+            <g
+               id="g11">
+              <use
+                 xlink:href="#m0915b77e0d"
+                 x="119.88"
+                 y="258.84"
+                 style="fill:#2e3440;stroke:#2e3440;stroke-width:1.5"
+                 id="use11" />
+            </g>
+          </g>
+          <g
+             id="text_4">
+            <text
+               style="font-size:22px;font-family:'Courier New', 'DejaVu Sans Mono', Menlo, monospace;text-anchor:end;fill:#2e3440"
+               x="111.38"
+               y="265.58093"
+               id="text12"><tspan
+                 style="font-weight:bold"
+                 id="tspan67">XGB</tspan></text>
+          </g>
+        </g>
+        <g
+           id="ytick_4">
+          <g
+             id="line2d_5">
+            <g
+               id="g12">
+              <use
+                 xlink:href="#m0915b77e0d"
+                 x="119.88"
+                 y="336.60001"
+                 style="fill:#2e3440;stroke:#2e3440;stroke-width:1.5"
+                 id="use12" />
+            </g>
+          </g>
+          <g
+             id="text_5">
+            <text
+               style="font-size:22px;font-family:'Courier New', 'DejaVu Sans Mono', Menlo, monospace;text-anchor:end;fill:#2e3440"
+               x="111.38"
+               y="343.34094"
+               id="text13"><tspan
+                 style="font-weight:bold"
+                 id="tspan68">LGBM</tspan></text>
+          </g>
+        </g>
+        <g
+           id="ytick_5">
+          <g
+             id="line2d_6">
+            <g
+               id="g13">
+              <use
+                 xlink:href="#m0915b77e0d"
+                 x="119.88"
+                 y="414.35999"
+                 style="fill:#2e3440;stroke:#2e3440;stroke-width:1.5"
+                 id="use13" />
+            </g>
+          </g>
+          <g
+             id="text_6">
+            <text
+               style="font-size:22px;font-family:'Courier New', 'DejaVu Sans Mono', Menlo, monospace;text-anchor:end;fill:#2e3440"
+               x="111.38"
+               y="421.10095"
+               id="text14"><tspan
+                 style="font-weight:bold"
+                 id="tspan69">RF</tspan></text>
+          </g>
+        </g>
+        <g
+           id="ytick_6">
+          <g
+             id="line2d_7">
+            <g
+               id="g14">
+              <use
+                 xlink:href="#m0915b77e0d"
+                 x="119.88"
+                 y="492.12"
+                 style="fill:#2e3440;stroke:#2e3440;stroke-width:1.5"
+                 id="use14" />
+            </g>
+          </g>
+          <g
+             id="text_7">
+            <text
+               style="font-size:22px;font-family:'Courier New', 'DejaVu Sans Mono', Menlo, monospace;text-anchor:end;fill:#2e3440"
+               x="111.38"
+               y="498.86093"
+               id="text15"><tspan
+                 style="font-weight:bold"
+                 id="tspan70">SVM</tspan></text>
+          </g>
+        </g>
+      </g>
+      <g
+         id="patch_9">
+        <path
+           d="M 119.88,531 V 64.44"
+           style="fill:none;stroke:#4c566a;stroke-width:1.7;stroke-linecap:square;stroke-linejoin:miter"
+           id="path15" />
+      </g>
+      <g
+         id="patch_10">
+        <path
+           d="M 536.04,531 V 64.44"
+           style="fill:none;stroke:#4c566a;stroke-width:1.7;stroke-linecap:square;stroke-linejoin:miter"
+           id="path16" />
+      </g>
+      <g
+         id="patch_11">
+        <path
+           d="M 119.88,531 H 536.04"
+           style="fill:none;stroke:#4c566a;stroke-width:1.7;stroke-linecap:square;stroke-linejoin:miter"
+           id="path17" />
+      </g>
+      <g
+         id="patch_12">
+        <path
+           d="M 119.88,64.44 H 536.04"
+           style="fill:none;stroke:#4c566a;stroke-width:1.7;stroke-linecap:square;stroke-linejoin:miter"
+           id="path18" />
+      </g>
+      <g
+         id="text_8">
+        <text
+           style="font-weight:700;font-size:20px;font-family:'Courier New', 'DejaVu Sans Mono', Menlo, monospace;fill:#ffffff"
+           transform="translate(297.95219,97.872188)"
+           id="text18">0.789</text>
+        <text
+           style="font-weight:700;font-size:20px;font-family:'Courier New', 'DejaVu Sans Mono', Menlo, monospace;fill:#ffffff"
+           transform="translate(249.93969,117.25219)"
+           id="text19">(0.697-0.856)</text>
+      </g>
+      <g
+         id="text_9">
+        <text
+           style="font-weight:700;font-size:20px;font-family:'Courier New', 'DejaVu Sans Mono', Menlo, monospace;fill:#ffffff"
+           transform="translate(297.95219,175.63219)"
+           id="text20">0.789</text>
+        <text
+           style="font-weight:700;font-size:20px;font-family:'Courier New', 'DejaVu Sans Mono', Menlo, monospace;fill:#ffffff"
+           transform="translate(249.93969,195.01219)"
+           id="text21">(0.696-0.856)</text>
+      </g>
+      <g
+         id="text_10">
+        <text
+           style="font-weight:700;font-size:20px;font-family:'Courier New', 'DejaVu Sans Mono', Menlo, monospace;fill:#ffffff"
+           transform="translate(297.95219,253.39219)"
+           id="text22">0.766</text>
+        <text
+           style="font-weight:700;font-size:20px;font-family:'Courier New', 'DejaVu Sans Mono', Menlo, monospace;fill:#ffffff"
+           transform="translate(249.93969,272.77219)"
+           id="text23">(0.632-0.874)</text>
+      </g>
+      <g
+         id="text_11">
+        <text
+           style="font-weight:700;font-size:20px;font-family:'Courier New', 'DejaVu Sans Mono', Menlo, monospace;fill:#ffffff"
+           transform="translate(297.95219,331.15219)"
+           id="text24">0.760</text>
+        <text
+           style="font-weight:700;font-size:20px;font-family:'Courier New', 'DejaVu Sans Mono', Menlo, monospace;fill:#ffffff"
+           transform="translate(249.93969,350.53219)"
+           id="text25">(0.623-0.866)</text>
+      </g>
+      <g
+         id="text_12">
+        <text
+           style="font-weight:700;font-size:20px;font-family:'Courier New', 'DejaVu Sans Mono', Menlo, monospace;fill:#ffffff"
+           transform="translate(297.95219,408.91219)"
+           id="text26">0.747</text>
+        <text
+           style="font-weight:700;font-size:20px;font-family:'Courier New', 'DejaVu Sans Mono', Menlo, monospace;fill:#ffffff"
+           transform="translate(249.93969,428.29219)"
+           id="text27">(0.600-0.863)</text>
+      </g>
+      <g
+         id="text_13">
+        <text
+           style="font-weight:700;font-size:20px;font-family:'Courier New', 'DejaVu Sans Mono', Menlo, monospace;fill:#ffffff"
+           transform="translate(297.95219,486.67219)"
+           id="text28">0.717</text>
+        <text
+           style="font-weight:700;font-size:20px;font-family:'Courier New', 'DejaVu Sans Mono', Menlo, monospace;fill:#ffffff"
+           transform="translate(249.93969,506.05219)"
+           id="text29">(0.559-0.822)</text>
+      </g>
+      <g
+         id="text_14">
+        <text
+           style="font-weight:700;font-size:23px;font-family:'Courier New', 'DejaVu Sans Mono', Menlo, monospace;text-anchor:middle;fill:#2e3440"
+           x="327.95999"
+           y="46.439999"
+           id="text30">Bootstrap .632+ AUC</text>
+      </g>
+    </g>
+    <g
+       id="axes_2"
+       transform="translate(-39)">
+      <g
+         id="patch_13">
+        <path
+           d="m 560.52,531 h 22.032 V 64.44 H 560.52 Z"
+           style="fill:#ffffff"
+           id="path30" />
+      </g>
+      <image
+         xlink:href="data:image/png;base64, iVBORw0KGgoAAAANSUhEUgAAAB4AAAKICAYAAABnkErVAAAC5klEQVR4nO2bwQ3CUAzFCvr7T4rEhXNhChwptheIQE7y0sLj9f58rwGeE0VHC5/vyBc9+omvmY8slOtOLgihXE0uiuTCmJRrBqFc95BdtdP+wi0JDJ/VyYUhlOseKqyUS9bHxVsMo1y2Wd2SwPC1U0sCI7kwkgtDKJdxLc4UFsrVUx8Kn9UtCQxhAtG9aUsuDN+sLoFgJBfGuZMLQiiXLt76gkB9jOELAv14f39hn9W+ydU+xvBlrvoYw3ctJheGLwgkF4YvCPTeCSO5MHzx1jerSyAYyYXh+5ViSwKjBIKRXBjJhdFa3F/YF/Z87dSSwEguDN+S8M3qnvpgJBeGT66sxvC9aSveYvjaqSWBkVwYQrn68T6FUK4mF8UZcqt2EhQ2ytW1CGGUq8kF4ZOrsIdxrpYEhPCRYnJRNLkwjHINFS5z7S/sO1OTC8N3piYXRpkLwyjXUGHhV62z2je5kgujyYXhC3u+a7HCGMmF0eTC8MnlK1ygxzAG+uSCOJfueXVyUfgmV1ZXeF9h3yXhuxaTq8L7CvvWYpkLwyiX7VpMLowmF4ZPrgpjFOgxfGdqclX4byQXhnFyDRVWyiXr4wI9hlGuocLJhdHk2l9Ymblk7ZRcGF2LGD65CnsYvsxV2MNILowmF4ZRLuHkmilslMt2piYXhu9MTS6MJheGUS7b5KowRnJhdJhjGOWy7WNf5koujP7hheFLIL52qo8xkgvDl0B66oNhXItDhYVydZhTCJdECYTCtyQqjOGTqwSC4UsgrUUMYebqMKcQyqULAi0JDN8T+uTaX1i4JEogFL593GGOYTzMbbO6BILha6eWBIYvCCQXRpMLQ7gWy1wUvj72zeoSyP7CvgdsLQkMYQLpvROFUK7WIoVvSfiCQHJh+GZ1hzlGhzlGCaTCfyO5MHz72Je5SiAYJRAM35LoMMfwLQlfEOjVAEZyYRjXoq2d6mMMXxBILgzffdxhvr+wL4FUGMMn1w/c2tr2x3WJXgAAAABJRU5ErkJggg=="
+         id="image6fea042a18"
+         transform="matrix(1,0,0,-1,0,466.56)"
+         x="560.88"
+         y="-64.080002"
+         width="21.6"
+         height="466.56" />
+      <g
+         id="matplotlib.axis_3" />
+      <g
+         id="matplotlib.axis_4">
+        <g
+           id="ytick_7">
+          <g
+             id="line2d_8">
+            <defs
+               id="defs30">
+              <path
+                 id="m7e5edc0f4d"
+                 d="M 0,0 H 5"
+                 style="stroke:#2e3440;stroke-width:1.3" />
+            </defs>
+            <g
+               id="g30">
+              <use
+                 xlink:href="#m7e5edc0f4d"
+                 x="582.552"
+                 y="531"
+                 style="fill:#2e3440;stroke:#2e3440;stroke-width:1.3"
+                 id="use30" />
+            </g>
+          </g>
+          <g
+             id="text_15">
+            <text
+               style="font-size:17px;font-family:'Courier New', 'DejaVu Sans Mono', Menlo, monospace;text-anchor:start;fill:#2e3440"
+               x="591.052"
+               y="536.20892"
+               id="text31">0.55</text>
+          </g>
+        </g>
+        <g
+           id="ytick_8">
+          <g
+             id="line2d_9">
+            <g
+               id="g31">
+              <use
+                 xlink:href="#m7e5edc0f4d"
+                 x="582.552"
+                 y="453.23999"
+                 style="fill:#2e3440;stroke:#2e3440;stroke-width:1.3"
+                 id="use31" />
+            </g>
+          </g>
+          <g
+             id="text_16">
+            <text
+               style="font-size:17px;font-family:'Courier New', 'DejaVu Sans Mono', Menlo, monospace;text-anchor:start;fill:#2e3440"
+               x="591.052"
+               y="458.44891"
+               id="text32">0.60</text>
+          </g>
+        </g>
+        <g
+           id="ytick_9">
+          <g
+             id="line2d_10">
+            <g
+               id="g32">
+              <use
+                 xlink:href="#m7e5edc0f4d"
+                 x="582.552"
+                 y="375.48001"
+                 style="fill:#2e3440;stroke:#2e3440;stroke-width:1.3"
+                 id="use32" />
+            </g>
+          </g>
+          <g
+             id="text_17">
+            <text
+               style="font-size:17px;font-family:'Courier New', 'DejaVu Sans Mono', Menlo, monospace;text-anchor:start;fill:#2e3440"
+               x="591.052"
+               y="380.6889"
+               id="text33">0.65</text>
+          </g>
+        </g>
+        <g
+           id="ytick_10">
+          <g
+             id="line2d_11">
+            <g
+               id="g33">
+              <use
+                 xlink:href="#m7e5edc0f4d"
+                 x="582.552"
+                 y="297.72"
+                 style="fill:#2e3440;stroke:#2e3440;stroke-width:1.3"
+                 id="use33" />
+            </g>
+          </g>
+          <g
+             id="text_18">
+            <text
+               style="font-size:17px;font-family:'Courier New', 'DejaVu Sans Mono', Menlo, monospace;text-anchor:start;fill:#2e3440"
+               x="591.052"
+               y="302.92889"
+               id="text34">0.70</text>
+          </g>
+        </g>
+        <g
+           id="ytick_11">
+          <g
+             id="line2d_12">
+            <g
+               id="g34">
+              <use
+                 xlink:href="#m7e5edc0f4d"
+                 x="582.552"
+                 y="219.96001"
+                 style="fill:#2e3440;stroke:#2e3440;stroke-width:1.3"
+                 id="use34" />
+            </g>
+          </g>
+          <g
+             id="text_19">
+            <text
+               style="font-size:17px;font-family:'Courier New', 'DejaVu Sans Mono', Menlo, monospace;text-anchor:start;fill:#2e3440"
+               x="591.052"
+               y="225.1689"
+               id="text35">0.75</text>
+          </g>
+        </g>
+        <g
+           id="ytick_12">
+          <g
+             id="line2d_13">
+            <g
+               id="g35">
+              <use
+                 xlink:href="#m7e5edc0f4d"
+                 x="582.552"
+                 y="142.2"
+                 style="fill:#2e3440;stroke:#2e3440;stroke-width:1.3"
+                 id="use35" />
+            </g>
+          </g>
+          <g
+             id="text_20">
+            <text
+               style="font-size:17px;font-family:'Courier New', 'DejaVu Sans Mono', Menlo, monospace;text-anchor:start;fill:#2e3440"
+               x="591.052"
+               y="147.40891"
+               id="text36">0.80</text>
+          </g>
+        </g>
+        <g
+           id="ytick_13">
+          <g
+             id="line2d_14">
+            <g
+               id="g36">
+              <use
+                 xlink:href="#m7e5edc0f4d"
+                 x="582.552"
+                 y="64.440002"
+                 style="fill:#2e3440;stroke:#2e3440;stroke-width:1.3"
+                 id="use36" />
+            </g>
+          </g>
+          <g
+             id="text_21">
+            <text
+               style="font-size:17px;font-family:'Courier New', 'DejaVu Sans Mono', Menlo, monospace;text-anchor:start;fill:#2e3440"
+               x="591.052"
+               y="69.648903"
+               id="text37">0.85</text>
+          </g>
+        </g>
+      </g>
+      <g
+         id="LineCollection_1" />
+      <g
+         id="patch_14">
+        <path
+           d="m 560.52,531 h 11.016 11.016 V 64.44 H 571.536 560.52 Z"
+           style="fill:none;stroke:#4c566a;stroke-width:1.4;stroke-linecap:square;stroke-linejoin:miter"
+           id="path37" />
+      </g>
+      <g
+         id="text_22">
+        <text
+           style="font-size:19px;font-family:'Courier New', 'DejaVu Sans Mono', Menlo, monospace;text-anchor:middle;fill:#2e3440"
+           x="571.53601"
+           y="50.439999"
+           id="text38">AUC</text>
+      </g>
+    </g>
+    <g
+       id="axes_3"
+       transform="translate(12)">
+      <g
+         id="patch_15">
+        <path
+           d="M 711.48706,514.8 H 1156.1929 V 61.2 H 711.48706 Z"
+           style="fill:#ffffff"
+           id="path38" />
+      </g>
+      <g
+         id="matplotlib.axis_5">
+        <g
+           id="xtick_2">
+          <g
+             id="line2d_15">
+            <path
+               d="M 711.48706,514.8 V 61.2"
+               clip-path="url(#pf5f1079b0f)"
+               style="fill:none;stroke:#d8dee9;stroke-linecap:square;stroke-opacity:0.58"
+               id="path39" />
+          </g>
+          <g
+             id="line2d_16">
+            <g
+               id="g39">
+              <use
+                 xlink:href="#m3aaeb05dce"
+                 x="711.48706"
+                 y="514.79999"
+                 style="fill:#2e3440;stroke:#2e3440;stroke-width:1.5"
+                 id="use39" />
+            </g>
+          </g>
+          <g
+             id="text_23">
+            <text
+               style="font-size:18px;font-family:'Courier New', 'DejaVu Sans Mono', Menlo, monospace;text-anchor:middle;fill:#2e3440"
+               x="711.48706"
+               y="534.33063"
+               id="text39">0.0</text>
+          </g>
+        </g>
+        <g
+           id="xtick_3">
+          <g
+             id="line2d_17">
+            <path
+               d="M 800.42823,514.8 V 61.2"
+               clip-path="url(#pf5f1079b0f)"
+               style="fill:none;stroke:#d8dee9;stroke-linecap:square;stroke-opacity:0.58"
+               id="path40" />
+          </g>
+          <g
+             id="line2d_18">
+            <g
+               id="g40">
+              <use
+                 xlink:href="#m3aaeb05dce"
+                 x="800.42822"
+                 y="514.79999"
+                 style="fill:#2e3440;stroke:#2e3440;stroke-width:1.5"
+                 id="use40" />
+            </g>
+          </g>
+          <g
+             id="text_24">
+            <text
+               style="font-size:18px;font-family:'Courier New', 'DejaVu Sans Mono', Menlo, monospace;text-anchor:middle;fill:#2e3440"
+               x="800.42822"
+               y="534.33063"
+               id="text40">0.2</text>
+          </g>
+        </g>
+        <g
+           id="xtick_4">
+          <g
+             id="line2d_19">
+            <path
+               d="M 889.36941,514.8 V 61.2"
+               clip-path="url(#pf5f1079b0f)"
+               style="fill:none;stroke:#d8dee9;stroke-linecap:square;stroke-opacity:0.58"
+               id="path41" />
+          </g>
+          <g
+             id="line2d_20">
+            <g
+               id="g41">
+              <use
+                 xlink:href="#m3aaeb05dce"
+                 x="889.36938"
+                 y="514.79999"
+                 style="fill:#2e3440;stroke:#2e3440;stroke-width:1.5"
+                 id="use41" />
+            </g>
+          </g>
+          <g
+             id="text_25">
+            <text
+               style="font-size:18px;font-family:'Courier New', 'DejaVu Sans Mono', Menlo, monospace;text-anchor:middle;fill:#2e3440"
+               x="889.36938"
+               y="534.33063"
+               id="text41">0.4</text>
+          </g>
+        </g>
+        <g
+           id="xtick_5">
+          <g
+             id="line2d_21">
+            <path
+               d="M 978.31059,514.8 V 61.2"
+               clip-path="url(#pf5f1079b0f)"
+               style="fill:none;stroke:#d8dee9;stroke-linecap:square;stroke-opacity:0.58"
+               id="path42" />
+          </g>
+          <g
+             id="line2d_22">
+            <g
+               id="g42">
+              <use
+                 xlink:href="#m3aaeb05dce"
+                 x="978.31061"
+                 y="514.79999"
+                 style="fill:#2e3440;stroke:#2e3440;stroke-width:1.5"
+                 id="use42" />
+            </g>
+          </g>
+          <g
+             id="text_26">
+            <text
+               style="font-size:18px;font-family:'Courier New', 'DejaVu Sans Mono', Menlo, monospace;text-anchor:middle;fill:#2e3440"
+               x="978.31061"
+               y="534.33063"
+               id="text42">0.6</text>
+          </g>
+        </g>
+        <g
+           id="xtick_6">
+          <g
+             id="line2d_23">
+            <path
+               d="M 1067.2518,514.8 V 61.2"
+               clip-path="url(#pf5f1079b0f)"
+               style="fill:none;stroke:#d8dee9;stroke-linecap:square;stroke-opacity:0.58"
+               id="path43" />
+          </g>
+          <g
+             id="line2d_24">
+            <g
+               id="g43">
+              <use
+                 xlink:href="#m3aaeb05dce"
+                 x="1067.2517"
+                 y="514.79999"
+                 style="fill:#2e3440;stroke:#2e3440;stroke-width:1.5"
+                 id="use43" />
+            </g>
+          </g>
+          <g
+             id="text_27">
+            <text
+               style="font-size:18px;font-family:'Courier New', 'DejaVu Sans Mono', Menlo, monospace;text-anchor:middle;fill:#2e3440"
+               x="1067.2517"
+               y="534.33063"
+               id="text43">0.8</text>
+          </g>
+        </g>
+        <g
+           id="xtick_7">
+          <g
+             id="line2d_25">
+            <path
+               d="M 1156.1929,514.8 V 61.2"
+               clip-path="url(#pf5f1079b0f)"
+               style="fill:none;stroke:#d8dee9;stroke-linecap:square;stroke-opacity:0.58"
+               id="path44" />
+          </g>
+          <g
+             id="line2d_26">
+            <g
+               id="g44">
+              <use
+                 xlink:href="#m3aaeb05dce"
+                 x="1156.193"
+                 y="514.79999"
+                 style="fill:#2e3440;stroke:#2e3440;stroke-width:1.5"
+                 id="use44" />
+            </g>
+          </g>
+          <g
+             id="text_28">
+            <text
+               style="font-size:18px;font-family:'Courier New', 'DejaVu Sans Mono', Menlo, monospace;text-anchor:middle;fill:#2e3440"
+               x="1156.193"
+               y="534.33063"
+               id="text44">1.0</text>
+          </g>
+        </g>
+        <g
+           id="text_29">
+          <text
+             style="font-size:22px;font-family:'Courier New', 'DejaVu Sans Mono', Menlo, monospace;text-anchor:middle;fill:#2e3440"
+             x="933.84003"
+             y="562.65466"
+             id="text45">1 - specificity</text>
+        </g>
+      </g>
+      <g
+         id="matplotlib.axis_6">
+        <g
+           id="ytick_14">
+          <g
+             id="line2d_27">
+            <path
+               d="M 711.48706,514.8 H 1156.1929"
+               clip-path="url(#pf5f1079b0f)"
+               style="fill:none;stroke:#d8dee9;stroke-linecap:square;stroke-opacity:0.58"
+               id="path45" />
+          </g>
+          <g
+             id="line2d_28">
+            <g
+               id="g45">
+              <use
+                 xlink:href="#m0915b77e0d"
+                 x="711.48706"
+                 y="514.79999"
+                 style="fill:#2e3440;stroke:#2e3440;stroke-width:1.5"
+                 id="use45" />
+            </g>
+          </g>
+          <g
+             id="text_30">
+            <text
+               style="font-size:22px;font-family:'Courier New', 'DejaVu Sans Mono', Menlo, monospace;text-anchor:end;fill:#2e3440"
+               x="702.98706"
+               y="521.54095"
+               id="text46">0.0</text>
+          </g>
+        </g>
+        <g
+           id="ytick_15">
+          <g
+             id="line2d_29">
+            <path
+               d="M 711.48706,425.85882 H 1156.1929"
+               clip-path="url(#pf5f1079b0f)"
+               style="fill:none;stroke:#d8dee9;stroke-linecap:square;stroke-opacity:0.58"
+               id="path46" />
+          </g>
+          <g
+             id="line2d_30">
+            <g
+               id="g46">
+              <use
+                 xlink:href="#m0915b77e0d"
+                 x="711.48706"
+                 y="425.85883"
+                 style="fill:#2e3440;stroke:#2e3440;stroke-width:1.5"
+                 id="use46" />
+            </g>
+          </g>
+          <g
+             id="text_31">
+            <text
+               style="font-size:22px;font-family:'Courier New', 'DejaVu Sans Mono', Menlo, monospace;text-anchor:end;fill:#2e3440"
+               x="702.98706"
+               y="432.59976"
+               id="text47">0.2</text>
+          </g>
+        </g>
+        <g
+           id="ytick_16">
+          <g
+             id="line2d_31">
+            <path
+               d="M 711.48706,336.91765 H 1156.1929"
+               clip-path="url(#pf5f1079b0f)"
+               style="fill:none;stroke:#d8dee9;stroke-linecap:square;stroke-opacity:0.58"
+               id="path47" />
+          </g>
+          <g
+             id="line2d_32">
+            <g
+               id="g47">
+              <use
+                 xlink:href="#m0915b77e0d"
+                 x="711.48706"
+                 y="336.91763"
+                 style="fill:#2e3440;stroke:#2e3440;stroke-width:1.5"
+                 id="use47" />
+            </g>
+          </g>
+          <g
+             id="text_32">
+            <text
+               style="font-size:22px;font-family:'Courier New', 'DejaVu Sans Mono', Menlo, monospace;text-anchor:end;fill:#2e3440"
+               x="702.98706"
+               y="343.6586"
+               id="text48">0.4</text>
+          </g>
+        </g>
+        <g
+           id="ytick_17">
+          <g
+             id="line2d_33">
+            <path
+               d="M 711.48706,247.97647 H 1156.1929"
+               clip-path="url(#pf5f1079b0f)"
+               style="fill:none;stroke:#d8dee9;stroke-linecap:square;stroke-opacity:0.58"
+               id="path48" />
+          </g>
+          <g
+             id="line2d_34">
+            <g
+               id="g48">
+              <use
+                 xlink:href="#m0915b77e0d"
+                 x="711.48706"
+                 y="247.97647"
+                 style="fill:#2e3440;stroke:#2e3440;stroke-width:1.5"
+                 id="use48" />
+            </g>
+          </g>
+          <g
+             id="text_33">
+            <text
+               style="font-size:22px;font-family:'Courier New', 'DejaVu Sans Mono', Menlo, monospace;text-anchor:end;fill:#2e3440"
+               x="702.98706"
+               y="254.71741"
+               id="text49">0.6</text>
+          </g>
+        </g>
+        <g
+           id="ytick_18">
+          <g
+             id="line2d_35">
+            <path
+               d="M 711.48706,159.03529 H 1156.1929"
+               clip-path="url(#pf5f1079b0f)"
+               style="fill:none;stroke:#d8dee9;stroke-linecap:square;stroke-opacity:0.58"
+               id="path49" />
+          </g>
+          <g
+             id="line2d_36">
+            <g
+               id="g49">
+              <use
+                 xlink:href="#m0915b77e0d"
+                 x="711.48706"
+                 y="159.03529"
+                 style="fill:#2e3440;stroke:#2e3440;stroke-width:1.5"
+                 id="use49" />
+            </g>
+          </g>
+          <g
+             id="text_34">
+            <text
+               style="font-size:22px;font-family:'Courier New', 'DejaVu Sans Mono', Menlo, monospace;text-anchor:end;fill:#2e3440"
+               x="702.98706"
+               y="165.77623"
+               id="text50">0.8</text>
+          </g>
+        </g>
+        <g
+           id="ytick_19">
+          <g
+             id="line2d_37">
+            <path
+               d="M 711.48706,70.094118 H 1156.1929"
+               clip-path="url(#pf5f1079b0f)"
+               style="fill:none;stroke:#d8dee9;stroke-linecap:square;stroke-opacity:0.58"
+               id="path50" />
+          </g>
+          <g
+             id="line2d_38">
+            <g
+               id="g50">
+              <use
+                 xlink:href="#m0915b77e0d"
+                 x="711.48706"
+                 y="70.094116"
+                 style="fill:#2e3440;stroke:#2e3440;stroke-width:1.5"
+                 id="use50" />
+            </g>
+          </g>
+          <g
+             id="text_35">
+            <text
+               style="font-size:22px;font-family:'Courier New', 'DejaVu Sans Mono', Menlo, monospace;text-anchor:end;fill:#2e3440"
+               x="702.98706"
+               y="76.835052"
+               id="text51">1.0</text>
+          </g>
+        </g>
+        <g
+           id="text_36">
+          <text
+             style="font-size:22px;font-family:'Courier New', 'DejaVu Sans Mono', Menlo, monospace;text-anchor:middle;fill:#2e3440"
+             x="660.64734"
+             y="288"
+             transform="rotate(-90,660.64732,288)"
+             id="text52">Sensitivity</text>
+        </g>
+      </g>
+      <g
+         id="line2d_39">
+        <path
+           d="M 711.48706,514.8 1156.1929,70.094118"
+           clip-path="url(#pf5f1079b0f)"
+           style="fill:none;stroke:#4c566a;stroke-width:2;stroke-dasharray:7.4, 3.2;stroke-dashoffset:0;stroke-opacity:0.8"
+           id="path52" />
+      </g>
+      <g
+         id="line2d_40">
+        <path
+           d="m 711.48706,514.8 v 0 -12.35294 0 -24.70588 h 2.79689 v 0 0 -49.41177 h 5.59379 v 0 0 -24.70588 h 5.59378 v 0 0 -12.35294 h 2.79689 v 0 0 -61.76471 h 2.79689 v 0 0 V 304.8 h 2.7969 v 0 0 -12.35294 h 8.39068 v 0 0 -12.35294 h 5.59378 v 0 0 -12.35294 h 2.79689 v 0 0 -12.35295 h 19.57825 v 0 0 -12.35294 h 5.59378 v 0 0 -12.35294 h 25.17203 v 0 0 -12.35294 h 19.57825 v 0 0 -12.35294 h 13.98446 v 0 0 -12.35294 h 16.78136 v 0 0 -24.70588 h 30.76581 v 0 0 -24.70588 h 8.39068 v 0 0 -12.35295 h 13.98446 v 0 0 -12.35294 h 19.57825 v 0 0 -12.35294 h 27.96892 v 0 0 V 94.8 h 44.75028 v 0 0 -12.352941 h 39.15652 v 0 0 -12.352941 h 120.2663 v 0"
+           clip-path="url(#pf5f1079b0f)"
+           style="fill:none;stroke:#5e81ac;stroke-width:4.2;stroke-linecap:square"
+           id="path53" />
+      </g>
+      <g
+         id="line2d_41">
+        <path
+           d="m 711.48706,514.8 0.22235,-60.54959 h 2.44588 l 0.22236,-8.53711 h 2.66823 l 0.22235,-6.307 0.66706,-0.11008 0.22236,-0.17992 0.22235,-0.68479 0.22235,-1.36656 0.22236,-2.55082 0.4447,-6.08054 0.22235,-3.86284 0.22236,-1.39359 0.22235,-7.80541 0.44471,-1.51617 0.66705,-0.27789 0.66706,-0.0438 h 0.88942 l 0.22235,-4.14445 1.77882,-0.10579 0.44471,-0.40708 0.22235,-0.35075 0.22235,-4.95099 0.22236,-0.66102 1.11176,-6.99894 h 0.22236 l 0.66705,-4.75758 h 0.22236 l 0.22235,-1.32872 0.22235,-4.56649 0.22236,-0.67738 h 0.22235 l 0.4447,-0.52961 h 0.22236 L 729.72,383.8731 h 0.22235 l 0.44471,-0.15116 0.44471,-0.10509 h 0.22235 l 0.22235,-3.47629 0.44471,-0.2478 h 0.22235 l 0.22235,-0.22816 0.22235,-0.60001 h 0.22236 l 0.4447,-1.85788 h 0.22236 l 0.4447,-2.36452 0.44471,-4.59274 h 0.22235 l 0.22235,-1.63984 h 0.22236 l 0.22235,-1.45165 h 0.22235 l 0.22236,-1.44693 h 0.22235 l 0.22235,-1.20474 h 0.22235 l 0.22236,-0.84699 0.22235,-0.009 0.22235,-3.08422 h 0.22236 L 737.28,360.1389 h 0.22235 l 0.22236,-0.52676 h 0.22235 l 0.22235,-0.25986 h 0.22235 l 0.66706,-0.43416 0.22236,-0.55918 0.22235,-2.4818 0.22235,-0.70553 0.44471,-0.0388 0.22235,-0.83937 0.22235,-0.0663 0.22236,-0.92855 H 741.06 l 0.22235,-1.48835 h 0.22236 l 0.22235,-1.6966 h 0.22235 l 0.22236,-1.44388 0.22235,-2.19216 h 0.22235 l 0.22235,-0.86847 h 0.22236 l 0.22235,-1.15143 h 0.44471 l 0.22235,-1.04816 0.4447,-0.072 0.22236,-0.95519 0.22235,-0.12621 0.22235,-2.78953 0.22236,-0.15612 h 0.22235 l 0.22235,-0.53334 h 0.44471 l 0.22235,-0.67729 h 0.22235 l 0.22236,-0.55618 0.22235,-0.24419 h 0.22235 l 0.22236,-0.80627 0.22235,-0.0293 0.22235,-2.89349 h 0.44471 l 0.22235,-1.40719 h 0.44471 l 0.22235,-1.28572 0.4447,-0.0545 0.22236,-1.31248 0.4447,-0.057 0.44471,-3.12505 h 0.22235 l 0.22235,-1.24405 0.44471,-0.066 0.22235,-0.87379 H 752.4 l 0.22235,-0.26817 0.22236,-0.66746 h 0.22235 l 0.22235,-0.47642 0.22235,-2.23779 h 0.22236 l 0.22235,-0.42296 h 0.22235 l 0.22236,-0.30301 0.22235,-0.63453 0.4447,-0.0124 0.22236,-0.85383 0.4447,-0.009 0.22236,-1.0247 H 756.18 l 0.22235,-1.57662 0.22236,-0.0535 0.22235,-0.88841 0.44471,-0.1388 0.22235,-1.12155 0.66706,-0.064 0.22235,-0.93685 h 0.22235 l 0.22236,-0.15147 0.4447,-2.49773 0.22235,-0.20177 0.44471,-0.0173 0.22235,-0.80707 h 0.66706 l 0.22236,-0.98654 h 0.4447 l 0.22235,-0.78422 0.22236,-1.88517 h 0.4447 l 0.22236,-0.76117 0.22235,-0.31286 0.4447,-0.0149 0.22236,-0.74235 H 763.74 l 0.22235,-0.33723 h 0.22236 l 0.4447,-2.2588 0.44471,-0.118 0.22235,-0.95601 0.22235,-0.12869 h 0.22236 l 0.22235,-0.11651 0.22235,-0.731 0.44471,-0.1068 h 0.22235 l 0.22235,-1.0446 h 0.22236 L 767.52,296.3708 h 0.22235 l 0.22236,-0.42338 0.22235,-0.67208 h 0.66706 l 0.4447,-0.96621 0.44471,-0.0626 0.22235,-0.64125 h 0.22235 l 0.22236,-1.61553 h 0.22235 l 0.22235,-0.90997 0.44471,-0.0511 0.22235,-0.27568 0.22236,-0.0146 0.22235,-0.69686 0.22235,-0.14834 h 0.22235 l 0.22236,-0.13898 0.22235,-0.70044 0.22235,-1.34826 0.44471,-0.0124 0.22235,-0.15693 0.44471,-1.12025 h 0.66706 l 0.22235,-1.19993 h 0.66706 l 0.44471,-2.16537 0.4447,-0.0955 0.44471,-0.0374 0.4447,-1.01119 0.44471,-0.0128 0.22235,-0.73012 h 0.22235 l 0.22236,-1.39886 0.66706,-0.0984 0.22235,-0.7461 h 0.22235 l 0.22235,-0.35312 h 0.44471 l 0.22235,-0.8178 h 0.22236 l 0.4447,-0.31138 0.44471,-1.68047 h 0.22235 l 0.22235,-0.38076 0.66706,-0.13011 0.44471,-0.89087 0.88941,-0.12572 0.22235,-2.10737 1.11177,-0.0109 0.22235,-1.05731 h 0.88941 l 0.22236,-0.90275 0.22235,-1.37969 0.66706,-0.01 0.22235,-0.17262 0.22235,-0.7184 h 0.22236 l 0.4447,-0.29813 h 0.22236 l 0.4447,-0.92665 h 0.22235 l 0.22236,-1.05618 H 790.2 l 0.22235,-0.47517 h 0.44471 l 0.22235,-0.58066 0.44471,-0.16416 0.22235,-0.4125 h 0.44471 l 0.22235,-0.57645 0.22235,-0.89596 h 0.22236 l 0.22235,-0.68229 0.66706,-0.21647 0.22235,-0.34959 h 0.22235 l 0.22236,-0.64201 h 0.22235 l 0.22235,-0.24921 h 0.44471 l 0.22235,-1.02833 h 0.22235 l 0.44471,-0.93397 0.66706,-0.0434 0.22235,-0.23311 0.22235,-0.53638 h 0.22236 l 0.22235,-0.43669 0.22235,-0.0495 0.22236,-0.84949 0.4447,-0.0661 0.44471,-1.26678 1.11176,-0.0134 0.22235,-1.35372 h 0.44471 l 0.22235,-0.9167 0.66706,-0.0118 0.22236,-0.82377 0.22235,-0.3502 1.11176,-0.33414 0.22236,-0.51236 h 0.22235 l 0.22235,-1.05357 0.66706,-0.0615 0.22235,-0.29387 h 0.22236 l 0.22235,-0.50918 0.88941,-0.10861 0.22236,-0.42663 0.4447,-1.38549 h 0.22235 l 0.66706,-0.24517 0.22236,-0.64803 h 0.4447 l 0.44471,-0.73721 0.4447,-0.0809 0.22236,-1.43809 0.66706,-0.048 0.22235,-0.64958 0.66706,-0.025 0.22235,-0.67403 h 0.4447 l 0.22236,-0.25248 0.22235,-1.1498 0.66706,-0.0747 0.22235,-0.54833 0.44471,-0.0105 0.22235,-0.38128 h 0.22235 l 0.22236,-0.38097 h 0.4447 l 0.22236,-0.41414 0.4447,-1.40188 h 0.22235 l 0.22236,-0.18874 0.66706,-0.10409 0.22235,-0.30017 h 0.22235 l 0.22236,-0.50624 h 0.22235 l 0.22235,-0.22463 0.22235,-0.86767 0.66706,-0.0885 0.22236,-0.3967 0.22235,-0.66473 0.22235,-0.3018 0.44471,-0.0791 0.88941,-0.0394 0.44471,-1.91893 0.4447,-0.0879 h 1.11177 l 0.22235,-1.31045 h 0.66706 l 0.22235,-0.88704 H 824.22 l 0.22235,-0.27837 0.44471,-1.07406 h 1.11176 l 0.22236,-1.05104 0.22235,-0.23899 0.4447,-0.99949 0.44471,-0.075 0.44471,-0.0115 0.22235,-0.17093 0.22235,-0.56373 h 0.22236 l 0.22235,-0.47858 h 0.22235 l 0.22235,-1.24298 0.88942,-0.19096 0.22235,-0.59546 h 0.22235 l 0.22235,-0.36611 0.44471,-0.022 0.44471,-0.46063 0.22235,-1.01035 0.22235,-0.0117 0.22236,-0.63298 h 0.4447 l 0.22235,-0.60261 h 0.44471 l 0.22235,-0.44896 0.44471,-0.10358 0.22235,-0.48291 h 0.22235 l 0.22236,-1.01449 h 0.22235 l 0.22235,-0.42801 h 0.22236 l 0.22235,-0.43319 0.66706,-0.17422 0.22235,-0.61656 0.22236,-0.20759 0.66705,-0.0115 0.22236,-1.85952 h 0.88941 l 0.22235,-0.8911 0.88941,-0.0857 0.22236,-0.89221 h 0.22235 l 0.22235,-0.92767 h 0.22236 l 0.4447,-0.86979 0.88941,-0.10663 0.22236,-0.61139 h 0.22235 l 0.66706,-0.45779 0.22235,-1.05708 0.44471,-0.60805 0.4447,-0.0391 0.22235,-0.73544 0.44471,-0.0256 0.22235,-0.49455 h 0.66706 l 0.22235,-1.39266 0.66706,-0.0355 0.22236,-0.28067 0.4447,-0.0119 0.22236,-0.69272 h 0.22235 l 0.22235,-0.41069 h 0.44471 l 0.22235,-0.29457 0.22235,-0.95482 h 0.22236 l 0.22235,-0.64367 h 0.22235 l 0.22235,-0.6535 h 0.22236 l 0.22235,-0.28477 h 0.22235 l 0.22236,-0.18959 0.66706,-0.0956 0.22235,-0.8475 0.22235,-0.39962 h 0.22236 l 0.22235,-0.49731 h 0.22235 l 0.22235,-0.58611 0.22236,-0.21228 0.4447,-0.0966 0.88941,-0.12623 0.44471,-1.9753 h 0.22235 l 0.44471,-0.94238 0.44471,-0.13045 1.11176,-0.0115 0.22235,-0.17373 0.44471,-2.4084 0.22235,-0.34565 h 2.00118 l 0.22235,-3.04453 h 2.00118 l 0.22235,-0.17539 0.66706,-2.76337 1.55647,-0.0603 0.22235,-0.2013 0.66706,-1.38995 0.22235,-0.87031 0.44471,-0.26455 0.44471,-0.0579 0.22235,-0.13867 h 0.22235 l 0.22235,-0.29228 0.22236,-0.58124 h 0.22235 l 0.22235,-0.38717 h 0.22236 l 0.22235,-0.39667 0.22235,-0.83052 0.22236,-0.17367 0.66705,-0.10622 0.22236,-0.21169 H 869.58 l 0.22235,-0.65874 h 0.44471 l 0.22235,-0.53635 h 0.22236 l 0.22235,-1.23823 h 0.22235 l 0.22235,-0.25386 0.44471,-0.0588 0.22235,-0.42157 0.44471,-0.01 0.22235,-0.603 h 0.44471 l 0.22235,-0.51002 h 0.22235 l 0.44471,-1.43721 0.4447,-0.009 0.22236,-0.70243 0.4447,-0.0682 0.22236,-0.58208 0.66705,-0.10319 0.44471,-0.79063 0.22235,-0.9457 H 877.14 l 0.22235,-0.48207 0.66706,-0.0128 0.22235,-0.8663 0.88942,-0.0239 0.22235,-1.53531 h 0.4447 l 0.22236,-0.15201 0.22235,-0.58391 0.44471,-0.0317 0.22235,-0.19919 h 0.22235 l 0.22236,-0.37652 0.4447,-0.0457 0.44471,-1.13952 h 0.22235 l 0.22235,-0.3319 h 0.22236 l 0.22235,-0.58565 h 0.44471 l 0.22235,-0.40379 0.4447,-0.10825 0.22236,-0.36813 H 884.7 l 0.22235,-1.29073 h 0.22236 l 0.22235,-0.19907 0.66706,-0.14002 0.4447,-0.84293 0.44471,-0.11851 0.66706,-0.0234 0.4447,-2.0956 1.11177,-0.0108 0.22235,-1.22229 h 1.11177 l 0.22235,-0.80405 0.4447,-0.74858 0.88942,-0.0368 0.22235,-0.15858 0.44471,-0.93495 0.4447,-0.0736 0.22235,-0.76542 0.22236,-0.0607 0.22235,-0.48862 h 0.22235 l 0.22236,-0.46428 h 0.22235 l 0.88941,-0.39395 0.22235,-0.33025 H 896.04 l 0.22235,-1.07568 h 0.44471 l 0.22235,-0.59627 0.44471,-0.0338 0.22235,-0.41153 h 0.22235 l 0.22236,-0.33415 0.66705,-0.0898 0.22236,-1.35577 0.22235,-0.18352 h 0.44471 l 0.22235,-0.16328 0.22235,-0.47617 0.44471,-0.0772 h 0.22235 l 0.44471,-0.90771 h 0.4447 l 0.22236,-0.69225 h 0.22235 l 0.22235,-0.68738 h 0.66706 l 0.22235,-0.14639 0.22236,-0.68278 0.66706,-0.0258 0.22235,-0.33849 0.22235,-0.98057 0.44471,-0.0221 0.22235,-0.43961 h 0.22235 l 0.22236,-0.3315 h 0.22235 l 0.22235,-0.15735 h 0.44471 l 0.22235,-0.47413 0.44471,-0.12083 0.4447,-0.94116 0.44471,-0.0317 0.66706,-0.51722 h 0.22235 l 0.22235,-0.56978 h 0.66706 l 0.44471,-1.22266 0.4447,-0.0239 0.22236,-0.61838 0.4447,-0.0293 0.22236,-0.37083 h 0.22235 l 0.88941,-0.41443 0.22235,-0.81646 0.22236,-0.14877 h 0.4447 l 0.22235,-0.43752 0.44471,-0.0219 0.22235,-0.35494 H 914.94 l 0.22235,-0.59327 0.44471,-0.0124 0.22235,-0.89354 0.22236,-0.0468 0.22235,-0.17434 h 0.4447 l 0.22236,-0.23605 h 0.22235 l 0.22235,-0.22826 0.44471,-0.0236 0.22235,-0.33851 h 0.22235 l 0.44471,-1.08761 h 0.22235 l 0.22236,-0.42722 h 0.22235 l 0.22235,-0.34431 0.22236,-0.0199 0.4447,-0.20041 0.88941,-0.19895 0.22235,-0.59366 h 0.22236 l 0.22235,-0.26597 h 0.22235 l 0.22236,-0.42319 H 922.5 l 0.44471,-0.94305 h 0.22235 l 0.4447,-0.19807 h 0.22236 l 0.22235,-0.57337 1.33412,-0.2451 0.22235,-0.2994 h 0.22235 l 0.66706,-1.22022 0.22236,-0.18528 0.22235,-0.68413 0.4447,-0.0605 2.00118,-0.0534 0.22235,-0.0931 0.22236,-0.89436 0.22235,-0.27809 0.22235,-0.76429 0.22236,-0.25192 1.11176,-0.0231 h 0.66706 l 0.22235,-0.37608 h 1.11177 l 0.22235,-1.76006 h 1.33412 l 0.22235,-0.42123 1.77882,-0.0152 0.22236,-0.23166 0.66706,-1.54468 0.66705,-0.17527 2.00118,-0.0243 0.22235,-0.46447 0.44471,-0.3905 0.44471,-0.64873 h 0.22235 l 0.4447,-0.36126 1.11177,-0.0949 0.22235,-0.3358 0.44471,-0.0859 0.22235,-0.13542 h 0.22235 l 0.88942,-0.63908 h 0.22235 l 0.22235,-0.18157 0.22236,-0.0124 0.22235,-0.43181 0.88941,-0.0723 0.66706,-0.12999 0.22235,-0.18785 h 0.22235 l 0.22236,-0.26638 H 948.96 l 0.44471,-0.53465 h 0.22235 l 0.22235,-0.23103 h 0.44471 l 0.22235,-0.17058 0.88941,-0.0978 0.44471,-0.0838 0.22235,-0.50591 h 0.44471 l 0.22235,-0.27448 0.44471,-0.0115 0.22235,-0.21078 0.4447,-0.0354 0.22236,-0.26915 0.66706,-0.0666 0.22235,-0.35597 h 0.22235 l 0.22235,-0.1474 0.44471,-0.0117 0.22235,-0.30844 0.66706,-0.0403 0.22236,-0.20862 0.4447,-0.01 0.44471,-0.35808 0.66706,-0.0146 0.22235,-0.34024 h 0.4447 l 0.44471,-0.32557 h 0.44471 l 0.66706,-0.52153 h 0.22235 l 0.22235,-0.30315 h 0.22235 l 0.22236,-0.20879 h 0.4447 l 0.22236,-0.16831 0.88941,-0.0761 0.4447,-0.58342 h 0.66706 l 0.22236,-0.19015 1.33411,-0.22082 0.22236,-0.17718 h 0.4447 l 0.44471,-0.33315 0.66706,-0.043 0.4447,-0.29441 0.66706,-0.0661 0.22235,-0.3877 1.11177,-0.0847 0.22235,-0.14713 h 0.44471 l 0.22235,-0.15369 h 0.44471 l 0.22235,-0.27557 h 0.44471 l 0.22235,-0.21492 1.11176,-0.13281 0.22236,-0.17197 h 0.22235 l 0.66706,-0.34019 0.66706,-0.14198 0.22235,-0.17716 1.11176,-0.0267 0.22236,-0.33447 0.88941,-0.26963 h 0.44471 l 0.22235,-0.3106 h 1.33412 l 0.4447,-0.44916 1.33412,-0.15084 0.44471,-0.20914 0.88941,-0.037 0.22235,-0.35732 0.66706,-0.0851 1.77882,-0.38707 0.44471,-0.32388 h 0.4447 l 0.22236,-0.140025 0.88941,-0.03475 0.22235,-0.153868 0.66706,-0.01073 0.22235,-0.30219 h 0.66706 l 0.22235,-0.191492 0.88942,-0.02394 0.4447,-0.127365 h 0.22236 l 0.4447,-0.291063 0.22235,-0.175753 0.66706,-0.04483 0.44471,-0.10393 0.22235,-0.02169 0.22235,-0.138122 h 0.44471 l 0.44471,-0.373004 H 994.32 l 0.22235,-0.153358 0.66706,-0.111094 0.44471,-0.01956 0.22235,-0.15511 0.88941,-0.05251 0.22236,-0.324775 h 0.22235 l 0.4447,-0.12656 h 0.22236 l 0.22235,-0.14841 1.33412,-0.101058 0.4447,-0.27706 0.44468,-0.10586 0.2224,-0.190635 0.8894,-0.09251 0.8894,-0.160882 0.6671,-0.47926 0.667,-0.125441 1.3341,-0.02812 0.6671,-0.662454 0.6671,-0.044 h 1.5564 l 0.2224,-0.81999 2.2235,-0.08082 0.6671,-0.718978 1.7788,-0.102367 0.2223,-0.182034 h 0.2224 l 0.6671,-0.528199 1.3341,-0.08687 0.2223,-0.182897 h 0.2224 l 0.2223,-0.181586 0.4447,-0.04842 0.2224,-0.220032 1.5565,-0.240513 0.2223,-0.164958 h 0.2224 l 0.2223,-0.152313 h 0.2224 l 0.4447,-0.334464 h 0.4447 l 0.667,-0.26434 h 0.4448 l 0.4447,-0.204607 h 0.4447 l 0.2223,-0.397191 h 0.4447 l 0.2224,-0.194902 0.667,-0.02608 0.2224,-0.185201 0.667,-0.07246 0.2224,-0.114888 0.2224,-0.285416 0.667,-0.171132 h 0.2224 l 0.2223,-0.19818 0.8894,-0.04699 0.4447,-0.205167 h 0.2224 l 0.2223,-0.272342 h 0.2224 l 0.2223,-0.187179 0.8895,-0.0277 0.2223,-0.28593 0.8894,-0.01516 0.2224,-0.506308 0.8894,-0.04499 0.4447,-0.171654 h 0.4447 l 0.2224,-0.137305 h 0.2223 l 0.2224,-0.141177 h 0.2223 l 0.2224,-0.292383 h 0.2223 l 0.2224,-0.294109 0.4447,-0.06436 0.4447,-0.119163 h 0.2223 l 0.2224,-0.172994 h 0.4447 l 0.2223,-0.213104 h 0.2224 l 0.4447,-0.293692 0.6671,-0.05785 0.2223,-0.223748 h 0.2224 l 0.2223,-0.171448 0.8894,-0.06726 0.2224,-0.391632 0.2223,-0.01241 0.2224,-0.316031 h 0.2223 l 0.2224,-0.153467 1.1118,-0.03757 0.8894,-0.78846 1.1117,-0.01232 0.2224,-0.13715 0.4447,-0.493754 h 0.6671 l 0.2223,-0.199105 h 0.4447 l 0.2224,-0.63822 1.7788,-0.08166 0.4447,-0.505388 1.3341,-0.06511 0.2224,-0.08107 0.4447,-0.420545 0.667,-0.0088 0.4447,-0.217898 h 0.2224 l 0.2223,-0.259278 0.6671,-0.10437 1.1118,-0.304166 0.667,-0.329877 0.6671,-0.05748 0.4447,-0.158481 h 0.2223 l 0.2224,-0.156715 0.6671,-0.01215 0.4447,-0.448391 h 0.4447 l 0.2223,-0.194763 0.6671,-0.01109 0.2223,-0.178627 0.6671,-0.0114 0.2223,-0.317252 0.6671,-0.02041 0.2224,-0.153533 h 0.4447 l 0.2223,-0.148528 0.8894,-0.06822 0.6671,-0.335962 0.8894,-0.06523 0.2224,-0.158962 1.1117,-0.09863 0.2224,-0.188374 h 0.2223 l 0.4447,-0.313821 1.1118,-0.168398 0.2223,-0.235027 1.1118,-0.06292 0.2224,-0.207861 h 1.3341 l 0.667,-0.344621 0.6671,-0.06861 1.1118,-0.238009 0.667,-0.04315 0.4447,-0.107551 0.8894,-0.142486 0.6671,-0.0997 0.6671,-0.101435 h 0.2223 l 0.2224,-0.177585 0.4447,-0.0324 0.4447,-0.119678 0.2223,-0.01275 0.2224,-0.140758 0.4447,-0.01004 0.4447,-0.112807 0.6671,-0.06795 1.1117,-0.324388 0.6671,-0.06668 0.4447,-0.188155 0.8894,-0.08255 0.2223,-0.157259 h 0.8895 l 0.4447,-0.111676 h 0.8894 l 0.4447,-0.122695 1.7788,-0.09171 2.0012,-0.33801 0.667,-0.06298 0.4447,-0.06829 0.6671,-0.0488 0.4447,-0.08715 1.7788,-0.103604 1.5565,-0.0853 2.6682,-0.08572 0.6671,-0.09023 1.3341,-0.09406 1.1118,-0.06599 2.6682,-0.04336 0.4447,-0.08423 4.0024,-0.105058 3.1129,-0.05181 5.1141,-0.100149 2.4459,-0.06201 9.3388,-0.110829 2.0012,-0.0135 28.2388,-0.03726 v 0"
+           clip-path="url(#pf5f1079b0f)"
+           style="fill:none;stroke:#d08770;stroke-width:2.4;stroke-dasharray:9.6, 4.8;stroke-dashoffset:0"
+           id="path54" />
+      </g>
+      <g
+         id="patch_16">
+        <path
+           d="M 711.48706,514.8 V 61.2"
+           style="fill:none;stroke:#4c566a;stroke-width:1.7;stroke-linecap:square;stroke-linejoin:miter"
+           id="path55" />
+      </g>
+      <g
+         id="patch_17">
+        <path
+           d="M 1156.1929,514.8 V 61.2"
+           style="fill:none;stroke:#4c566a;stroke-width:1.7;stroke-linecap:square;stroke-linejoin:miter"
+           id="path56" />
+      </g>
+      <g
+         id="patch_18">
+        <path
+           d="M 711.48706,514.8 H 1156.1929"
+           style="fill:none;stroke:#4c566a;stroke-width:1.7;stroke-linecap:square;stroke-linejoin:miter"
+           id="path57" />
+      </g>
+      <g
+         id="patch_19">
+        <path
+           d="M 711.48706,61.2 H 1156.1929"
+           style="fill:none;stroke:#4c566a;stroke-width:1.7;stroke-linecap:square;stroke-linejoin:miter"
+           id="path58" />
+      </g>
+      <g
+         id="text_37">
+        <text
+           style="font-weight:700;font-size:23px;font-family:'Courier New', 'DejaVu Sans Mono', Menlo, monospace;text-anchor:middle;fill:#2e3440"
+           x="933.84003"
+           y="43.200001"
+           id="text58">7-rad ROC: apparent and .632+ corrected</text>
+      </g>
+      <g
+         id="legend_1">
+        <g
+           id="patch_20">
+          <path
+             d="m 796.11544,506.8 h 348.87746 q 3.2,0 3.2,-3.2 v -56.5435 q 0,-3.2 -3.2,-3.2 H 796.11544 q -3.2,0 -3.2,3.2 V 503.6 q 0,3.2 3.2,3.2 z"
+             style="opacity:0.97;fill:#ffffff;stroke:#d8dee9;stroke-linejoin:miter"
+             id="path59" />
+        </g>
+        <g
+           id="line2d_42">
+          <path
+             d="m 799.31544,455.8565 h 16 v 0 h 16 v 0"
+             style="fill:none;stroke:#5e81ac;stroke-width:4.2;stroke-linecap:square"
+             id="path60" />
+        </g>
+        <g
+           id="text_38">
+          <text
+             style="font-size:16px;font-family:'Courier New', 'DejaVu Sans Mono', Menlo, monospace;text-anchor:start;fill:#2e3440"
+             x="844.11542"
+             y="461.45651"
+             id="text60"><tspan
+               style="font-weight:bold"
+               id="tspan71">Apparent ROC, AUC 0.825</tspan></text>
+        </g>
+        <g
+           id="line2d_43">
+          <path
+             d="m 799.31544,485.73825 h 16 16"
+             style="fill:none;stroke:#d08770;stroke-width:2.4;stroke-dasharray:9.6, 4.8;stroke-dashoffset:0"
+             id="path61" />
+        </g>
+        <g
+           id="text_39">
+          <text
+             style="font-size:16px;font-family:'Courier New', 'DejaVu Sans Mono', Menlo, monospace;fill:#2e3440"
+             transform="translate(844.11544,482.604)"
+             id="text61"><tspan
+               style="font-weight:bold"
+               id="tspan72">Pointwise bootstrap .632+ ROC</tspan></text>
+          <text
+             style="font-size:16px;font-family:'Courier New', 'DejaVu Sans Mono', Menlo, monospace;fill:#2e3440"
+             transform="translate(844.11544,497.385)"
+             id="text62"><tspan
+               style="font-weight:bold"
+               id="tspan73">AUC 0.789 (95% CI, 0.697-0.856)</tspan></text>
+        </g>
+      </g>
+    </g>
+    <g
+       id="text_40"
+       transform="translate(-10.5,-12)">
+      <text
+         style="font-weight:700;font-size:32px;font-family:'Courier New', 'DejaVu Sans Mono', Menlo, monospace;text-anchor:start;fill:#2e3440"
+         x="15.84"
+         y="36.105"
+         id="text63">A</text>
+    </g>
+    <g
+       id="text_41"
+       transform="translate(-3,-39)">
+      <text
+         style="font-weight:700;font-size:32px;font-family:'Courier New', 'DejaVu Sans Mono', Menlo, monospace;text-anchor:start;fill:#2e3440"
+         x="646.20001"
+         y="62.025002"
+         id="text64">B</text>
+    </g>
+  </g>
+  <defs
+     id="defs65">
+    <clipPath
+       id="p139249d96d">
+      <rect
+         x="119.88"
+         y="64.44"
+         width="416.16"
+         height="466.56"
+         id="rect64" />
+    </clipPath>
+    <clipPath
+       id="pf5f1079b0f">
+      <rect
+         x="711.487059"
+         y="61.2"
+         width="444.705882"
+         height="453.6"
+         id="rect65" />
+    </clipPath>
+  </defs>
+</svg>

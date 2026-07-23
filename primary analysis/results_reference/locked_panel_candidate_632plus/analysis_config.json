@@ -1,0 +1,19 @@
+{
+  "cohort_n": 195,
+  "events": 36,
+  "features": [
+    "log-sigma-3-0-mm-3D_glcm_ClusterProminence",
+    "log-sigma-3-0-mm-3D_glcm_ClusterShade",
+    "log-sigma-3-0-mm-3D_gldm_SmallDependenceHighGrayLevelEmphasis",
+    "log-sigma-7-0-mm-3D_ngtdm_Strength",
+    "original_shape_MinorAxisLength",
+    "wavelet-HLH_firstorder_Median",
+    "wavelet-HLH_gldm_LargeDependenceLowGrayLevelEmphasis"
+  ],
+  "bootstrap_method": "paired class-stratified nonparametric bootstrap",
+  "bootstrap_replicates": 2000,
+  "auc_estimator": ".632+",
+  "bootstrap_seed": 20260721,
+  "model_tuning": "3-fold stratified CV once on the full cohort",
+  "refit_per_replicate": true
+}

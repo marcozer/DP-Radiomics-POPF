@@ -1,0 +1,2 @@
+method,replicates,auc,ci_low,ci_high,mean_oob_auc,median_oob_n,median_oob_events
+stratified bootstrap .632+,2000,0.7886363715196645,0.6965084010106993,0.8556246571874394,0.7740060619908531,71.0,13.0

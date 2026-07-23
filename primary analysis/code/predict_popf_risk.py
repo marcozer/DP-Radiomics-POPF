@@ -25,7 +25,6 @@ from __future__ import annotations
 import argparse
 import json
 import logging
-import sys
 from pathlib import Path
 from typing import Any
 
@@ -169,10 +168,9 @@ def _load_risk_thresholds(risk_thresholds_json: Path) -> dict[str, Any]:
 
 
 def _risk_group_from_probability(p: float, low_thr: float, high_thr: float) -> str:
-    # Match `build_risk_table()` in `comparative_risk_stratification_v2.py`
-    if p <= low_thr:
+    if p < low_thr:
         return "Low"
-    if p <= high_thr:
+    if p < high_thr:
         return "Intermediate"
     return "High"
 

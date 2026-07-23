@@ -15,5 +15,7 @@ Notes:
 - The modeling scripts expect `stabl` to be installed via pip (e.g., `pip install git+https://github.com/gregbellan/Stabl.git@<commit>`); no vendored copy is used.
 - Run commands from the repository root, referencing scripts under `code/...` (see `docs/runbook.md`).
 - Radiomics extraction/harmonization lives in the sibling `radiomics pipeline` repo; consume its exported CSVs via CLI arguments rather than cross-repo paths.
-- For current R0_v2 manuscript analysis, use `code/models/r0_v2_elasticnet_7rad_mpd_thickness.py`; it runs on the bundled de-identified files by default.
-- For single-patient inference with the frozen radiomics signature, use `code/predict_popf_risk.py` with `configs/exported_model.pkl` (see `docs/runbook.md` section 6). The default calibration JSON is identity for the R0_v2 elastic-net bundle.
+- For the current apparent radiomics/radioclinical comparison, use `code/models/r0_v3_apparent_model_comparison.py`.
+- For the locked-panel six-estimator screening, use `code/models/locked_panel_candidate_632plus.py`; its 2,000 paired class-stratified bootstrap resamples provide the primary `.632+` AUC.
+- For rule-out and rule-in operating points, use `code/models/bootstrap_oob_cutpoints.py`; cutpoints are derived in bag and evaluated unchanged out of bag.
+- For single-patient inference with the frozen radiomics signature, use `code/predict_popf_risk.py` with `configs/exported_model.pkl` (see `docs/runbook.md`). The default calibration JSON is identity for the deployment elastic-net bundle.

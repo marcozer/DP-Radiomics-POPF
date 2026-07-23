@@ -1,16 +1,18 @@
 {
   "method": "identity",
-  "reason": "R0_v2 uses the raw probabilities from the final full-cohort standardized unweighted elastic-net 7-rad model for deployment. No post-hoc recalibration mapping is applied by default; manuscript performance is reported with bootstrap .632+ and repeated out-of-fold validation.",
-  "probability_model": "r0_v2_elasticnet_7rad_full_cohort",
+  "reason": "The deployable model returns raw probabilities from the final full-cohort standardized, unweighted elastic-net 7-rad fit. No post-hoc calibration mapping is applied.",
+  "probability_model": "r0_v3_elasticnet_7rad_full_cohort",
   "model_bundle": "primary analysis/configs/exported_model.pkl",
   "cohort_n": 195,
   "events": 36,
-  "auc_apparent": 0.825472,
-  "auc_632plus": 0.787178,
-  "auc_632plus_ci_low": 0.685255,
-  "auc_632plus_ci_high": 0.854118,
-  "auc_oof_5x5": 0.780398,
-  "brier_oof_5x5": 0.126088,
-  "ece_oof_5x5": 0.037631,
-  "calibration_slope_oof_5x5": 0.945744
+  "auc_apparent": 0.8254716981132075,
+  "auc_632plus": 0.7886363715391352,
+  "auc_632plus_ci_low": 0.6965084009611164,
+  "auc_632plus_ci_high": 0.8556246572322547,
+  "bootstrap_replicates": 2000,
+  "calibration_intercept_apparent": 0.1532318969894194,
+  "calibration_slope_apparent": 1.1397538084976635,
+  "strict_nested_oof_auc": 0.7042278127183788,
+  "strict_nested_oof_auc_ci_low": 0.6035945143256464,
+  "strict_nested_oof_auc_ci_high": 0.8045204402515723
 }

@@ -1,0 +1,4 @@
+stratum,n,events,event_rate
+Rule-out,86,3,0.03488372093023256
+Intermediate,83,15,0.18072289156626506
+Rule-in,26,18,0.6923076923076923

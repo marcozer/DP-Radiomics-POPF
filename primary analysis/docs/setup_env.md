@@ -9,10 +9,10 @@
 
 2. **Install Python dependencies**
    ```bash
-   pip install -r publication_export/requirements.txt
+   pip install -r "primary analysis/requirements.txt"
    ```
    - Optional extras: `pip install neurocombat-sklearn optuna` if discovery harmonization and LR C tuning are required.
-   - Install STABL from git (required): `pip install git+https://github.com/gregbellan/Stabl.git@<commit>`
+   - Install the STABL revision used for this analysis: `pip install git+https://github.com/gregbellan/Stabl.git@1d07f85a13cfbecb4f08ce21075bf4fbb8e34678`
 
 3. **Verify STABL installation**
    - Verify installation with `python -c "import stabl; print(stabl.__version__)"`.
@@ -25,4 +25,4 @@
 
 6. **Testing sanity**
    - Run `pytest -q` (future home for targeted unit tests under `tests/`).
-   - Execute the R0_v2 command in `docs/runbook.md` once to ensure IO dependencies are satisfied.
+   - Execute the three current analysis commands in `docs/runbook.md` once to verify the public inputs and dependencies.

@@ -8,8 +8,10 @@
 | `code/scripts/eval_fixed_panel.py` | `scripts/eval_fixed_panel.py` | Clean fixed-panel CV without selection. |
 | `code/scripts/eval_fixed_panel_combat.py` | `scripts/eval_fixed_panel_combat.py` | Optional harmonization evaluation. |
 | `code/scripts/optimize_lr_postselection.py` | `scripts/optimize_lr_postselection.py` | Optional LR C sensitvity. |
-| `code/models/r0_v2_elasticnet_7rad_mpd_thickness.py` | `R0_v2/analysis_elasticnet_7rad_mpd_thickness_20260616` | Current manuscript analysis: standardized unweighted elastic-net `7-rad`, refitted `7-rad + MPD/thickness`, standalone DP-FRS/DISPAIR benchmarks, bootstrap `.632+`, paired OOF comparison, and deployable model export. |
-| `code/figures/generate_figure3_model_development_internal_validation.py` | `R0_v2` / local aggregate analysis outputs | Regenerates manuscript Figure 3 with the validation-method comparison retained and the ROC panel shown as the apparent final-fit curve annotated with bootstrap `.632+` AUC. |
+| `code/models/r0_v2_elasticnet_7rad_mpd_thickness.py` | `R0_v2/analysis_elasticnet_7rad_mpd_thickness_20260616` | Earlier fixed-panel analysis retained for the deployable model export; it is not the current manuscript comparison entry point. |
+| `code/models/r0_v3_apparent_model_comparison.py` | `R0_v3/hobeika_completion_20260715` | Reproduces apparent elastic-net radiomics/radioclinical comparisons, published preoperative DP-FRS and 2025 DISPAIR benchmarks, calibration, coefficients, and paired DeLong tests. |
+| `code/models/locked_panel_candidate_632plus.py` | `R0_v3/model_family_2000_stratified_632plus_20260721` | Reproduces six-estimator screening with 2,000 paired class-stratified bootstrap `.632+` resamples. |
+| `code/models/bootstrap_oob_cutpoints.py` | `R0_v3/bootstrap_oob_cutpoints_20260721` | Reproduces 2,000-resample in-bag constrained-MCC cutpoint derivation and unchanged out-of-bag evaluation. |
 | `code/source_snapshots/popf_stabl_corrected_parallel_enhanced_v3_publish_github_original.py` | `sept25/popf_stabl_corrected_parallel_enhanced_v3.py` | STABL model-development script for the 7-rad EN run used in Figure 3. |
 | `code/source_snapshots/popf_stabl_nested_experiments_original.py` | `sept25/popf_stabl_nested_experiments.py` | Nested STABL feature-selection script. |
 | `code/models/comparative_risk_stratification_v2.py` | `R0` / manuscript regeneration utility | Comparative score/risk-stratification utility retained for earlier figure generations. |

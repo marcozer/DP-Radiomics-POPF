@@ -232,7 +232,7 @@ python deployment/smoke_test.py
 
 ## Reportable Probability
 
-The deployment uses the exported seven-feature elastic-net model to return a reportable CR-POPF probability. Manuscript performance estimates are reported separately with bootstrap `.632+` and repeated out-of-fold validation.
+The deployment uses the exported seven-feature elastic-net model to return a reportable CR-POPF probability. The primary manuscript AUC is estimated separately with 2,000 class-stratified bootstrap `.632+` resamples; strict nested STABL evaluates feature-selection sensitivity.
 
 - Intercept-only recalibration was evaluated but not retained for the manuscript.
 - A frozen identity-calibration artifact is stored under:
@@ -241,10 +241,11 @@ The deployment uses the exported seven-feature elastic-net model to return a rep
 
 ## Risk stratification (Low / Intermediate / High)
 
-- The deployment assigns a **frozen** risk group based on the reportable 7-rad probability.
+- The deployment assigns an exploratory risk group based on the reportable 7-rad probability.
 - Thresholds are stored under:
-  `primary analysis/configs/calibration/radiomics_risk_stratification.json` and are taken from the final threshold
-  diagnostics figure in `primary analysis/configs/calibration/radiomics_threshold_diagnostics.svg`.
+  `primary analysis/configs/calibration/radiomics_risk_stratification.json`.
+- The rule-out and rule-in cutpoints were selected by constrained MCC on the full cohort and internally validated by deriving them in bag and applying them unchanged out of bag over 2,000 class-stratified bootstrap resamples.
+- These operating points require external validation before clinical use.
 - The resulting columns appear in `popf_predictions.csv` (e.g., `risk_group`, `risk_threshold_low`, `risk_threshold_high`).
 
 ## ComBat deployment rule

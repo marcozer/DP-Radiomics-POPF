@@ -1,22 +1,35 @@
 # Reference Results
 
-This directory contains aggregate manuscript-ready figures only. It must not contain patient-level databases, imaging files, segmentations, or OOF prediction tables.
+This directory contains aggregate manuscript-ready figures and non-patient-level validation summaries. It must not contain patient-level databases, imaging files, segmentations, or OOF prediction tables.
 
 ## Manuscript Figure Assets
 
-The files in `manuscript_figures/` were exported from the current manuscript figure DOCX:
+The current editable SVG files in `manuscript_figures/` are:
 
-- `figure1_study_design_radiomics_workflow.svg`
-- `figure2_radiomics_feature_selection.svg`
-- `figure3_model_development_internal_validation.svg`
-- `figure4_signature_values_predicted_risk.svg`
-- `figure5_published_clinical_score_benchmarks.svg`
-- `figure6_elasticnet_7rad_mpd_thickness.svg`
+- `figure1_study_flow_and_radiomics_pipeline.svg`
+- `figure2_segmentation_and_head_isthmus_volume.svg`
+- `figure3_radiomics_feature_selection_lasso.svg`
+- `figure4_locked_panel_model_screening.svg`
+- `figure5_apparent_radiomics_heatmap.svg`
+- `figure6_apparent_roc_and_fitted_model_calibration.svg`
+
+The `manuscript_figures/supplementary/` directory contains the three current
+supplementary SVG figures.
 
 ## Regeneration
 
-Use `../code/models/r0_v2_elasticnet_7rad_mpd_thickness.py` for the current R0_v2 model comparison and Figure 6. Outputs should be written under `primary analysis/results/`, which is ignored by git.
+Use `../code/models/r0_v3_apparent_model_comparison.py` for the apparent model comparison and Figure 6.
 
-Use `../code/figures/generate_figure3_model_development_internal_validation.py` to regenerate Figure 3 from local R0_v2 outputs. Only aggregate SVG figure assets are committed for cited manuscript figures.
+Use `../code/models/locked_panel_candidate_632plus.py` to reproduce the 2,000-resample paired bootstrap `.632+` model-family estimates.
+
+Use `../code/models/bootstrap_oob_cutpoints.py` to reproduce the 2,000-resample out-of-bag cutpoint validation.
+
+Runtime outputs should be written under `primary analysis/results/`, which is ignored by git. The corresponding directories here contain only aggregate reference outputs and editable SVG assets.
+
+## Aggregate Reference Outputs
+
+- `r0_v3_apparent_model_comparison/`: apparent AUCs, bootstrap confidence intervals, calibration points, DeLong tests, tuning parameters, and elastic-net coefficients.
+- `locked_panel_candidate_632plus/`: paired 2,000-resample `.632+` model-family screening.
+- `bootstrap_oob_cutpoints/`: paired 2,000-resample `.632+` AUC and out-of-bag validation of constrained-MCC operating points.
 
 `nested_feature_selection_summary.json` contains the aggregate nested STABL feature-selection sensitivity result used to support feature-selection robustness. It does not contain patient-level data.

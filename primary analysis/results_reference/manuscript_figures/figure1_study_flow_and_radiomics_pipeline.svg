@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="720pt" height="960pt" viewBox="0 0 900 1200" version="1.1">
+  <title>Study flow and radiomics pipeline</title>
+  <desc>Vertical study flow from cohort inclusion through segmentation, radiomics extraction, feature reduction, STABL selection, and CR-POPF outcomes.</desc>
+  <defs>
+    <marker id="arrowhead" markerWidth="18" markerHeight="14" refX="14" refY="7" orient="auto" markerUnits="userSpaceOnUse" viewBox="0 0 18 14" overflow="visible">
+      <path d="M 1 1 L 17 7 L 1 13 Z" fill="#4C566A"/>
+    </marker>
+    <style>
+      .pipeline-box { stroke-width: 3; }
+      .flow-line { fill: none; stroke: #4C566A; stroke-width: 3.2; stroke-linecap: butt; stroke-linejoin: round; marker-end: url(#arrowhead); }
+      .flow-stem { fill: none; stroke: #4C566A; stroke-width: 3.2; stroke-linecap: round; stroke-linejoin: round; }
+      .box-title { fill: #2E3440; font-family: 'Courier New', 'DejaVu Sans Mono', 'Menlo', monospace; font-size: 21px; font-weight: 700; text-anchor: middle; }
+      .box-detail { fill: #2E3440; font-family: 'Courier New', 'DejaVu Sans Mono', 'Menlo', monospace; font-size: 19px; font-weight: 700; text-anchor: middle; }
+      .outcome-title { fill: #2E3440; font-family: 'Courier New', 'DejaVu Sans Mono', 'Menlo', monospace; font-size: 22px; font-weight: 700; text-anchor: middle; }
+      .outcome-detail { fill: #2E3440; font-family: 'Courier New', 'DejaVu Sans Mono', 'Menlo', monospace; font-size: 19px; font-weight: 700; text-anchor: middle; }
+    </style>
+  </defs>
+
+  <rect x="0" y="0" width="900" height="1200" fill="#FFFFFF"/>
+
+  <rect class="pipeline-box" x="120" y="40" width="660" height="120" rx="24" fill="#A3BE8C" fill-opacity="0.22" stroke="#A3BE8C"/>
+  <text class="box-title" x="450" y="72">
+    <tspan x="450" dy="0">Distal pancreatectomy</tspan>
+    <tspan x="450" dy="25">with preoperative CT</tspan>
+    <tspan x="450" dy="25">2019-2024</tspan>
+    <tspan x="450" dy="25">(n=195)</tspan>
+  </text>
+
+  <path class="flow-line" d="M 450 160 L 450 194"/>
+
+  <rect class="pipeline-box" x="120" y="200" width="660" height="100" rx="24" fill="#88C0D0" fill-opacity="0.22" stroke="#5E81AC"/>
+  <text class="box-title" x="450" y="242">
+    <tspan x="450" dy="0">TotalSegmentator</tspan>
+    <tspan x="450" dy="27">pancreas mask</tspan>
+  </text>
+
+  <path class="flow-line" d="M 450 300 L 450 334"/>
+
+  <rect class="pipeline-box" x="120" y="340" width="660" height="130" rx="24" fill="#EBCB8B" fill-opacity="0.22" stroke="#D08770"/>
+  <text class="box-title" x="450" y="380">
+    <tspan x="450" dy="0">Review by 2 abdominal radiologists</tspan>
+    <tspan x="450" dy="25">and head-isthmus delimitation</tspan>
+    <tspan class="box-detail" x="450" dy="25">Segmentation successful</tspan>
+    <tspan class="box-detail" x="450" dy="25">195/195</tspan>
+  </text>
+
+  <path class="flow-line" d="M 450 470 L 450 504"/>
+
+  <rect class="pipeline-box" x="120" y="510" width="660" height="105" rx="24" fill="#B48EAD" fill-opacity="0.22" stroke="#B48EAD"/>
+  <text class="box-title" x="450" y="548">
+    <tspan x="450" dy="0">PyRadiomics extraction</tspan>
+    <tspan class="box-detail" x="450" dy="27">1,130 features</tspan>
+  </text>
+
+  <path class="flow-line" d="M 450 615 L 450 649"/>
+
+  <rect class="pipeline-box" x="120" y="655" width="660" height="105" rx="24" fill="#88C0D0" fill-opacity="0.22" stroke="#5E81AC"/>
+  <text class="box-title" x="450" y="693">
+    <tspan x="450" dy="0">Unsupervised filtering</tspan>
+    <tspan class="box-detail" x="450" dy="27">313 features</tspan>
+  </text>
+
+  <path class="flow-line" d="M 450 760 L 450 794"/>
+
+  <rect class="pipeline-box" x="120" y="800" width="660" height="125" rx="24" fill="#5E81AC" fill-opacity="0.22" stroke="#5E81AC"/>
+  <text class="box-title" x="450" y="842">
+    <tspan x="450" dy="0">STABL consensus selection</tspan>
+    <tspan x="450" dy="27">7-feature signature</tspan>
+    <tspan class="box-detail" x="450" dy="27">(&gt;=12 of 20 runs)</tspan>
+  </text>
+
+  <path class="flow-stem" d="M 450 925 L 450 970"/>
+  <path class="flow-line" d="M 450 970 L 232.5 970 L 232.5 1004"/>
+  <path class="flow-line" d="M 450 970 L 667.5 970 L 667.5 1004"/>
+  <circle cx="450" cy="970" r="4" fill="#4C566A"/>
+
+  <rect class="pipeline-box" x="35" y="1010" width="395" height="150" rx="24" fill="#88C0D0" fill-opacity="0.22" stroke="#5E81AC"/>
+  <text class="outcome-title" x="232.5" y="1065">
+    <tspan x="232.5" dy="0">No CR-POPF</tspan>
+    <tspan class="outcome-detail" x="232.5" dy="30">159 (81.5%)</tspan>
+  </text>
+
+  <rect class="pipeline-box" x="470" y="1010" width="395" height="150" rx="24" fill="#D08770" fill-opacity="0.22" stroke="#BF616A"/>
+  <text class="outcome-title" x="667.5" y="1050">
+    <tspan x="667.5" dy="0">CR-POPF</tspan>
+    <tspan class="outcome-detail" x="667.5" dy="29">36 (18.5%)</tspan>
+    <tspan class="outcome-detail" x="667.5" dy="29">Grade B: 31 | Grade C: 5</tspan>
+  </text>
+</svg>

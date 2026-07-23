@@ -1,0 +1,25 @@
+{
+  "cohort_n": 195,
+  "events": 36,
+  "features": [
+    "log-sigma-3-0-mm-3D_glcm_ClusterProminence",
+    "log-sigma-3-0-mm-3D_glcm_ClusterShade",
+    "log-sigma-3-0-mm-3D_gldm_SmallDependenceHighGrayLevelEmphasis",
+    "log-sigma-7-0-mm-3D_ngtdm_Strength",
+    "original_shape_MinorAxisLength",
+    "wavelet-HLH_firstorder_Median",
+    "wavelet-HLH_gldm_LargeDependenceLowGrayLevelEmphasis"
+  ],
+  "model": "unweighted elastic-net logistic regression",
+  "model_parameters": {
+    "C": 3.0,
+    "l1_ratio": 0.05
+  },
+  "scaling": "StandardScaler refitted in every bootstrap sample",
+  "calibration": "none",
+  "bootstrap": "class-stratified nonparametric bootstrap",
+  "requested_valid_replicates": 2000,
+  "valid_replicates": 2000,
+  "attempts": 2000,
+  "seed": 20260721
+}

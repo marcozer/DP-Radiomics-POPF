@@ -1,39 +1,49 @@
 {
   "source": {
+    "analysis": "primary analysis/code/models/bootstrap_oob_cutpoints.py",
     "calibration": "primary analysis/configs/calibration/radiomics_calibration.json",
-    "performance_plot": "primary analysis/configs/calibration/radiomics_performance.svg",
     "model_bundle": "primary analysis/configs/exported_model.pkl",
-    "note": "Internal descriptive thresholds from R0_v2 5x5 out-of-fold 7-rad predictions. External validation is required before using these thresholds for clinical decisions."
+    "note": "Exploratory full-cohort cutpoints with internal out-of-bag bootstrap validation. External validation is required before clinical use."
   },
   "probability_source": "popf_risk_calibrated",
   "threshold_selection": {
-    "method": "internal_tertile_cut_points_from_5x5_oof_predictions",
-    "low_threshold": "Lower tertile cut point of R0_v2 7-rad out-of-fold probabilities.",
-    "high_threshold": "Upper tertile cut point of R0_v2 7-rad out-of-fold probabilities."
+    "method": "constrained_mcc",
+    "rule_out": "Sensitivity >=90%; maximize MCC.",
+    "rule_in": "Specificity >=90%; maximize MCC.",
+    "validation": "Cutpoints selected in bag and applied unchanged out of bag over 2,000 class-stratified bootstrap resamples."
   },
-  "low_threshold": 0.07449991845313005,
-  "high_threshold": 0.2657460819031407,
+  "low_threshold": 0.10166248347471143,
+  "high_threshold": 0.36836407433750906,
   "risk_groups": [
     {
       "label": "Low",
-      "rule": "p <= low_threshold",
-      "internal_oof_n": 65,
-      "internal_oof_events": 3,
-      "internal_oof_event_rate": 0.046153846153846156
+      "clinical_interpretation": "Rule-out",
+      "rule": "p < low_threshold",
+      "full_cohort_n": 86,
+      "full_cohort_events": 3,
+      "full_cohort_event_rate": 0.03488372093023256
     },
     {
       "label": "Intermediate",
-      "rule": "low_threshold < p <= high_threshold",
-      "internal_oof_n": 64,
-      "internal_oof_events": 11,
-      "internal_oof_event_rate": 0.171875
+      "rule": "low_threshold <= p < high_threshold",
+      "full_cohort_n": 83,
+      "full_cohort_events": 15,
+      "full_cohort_event_rate": 0.18072289156626506
     },
     {
       "label": "High",
-      "rule": "p > high_threshold",
-      "internal_oof_n": 66,
-      "internal_oof_events": 22,
-      "internal_oof_event_rate": 0.3333333333333333
+      "clinical_interpretation": "Rule-in",
+      "rule": "p >= high_threshold",
+      "full_cohort_n": 26,
+      "full_cohort_events": 18,
+      "full_cohort_event_rate": 0.6923076923076923
     }
-  ]
+  ],
+  "out_of_bag_validation": {
+    "bootstrap_replicates": 2000,
+    "rule_out_mean_sensitivity": 0.838495665413448,
+    "rule_out_mean_negative_predictive_value": 0.9415250767112904,
+    "rule_in_mean_specificity": 0.9212072846916363,
+    "rule_in_mean_positive_predictive_value": 0.5185967012306826
+  }
 }

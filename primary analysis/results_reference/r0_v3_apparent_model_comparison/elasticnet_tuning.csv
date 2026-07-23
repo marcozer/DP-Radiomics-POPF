@@ -1,0 +1,6 @@
+slug,model,n_features,inner_cv_auc,C,l1_ratio
+radiomics_7rad,7-rad,7,0.790356394129979,3.0,0.05
+radioclinical_dpfrs,7-rad + MPD/thickness,9,0.7573375262054508,10.0,0.9
+radioclinical_dispair_2025,7-rad + DISPAIR-FRS 2025 covariates,14,0.7479035639412999,10.0,0.7
+dpfrs_covariates_refit,DP-FRS covariates refit,2,0.5,0.01,0.1
+dispair_covariates_refit,DISPAIR-FRS 2025 covariates refit,7,0.539308176100629,10.0,0.05

@@ -3,13 +3,19 @@
   "purpose": "Assess feature-selection robustness by repeating STABL within training folds; not the primary performance estimate.",
   "cv_nested_selection": true,
   "model": "logistic_regression",
-  "cv_splits": 5,
+  "outer_folds": 5,
   "cv_repeats": 1,
-  "auc": 0.7104262672811059,
-  "auc_95_ci": [
+  "pooled_oof_auc": 0.7042278127183788,
+  "pooled_oof_auc_95_ci": [
+    0.6035945143256464,
+    0.8045204402515723
+  ],
+  "mean_outer_fold_auc": 0.7104262672811059,
+  "outer_fold_auc_percentile_interval": [
     0.5642857142857143,
     0.9044642857142856
   ],
+  "fold_specific_selected_panels_exported": false,
   "selected_features": [
     "log-sigma-3-0-mm-3D_glcm_ClusterProminence",
     "log-sigma-3-0-mm-3D_glcm_ClusterShade",

@@ -1,0 +1,6 @@
+comparison,mean_delta_auc_632plus,ci_low,ci_high,paired_replicates
+L2 logistic regression minus Elastic-net logistic regression,1.066879254777836e-05,-0.0018163357679192443,0.0017412442742415137,2000
+LightGBM minus Elastic-net logistic regression,-0.029098706739227546,-0.14438268362746662,0.07049494222127581,2000
+Random forest minus Elastic-net logistic regression,-0.04171770086429134,-0.15872715382139949,0.050975471974561655,2000
+Support vector machine minus Elastic-net logistic regression,-0.07138540721562717,-0.19414815637479677,0.020225341072299993,2000
+XGBoost minus Elastic-net logistic regression,-0.02227663163698493,-0.1356339779458999,0.0716382688956606,2000
